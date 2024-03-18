@@ -1,6 +1,6 @@
-# Project Name
+# PIDEV ArcTic
 
-Short description or introduction to the project.
+PI Project of the Cloud Seekers.
 
 ## Table of Contents
 
@@ -15,6 +15,6 @@ Provide instructions on how to install and set up the project locally. Include a
 
 ```bash
 # Example installation commands
-git clone https://github.com/username/project.git
-cd project
-npm install
+git init
+git clone https://github.com/SeifeddineABIDI/pidev-backend
+And you're DONE :)
