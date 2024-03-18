@@ -32,4 +32,4 @@ An awesome Spring Boot application showcasing [brief description of what the app
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/username/awesome-spring-boot-app.git
+git clone https://github.com/SeifeddineABIDI/pidev-backend.git
