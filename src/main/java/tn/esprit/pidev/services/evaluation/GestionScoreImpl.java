@@ -23,12 +23,12 @@ public class GestionScoreImpl implements IGestionScore{
 
     @Override
     public Score addScore(Score score) {
-        return scoreRepo.save();
+        return scoreRepo.save(score);
     }
 
     @Override
     public Score updateScore(Score score) {
-        return scoreRepo.save();
+        return scoreRepo.save(score);
     }
 
     @Override
