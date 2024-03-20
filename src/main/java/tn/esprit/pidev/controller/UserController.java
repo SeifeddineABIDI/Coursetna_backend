@@ -1,4 +1,4 @@
-package tn.esprit.pidev;
+package tn.esprit.pidev.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-public class controller {
+public class UserController {
     @Autowired
     IGestionUser iGestionUser;
     public List<User> getAll(){return iGestionUser.getAll();}
