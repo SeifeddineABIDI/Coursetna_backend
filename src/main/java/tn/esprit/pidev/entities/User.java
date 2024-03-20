@@ -1,5 +1,6 @@
 package tn.esprit.pidev.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +12,10 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
     private String prenom;
@@ -22,4 +24,6 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private TypeUser role;
     private String photo;
+    private Boolean isArchived = false;
+    private Boolean isBanned = false;
 }
