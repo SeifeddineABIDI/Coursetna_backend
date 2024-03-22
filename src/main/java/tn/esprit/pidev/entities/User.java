@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.io.Serializable;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -22,4 +24,7 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private TypeUser role;
     private String photo;
+
+    @OneToMany(mappedBy = "user") // user 1 ------ * reclamtion
+    private List<Reclamtion> reclamtionList;
 }
