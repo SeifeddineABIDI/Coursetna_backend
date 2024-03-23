@@ -8,6 +8,7 @@ public interface IGestionQuestion {
     List<Question> retrieveAllQuestions();
     Question retrieveQuestion (Long numQuestion);
     Question addQuestion(Question question);
+    //Question updateQuestion (Long numQuestion,Question question);
     Question updateQuestion (Question question);
     void removeQuestion(Long numQuestion);
 }

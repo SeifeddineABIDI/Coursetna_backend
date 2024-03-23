@@ -23,17 +23,21 @@ public class QuestionController {
         return IgQuestion.retrieveQuestion(numQuestion);
     }
 
-    @GetMapping("/addQuestion")
+    @PostMapping("/addQuestion")
     public Question addQuestion(@RequestBody Question question) {
         return IgQuestion.addQuestion(question);
     }
 
-    @GetMapping("/updateQuestion")
+   /* @PutMapping("/updateQuestion/{id}")
+    public Question updateQuestion(@RequestBody Question question,@PathVariable("id") Long numQuestion) {
+        return IgQuestion.updateQuestion(numQuestion,question);
+    }*/
+    @PutMapping("/updateQuestion")
     public Question updateQuestion(@RequestBody Question question) {
         return IgQuestion.updateQuestion(question);
     }
 
-    @GetMapping("/removeQuestion/{id}")
+    @DeleteMapping("/removeQuestion/{id}")
     public void removeQuestion(@PathVariable("id") Long numQuestion) {
         IgQuestion.removeQuestion(numQuestion);
     }

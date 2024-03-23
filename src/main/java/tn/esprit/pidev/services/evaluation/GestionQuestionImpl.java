@@ -26,6 +26,14 @@ public class GestionQuestionImpl implements IGestionQuestion{
         return questionRepo.save(question);
     }
 
+    /*@Override
+    public Question updateQuestion(Long numQuestion,Question question) {
+        if(questionRepo.findById(numQuestion).get()!=null){
+            question.setNumQuestion(numQuestion);
+            return questionRepo.save(question);
+        }
+        return null;
+    }*/
     @Override
     public Question updateQuestion(Question question) {
         return questionRepo.save(question);
