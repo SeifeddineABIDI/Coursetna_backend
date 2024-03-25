@@ -20,13 +20,13 @@ public class DiscussionController {
     }
 
     @PostMapping("/startDiscussionGroup")
-    public Discussion cstartDiscussionGroup(@RequestParam Long userStart, @RequestBody List<Long> userList) {
-        return iGestionDiscussion.startDiscussionGroup(userStart,userList);
+    public Discussion cstartDiscussionGroup(@RequestParam Long userStart,@RequestParam String title, @RequestBody List<Long> userList) {
+        return iGestionDiscussion.startDiscussionGroup(userStart,title,userList);
     }
 
     @PostMapping("/startDiscussionCommunity")
-    public Discussion cstartDiscussionCommunity(@RequestParam Long userStart, @RequestBody List<Long> userList) {
-        return iGestionDiscussion.startDiscussionCommunity(userStart,userList);
+    public Discussion cstartDiscussionCommunity(@RequestParam Long userStart,@RequestParam String title, @RequestBody List<Long> userList) {
+        return iGestionDiscussion.startDiscussionCommunity(userStart,title,userList);
     }
 
     @GetMapping("/retrieveAllMessages")

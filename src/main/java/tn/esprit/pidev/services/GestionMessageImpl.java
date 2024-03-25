@@ -19,12 +19,12 @@ public class GestionMessageImpl implements IGestionMessage {
     @Autowired
     IDiscussionRepository iDiscussionRepository;
     @Override
-    public Message sendMessage(Long sender, Long discussion, String message) {
+    public Message sendMessage(Long userSender, Long discussion, String message) {
         Message messageo = new Message();
         messageo.setMessage(message);
         messageo.setDateSent(LocalDateTime.now());
         messageo.setArchived(false);
-        messageo.setUser(iUserRepository.findById(sender).get());
+        messageo.setUser(iUserRepository.findById(userSender).get());
 
         Discussion discussiono = iDiscussionRepository.findById(discussion).get();
         messageo.setDiscussion(discussiono);

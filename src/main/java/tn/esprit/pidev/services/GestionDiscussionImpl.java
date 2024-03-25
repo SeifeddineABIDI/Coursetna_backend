@@ -11,6 +11,7 @@ import tn.esprit.pidev.repository.IUserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GestionDiscussionImpl implements IGestionDiscussion {
@@ -22,17 +23,20 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
     public Discussion startDiscussionDuo(Long userStart, Long userEnd) {
         Discussion discussion = new Discussion();
         discussion.setTypeDiscussion(TypeDiscussion.Duo);
+        User userEndo = iUserRepository.findById(userEnd).get() ;
         discussion.getUsers().add(iUserRepository.findById(userStart).get());
-        discussion.getUsers().add(iUserRepository.findById(userEnd).get());
+        discussion.getUsers().add(userEndo);
+        discussion.setTitle(userEndo.getPrenom() + " " + userEndo.getNom());
         discussion.setDateStart(LocalDateTime.now());
         discussion.setArchived(false);
         return iDiscussionRepository.save(discussion) ;
     }
 
     @Override
-    public Discussion startDiscussionGroup(Long userStart, List<Long> userList) {
+    public Discussion startDiscussionGroup(Long userStart, String title, List<Long> userList) {
         Discussion discussion = new Discussion();
         discussion.setTypeDiscussion(TypeDiscussion.Group);
+        discussion.setTitle(title);
         discussion.getUsers().add(iUserRepository.findById(userStart).get());
         for (Long user : userList) {
             discussion.getUsers().add(iUserRepository.findById(user).get());
@@ -43,9 +47,10 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
     }
 
     @Override
-    public Discussion startDiscussionCommunity(Long userStart, List<Long> userList) {
+    public Discussion startDiscussionCommunity(Long userStart, String title, List<Long> userList) {
         Discussion discussion = new Discussion();
         discussion.setTypeDiscussion(TypeDiscussion.Community);
+        discussion.setTitle(title);
         discussion.getUsers().add(iUserRepository.findById(userStart).get());
         for (Long user : userList) {
             discussion.getUsers().add(iUserRepository.findById(user).get());
@@ -56,7 +61,12 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
     }
 
     public List<Message> retrieveAllMessages(Long id){
-        return iDiscussionRepository.findById(id).get().getMessages();
+        return iDiscussionRepository.findById(id)
+                .map(Discussion::getMessages)
+                .orElseThrow(() -> new IllegalArgumentException("Discussion not found with id: " + id))
+                .stream()
+                .filter(message -> !message.isArchived())
+                .collect(Collectors.toList());
     }
 
     @Override

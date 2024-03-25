@@ -1,5 +1,6 @@
 package tn.esprit.pidev.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class Message {
     @ManyToOne
     private User user;
     @ManyToOne
+    @JsonIgnore
     private Discussion discussion;
     private boolean archived;
 

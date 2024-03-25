@@ -15,16 +15,16 @@ public class MessageController {
     IGestionMessage iGestionMessage ;
 
     @PostMapping("/sendMessage")
-    public Message csendMessage(@RequestParam Long senderUser,@RequestParam Long discussion,@RequestBody String message) {
-        return iGestionMessage.sendMessage(senderUser,discussion,message);
+    public Message csendMessage(@RequestParam Long userSender,@RequestParam Long discussion,@RequestBody String message) {
+        return iGestionMessage.sendMessage(userSender,discussion,message);
     }
 
-    @PostMapping("/modifyMessage")
+    @PutMapping("/modifyMessage")
     public Message cmodifyMessage(@RequestParam Long id,@RequestBody String message) {
         return iGestionMessage.modifyMessage(id,message);
     }
 
-    @PostMapping("/deleteMessage")
+    @PutMapping("/deleteMessage")
     public boolean cdeleteMessage(@RequestParam Long id) {
         return iGestionMessage.deleteMessage(id);
     }

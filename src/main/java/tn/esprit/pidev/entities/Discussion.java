@@ -20,12 +20,12 @@ public class Discussion implements Serializable {
     @GeneratedValue
     private Long id;
     private String title;
-    @Enumerated(EnumType.STRING)
     private LocalDateTime dateStart;
+    @Enumerated(EnumType.STRING)
     private TypeDiscussion typeDiscussion;
-    @OneToMany(cascade = CascadeType.DETACH)
+    @ManyToMany(cascade = CascadeType.DETACH)
     private List<User> users = new ArrayList<User>();
-    @OneToMany(cascade = CascadeType.DETACH)
+    @ManyToMany(cascade = CascadeType.DETACH)
     private List<User> acceptedUsers = new ArrayList<User>();
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "discussion")
     private List<Message> messages = new ArrayList<Message>();
