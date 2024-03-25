@@ -39,4 +39,9 @@ public class ReponseController {
     public void removeReponse(@PathVariable("id") Long numReponse){
         IgResponse.removeReponse(numReponse);
     }
+
+    @PostMapping("addReponseAndAssignToQuestionAndUser/{numUser}/{numQuestion}")
+    public Reponse addReponseAndAssignToQuestionAndUser(@RequestBody Reponse reponse,@PathVariable("numQuestion") Long numQuestion,@PathVariable("numUser") Long numUser){
+        return IgResponse.addReponseAndAssignToQuestionAndUser(reponse,numQuestion,numUser);
+    }
 }
