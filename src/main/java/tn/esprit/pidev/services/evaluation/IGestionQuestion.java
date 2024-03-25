@@ -11,4 +11,7 @@ public interface IGestionQuestion {
     //Question updateQuestion (Long numQuestion,Question question);
     Question updateQuestion (Question question);
     void removeQuestion(Long numQuestion);
+
+    Question addQuestionAndAssignToQuiz(Question question,Long numQuiz);
+
 }

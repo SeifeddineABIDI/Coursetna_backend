@@ -3,7 +3,9 @@ package tn.esprit.pidev.services.evaluation;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.pidev.entities.evaluation.Question;
+import tn.esprit.pidev.entities.evaluation.Quiz;
 import tn.esprit.pidev.repository.evaluation.IQuestionRepository;
+import tn.esprit.pidev.repository.evaluation.IQuizRepository;
 
 import java.util.List;
 
@@ -11,6 +13,7 @@ import java.util.List;
 @Service
 public class GestionQuestionImpl implements IGestionQuestion{
     IQuestionRepository questionRepo;
+    IQuizRepository quizRepo;
     @Override
     public List<Question> retrieveAllQuestions() {
         return questionRepo.findAll();
@@ -43,4 +46,14 @@ public class GestionQuestionImpl implements IGestionQuestion{
     public void removeQuestion(Long numQuestion) {
         questionRepo.deleteById(numQuestion);
     }
+
+    @Override
+    public Question addQuestionAndAssignToQuiz(Question question,Long numQuiz){
+        Quiz quiz=quizRepo.findById(numQuiz).get();
+
+        question.setQuiz(quiz);
+        return questionRepo.save(question);
+    }
+
+
 }

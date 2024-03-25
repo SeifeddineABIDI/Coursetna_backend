@@ -20,8 +20,6 @@ public class Reponse implements Serializable {
     @ManyToOne
     private User user;
     @ManyToOne
-    private Quiz quiz;
-    @ManyToOne
     private Question question;
 
 }
