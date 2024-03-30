@@ -38,8 +38,16 @@ public class ReclamationController {
         return iGestionReclamation.updateReclamtion(reclamtion);
     }
 
+    //************* ----delete Reclamtion----************
+
+    @DeleteMapping("/deleReclamtion/{id}")
+    public void deleteReclamation(@PathVariable("id") long idrec) {
+        iGestionReclamation.deleteReclamation(idrec);
+    }
 
 
 
 
-}
+
+
+    }
