@@ -1,10 +1,7 @@
 package tn.esprit.pidev.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.entities.Reclamtion;
 import tn.esprit.pidev.repository.IReclamationRepository;
 import tn.esprit.pidev.services.IGestionReclamation;
@@ -29,11 +26,17 @@ public class ReclamationController {
     public Reclamtion addReclamation(Reclamtion reclamtion){
         return  iGestionReclamation.addReclamation(reclamtion);
     }
+    //******************* --- getreclamation --- ************
+    @GetMapping("/getreclamation/{id}")
+    public Reclamtion RetrieveReclamation(@PathVariable("id") long idrec) {
+        return iGestionReclamation.RetrieveReclamation(idrec);
+    }
 
-
-
-
-
+    //***************** update reclamation--- *****************
+    @PutMapping("/updateReclamtion")
+        public Reclamtion updateReclamtion(@RequestBody Reclamtion reclamtion)    {
+        return iGestionReclamation.updateReclamtion(reclamtion);
+    }
 
 
 
