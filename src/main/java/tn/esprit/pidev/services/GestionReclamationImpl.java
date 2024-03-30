@@ -33,6 +33,6 @@ public class GestionReclamationImpl implements IGestionReclamation {
 
     @Override
     public void deleteReclamation(long idrec) {
-iReclamationRepository.deleteById(idrec);
+        iReclamationRepository.deleteById(idrec);
     }
 }

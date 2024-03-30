@@ -23,7 +23,7 @@ public class ReclamationController {
 
     //******************* ---addReclamation--- ************
     @PostMapping("addReclamation")
-    public Reclamtion addReclamation(Reclamtion reclamtion){
+    public Reclamtion addReclamation(@RequestBody Reclamtion reclamtion){
         return  iGestionReclamation.addReclamation(reclamtion);
     }
     //******************* --- getreclamation --- ************

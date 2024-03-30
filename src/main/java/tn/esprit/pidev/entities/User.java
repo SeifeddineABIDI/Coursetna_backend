@@ -27,4 +27,7 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user") // user 1 ------ * reclamtion
     private List<Reclamtion> reclamtionList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Reponse> reponseList;
 }
