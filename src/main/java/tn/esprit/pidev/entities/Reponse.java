@@ -25,4 +25,6 @@ public class Reponse implements Serializable {
 
     @ManyToOne
     private User user;
+    @ManyToOne
+    private Reclamtion reclamtion;
 }
