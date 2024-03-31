@@ -2,8 +2,12 @@ package tn.esprit.pidev.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tn.esprit.pidev.entities.Reclamtion;
 import tn.esprit.pidev.entities.Reponse;
+import tn.esprit.pidev.entities.User;
+import tn.esprit.pidev.repository.IReclamationRepository;
 import tn.esprit.pidev.repository.IReponseRepository;
+import tn.esprit.pidev.repository.IUserRepository;
 
 import java.util.List;
 
@@ -11,6 +15,8 @@ import java.util.List;
 public class GestionReponseImpl implements IGestionReponse{
     @Autowired
     IReponseRepository iReponseRepository;
+    IReclamationRepository iReclamationRepository;
+    IUserRepository iUserRepository;
 
 
     @Override
@@ -38,4 +44,6 @@ public class GestionReponseImpl implements IGestionReponse{
         iReponseRepository.deleteById(idrep);
 
     }
+
+
 }
