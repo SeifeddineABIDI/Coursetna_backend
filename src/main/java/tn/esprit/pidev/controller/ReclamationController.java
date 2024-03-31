@@ -3,6 +3,7 @@ package tn.esprit.pidev.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.entities.Reclamtion;
+import tn.esprit.pidev.entities.Reponse;
 import tn.esprit.pidev.repository.IReclamationRepository;
 import tn.esprit.pidev.services.IGestionReclamation;
 
@@ -50,4 +51,5 @@ public class ReclamationController {
 
 
 
-    }
+
+}

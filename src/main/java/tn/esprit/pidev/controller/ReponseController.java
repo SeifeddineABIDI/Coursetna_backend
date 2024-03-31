@@ -43,6 +43,11 @@ public class ReponseController {
         iGestionReponse.deleteReponse(idrep);
 
     }
-
+    //********** ---addReponseAndAssignToReclamationAndUser---**********//
+    @PostMapping("/addReponseAndAssignToReclamationAndUser/{numReclamtion}/{numUser}")
+    public Reponse addReponseAndAssignToReclamationAndUser(@RequestBody Reponse reponse,@PathVariable("numReclamtion") long numReclamtion,@PathVariable("numUser") long numUser)
+    {
+        return iGestionReponse.addReponseAndAssignToReclamationAndUser(reponse,numReclamtion,numUser);
+    }
 
 }
