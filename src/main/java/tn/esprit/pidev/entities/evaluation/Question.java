@@ -1,5 +1,6 @@
 package tn.esprit.pidev.entities.evaluation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +21,10 @@ public class Question implements Serializable {
     private String choice2;
     private String choice3;
     private String correctAnswer;
+    private int points;
 
     @ManyToOne
+    @JsonIgnore
     private Quiz quiz;
 
 }

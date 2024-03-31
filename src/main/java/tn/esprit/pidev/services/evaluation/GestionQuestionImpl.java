@@ -50,8 +50,9 @@ public class GestionQuestionImpl implements IGestionQuestion{
     @Override
     public Question addQuestionAndAssignToQuiz(Question question,Long numQuiz){
         Quiz quiz=quizRepo.findById(numQuiz).get();
-
+        quiz.getListQuestions().add(question);
         question.setQuiz(quiz);
+
         return questionRepo.save(question);
     }
 

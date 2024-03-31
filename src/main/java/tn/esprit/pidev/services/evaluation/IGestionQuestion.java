@@ -13,5 +13,4 @@ public interface IGestionQuestion {
     void removeQuestion(Long numQuestion);
 
     Question addQuestionAndAssignToQuiz(Question question,Long numQuiz);
-
 }

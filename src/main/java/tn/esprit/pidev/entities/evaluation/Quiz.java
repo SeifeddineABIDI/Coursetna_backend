@@ -1,11 +1,13 @@
 package tn.esprit.pidev.entities.evaluation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,4 +20,9 @@ public class Quiz implements Serializable {
     private String title;
     private String description;
     private int duree;
+
+    @OneToMany(mappedBy = "quiz",cascade = CascadeType.ALL)
+    List<Question> listQuestions;
+
+
 }
