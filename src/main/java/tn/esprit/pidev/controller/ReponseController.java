@@ -50,4 +50,11 @@ public class ReponseController {
         return iGestionReponse.addReponseAndAssignToReclamationAndUser(reponse,numReclamtion,numUser);
     }
 
+    //***************** --- addReponseAndAssignToReclamtion --- ****************
+    @PostMapping("/addReponseAndAssignToReclamtion/{numReclamtion}")
+    public Reponse addReponseAndAssignToReclamtion(@RequestBody Reponse reponse,@PathVariable("numReclamtion") long numReclamtion)
+    {
+        return iGestionReponse.addReponseAndAssignToReclamtion(reponse,numReclamtion);
+    }
+
 }
