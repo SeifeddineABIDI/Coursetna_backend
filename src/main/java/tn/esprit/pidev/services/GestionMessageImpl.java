@@ -51,4 +51,21 @@ public class GestionMessageImpl implements IGestionMessage {
             return false;
         }
     }
+
+    @Override
+    public Message replyMessage(Long userSender, Long discussion,Long message, String reply) {
+        Message messageo = new Message();
+        messageo.setMessage(reply);
+        messageo.setDateSent(LocalDateTime.now());
+        messageo.setArchived(false);
+        messageo.setUser(iUserRepository.findById(userSender).get());
+        messageo.setReply(iMessageRepository.findById(message).get());
+
+        Discussion discussiono = iDiscussionRepository.findById(discussion).get();
+        messageo.setDiscussion(discussiono);
+        discussiono.getMessages().add(messageo);
+
+        iDiscussionRepository.save(discussiono);
+        return iMessageRepository.save(messageo);
+    }
 }

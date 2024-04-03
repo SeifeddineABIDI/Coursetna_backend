@@ -29,4 +29,8 @@ public class MessageController {
         return iGestionMessage.deleteMessage(id);
     }
 
+    @PostMapping("/replyMessage")
+    public Message creplyMessage(@RequestParam Long userSender,@RequestParam Long discussion,@RequestParam Long message,@RequestBody String reply) {
+        return iGestionMessage.replyMessage(userSender,discussion,message,reply);
+    }
 }

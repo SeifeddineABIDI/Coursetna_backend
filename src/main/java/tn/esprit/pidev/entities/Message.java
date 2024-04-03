@@ -30,6 +30,8 @@ public class Message {
     private Discussion discussion;
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "message")
     private List<Reaction> reactions = new ArrayList<Reaction>();
+    @OneToOne
+    private Message reply = null;
     private boolean archived;
 
     @Override

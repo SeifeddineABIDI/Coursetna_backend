@@ -11,4 +11,7 @@ public interface IGestionMessage {
 
     public boolean deleteMessage (Long id);
 
-}
+    public Message replyMessage(Long userSender, Long discussion, Long message, String reply);
+
+
+    }
