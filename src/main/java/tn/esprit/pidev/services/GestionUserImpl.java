@@ -21,7 +21,10 @@ public class GestionUserImpl implements IGestionUser{
     @Override
     public User add(User user){return ur.save(user);}
     @Override
-    public  User update(User user){return ur.save(user);}
+    public  User update(User user){
+        User thisUser = ur.findUserByEmail(user.getEmail());
+        return ur.save( thisUser);
+    }
     @Override
     public User findById(Integer id){return ur.getById(id);}
     @Override
@@ -36,4 +39,5 @@ public class GestionUserImpl implements IGestionUser{
     }
     @Override
     public Optional<User> findByEmail(String user){return ur.findByEmail(user);}
+
 }

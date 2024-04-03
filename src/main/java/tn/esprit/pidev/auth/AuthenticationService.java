@@ -131,7 +131,7 @@ public class AuthenticationService {
                 var accessToken = jwtService.generateToken(user);
                 revokeAllUserTokens(user);
                 saveUserToken(user, accessToken);
-                var authResponse = AuthenticationResponse.builder()
+                var authResponse = HttpResponse.builder()
                         .accessToken(accessToken)
                         .refreshToken(refreshToken)
                         .build();

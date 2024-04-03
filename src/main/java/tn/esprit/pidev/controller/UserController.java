@@ -15,17 +15,7 @@ public class UserController {
     @Autowired
     IGestionUser iGestionUser;
 
-    // Read all
-    @GetMapping("/all")
-    public ResponseEntity<List<User>> findAll() {
-        try {
-            List<User> users = iGestionUser.findAll();
-            return ResponseEntity.ok(users);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-    // Create
+
     @PostMapping("/add")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         try {
@@ -49,6 +39,7 @@ public class UserController {
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         try {
+
             User updatedUser = iGestionUser.update(user);
             return ResponseEntity.ok(updatedUser);
         } catch (Exception e) {
