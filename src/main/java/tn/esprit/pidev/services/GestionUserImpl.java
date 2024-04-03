@@ -33,5 +33,6 @@ public class GestionUserImpl implements IGestionUser{
     public List<User> findAllActive() {
         return entityManager.createQuery("SELECT u FROM User u WHERE u.isArchived = false", User.class).getResultList();
     }
-
+    @Override
+    public User findByEmail(String user){return ur.findByEmail(user);}
 }

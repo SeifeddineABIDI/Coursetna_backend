@@ -10,6 +10,7 @@ public interface IGestionUser {
     User add(User user);
     User update(User user);
     User findById (Long id);
+    User findByEmail (String email);
     void delete(Long id);
 
 }
