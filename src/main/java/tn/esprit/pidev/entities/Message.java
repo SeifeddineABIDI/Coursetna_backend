@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -25,6 +28,8 @@ public class Message {
     @ManyToOne
     @JsonIgnore
     private Discussion discussion;
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "message")
+    private List<Reaction> reactions = new ArrayList<Reaction>();
     private boolean archived;
 
     @Override
