@@ -19,5 +19,8 @@ public interface IGestionDiscussion {
     public Discussion addUserToDiscussion(Long id, List<Long> userList);
 
     public List<Message> retrieveAllMessages(Long id);
+
+    public Discussion renameDiscussion(Long id,String title);
+
     public boolean deleteDiscussion(Long id);
 }

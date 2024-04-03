@@ -29,8 +29,23 @@ public class DiscussionController {
         return iGestionDiscussion.startDiscussionCommunity(userStart,title,userList);
     }
 
+    @PutMapping("/addUserToDiscussion")
+    public Discussion caddUserToDiscussion(@RequestParam Long id, @RequestBody List<Long> userList) {
+        return iGestionDiscussion.addUserToDiscussion(id,userList);
+    }
+
     @GetMapping("/retrieveAllMessages")
     public List<Message> cretrieveAllMessages(@RequestParam Long id) {
         return iGestionDiscussion.retrieveAllMessages(id);
+    }
+
+    @PutMapping("/renameDiscussion")
+    public Discussion crenameDiscussion(@RequestParam Long id,@RequestParam String title) {
+        return iGestionDiscussion.renameDiscussion(id,title);
+    }
+
+    @PutMapping("/deleteDiscussion")
+    public boolean cdeleteDiscussion(@RequestParam Long id) {
+        return iGestionDiscussion.deleteDiscussion(id);
     }
 }

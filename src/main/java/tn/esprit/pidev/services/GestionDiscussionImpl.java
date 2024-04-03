@@ -60,6 +60,16 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
         return iDiscussionRepository.save(discussion) ;
     }
 
+    @Override
+    public Discussion addUserToDiscussion(Long id, List<Long> userList) {
+        Discussion discussion = iDiscussionRepository.findById(id).get();
+        for (Long user : userList) {
+            discussion.getUsers().add(iUserRepository.findById(user).get());
+        }
+        return iDiscussionRepository.save(discussion) ;
+    }
+
+
     public List<Message> retrieveAllMessages(Long id){
         return iDiscussionRepository.findById(id)
                 .map(Discussion::getMessages)
@@ -69,12 +79,12 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
                 .collect(Collectors.toList());
     }
 
+
+
     @Override
-    public Discussion addUserToDiscussion(Long id, List<Long> userList) {
+    public Discussion renameDiscussion(Long id, String title) {
         Discussion discussion = iDiscussionRepository.findById(id).get();
-        for (Long user : userList) {
-            discussion.getUsers().add(iUserRepository.findById(user).get());
-        }
+        discussion.setTitle(title);
         return iDiscussionRepository.save(discussion) ;
     }
 
