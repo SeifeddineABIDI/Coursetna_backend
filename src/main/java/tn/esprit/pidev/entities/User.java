@@ -34,9 +34,7 @@ public class User implements UserDetails {
     private Boolean isArchived = false;
     private Boolean isBanned = false;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user")
-    private List<Token> tokens;
+
 
     public void setPassword(String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
