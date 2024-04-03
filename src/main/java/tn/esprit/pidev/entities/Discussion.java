@@ -29,7 +29,7 @@ public class Discussion implements Serializable {
     private List<User> acceptedUsers = new ArrayList<User>();
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "discussion")
     private List<Message> messages = new ArrayList<Message>();
-    private boolean archived = false;
+    private boolean archived = false ;
 
     @Override
     public String toString() {

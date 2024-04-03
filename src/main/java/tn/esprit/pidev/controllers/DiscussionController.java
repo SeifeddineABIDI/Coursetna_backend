@@ -34,6 +34,11 @@ public class DiscussionController {
         return iGestionDiscussion.addUserToDiscussion(id,userList);
     }
 
+    @GetMapping("/retrieveAllDiscussions")
+    public List<Discussion> cretrieveAllDiscussions(@RequestParam Long id) {
+        return iGestionDiscussion.retrieveAllDiscussions(id);
+    }
+
     @GetMapping("/retrieveAllMessages")
     public List<Message> cretrieveAllMessages(@RequestParam Long id) {
         return iGestionDiscussion.retrieveAllMessages(id);

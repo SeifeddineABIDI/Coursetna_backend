@@ -69,6 +69,14 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
         return iDiscussionRepository.save(discussion) ;
     }
 
+    public List<Discussion> retrieveAllDiscussions(Long id){
+        User user = iUserRepository.findById(id).get();
+        return iDiscussionRepository.findAll()
+                .stream()
+                .filter(discussion -> !discussion.isArchived() && discussion.getAcceptedUsers().contains(user))
+                .collect(Collectors.toList());
+    }
+
 
     public List<Message> retrieveAllMessages(Long id){
         return iDiscussionRepository.findById(id)

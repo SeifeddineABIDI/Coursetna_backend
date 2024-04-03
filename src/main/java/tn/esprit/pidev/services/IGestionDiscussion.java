@@ -18,6 +18,8 @@ public interface IGestionDiscussion {
 
     public Discussion addUserToDiscussion(Long id, List<Long> userList);
 
+    public List<Discussion> retrieveAllDiscussions(Long id);
+
     public List<Message> retrieveAllMessages(Long id);
 
     public Discussion renameDiscussion(Long id,String title);
