@@ -1,16 +1,20 @@
-package tn.esprit.pidev.config;
+package tn.esprit.pidev.auth;
 
+import tn.esprit.pidev.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class AuthRequestDTO {
+public class RegisterRequest {
 
+    private String firstname;
+    private String lastname;
     private String email;
     private String password;
+    private Role role;
 }

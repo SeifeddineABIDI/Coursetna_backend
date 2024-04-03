@@ -37,7 +37,7 @@ public class UserController {
     }
     // Read by ID
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
+    public ResponseEntity<User> findById(@PathVariable Integer id) {
         try {
             User user = iGestionUser.findById(id);
             return ResponseEntity.ok(user);

@@ -8,6 +8,7 @@ import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.IUserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GestionUserImpl implements IGestionUser{
@@ -22,9 +23,9 @@ public class GestionUserImpl implements IGestionUser{
     @Override
     public  User update(User user){return ur.save(user);}
     @Override
-    public User findById(Long id){return ur.getById(id);}
+    public User findById(Integer id){return ur.getById(id);}
     @Override
-    public void delete(Long id) {
+    public void delete(Integer id) {
         User user = findById(id);
         user.setIsArchived(true);
         ur.save(user);
@@ -34,5 +35,5 @@ public class GestionUserImpl implements IGestionUser{
         return entityManager.createQuery("SELECT u FROM User u WHERE u.isArchived = false", User.class).getResultList();
     }
     @Override
-    public User findByEmail(String user){return ur.findByEmail(user);}
+    public Optional<User> findByEmail(String user){return ur.findByEmail(user);}
 }

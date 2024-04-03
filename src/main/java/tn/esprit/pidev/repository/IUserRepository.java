@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tn.esprit.pidev.entities.User;
 
-public interface IUserRepository extends JpaRepository<User, Long> {
-    @Query("SELECT u FROM User u WHERE u.email = :email")
-    User findByEmail(@Param("email") String email);
+import java.util.Optional;
+
+public interface IUserRepository extends JpaRepository<User, Integer> {
+    Optional<User> findByEmail(String email);
+
 }
