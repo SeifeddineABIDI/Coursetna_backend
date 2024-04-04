@@ -13,5 +13,6 @@ public interface IGestionUser {
     User findById (Integer id);
     Optional<User> findByEmail (String email);
     void delete(Integer id);
+    User findUserBymail(String mail);
 
 }

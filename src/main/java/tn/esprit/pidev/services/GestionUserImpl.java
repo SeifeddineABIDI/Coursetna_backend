@@ -26,18 +26,25 @@ public class GestionUserImpl implements IGestionUser{
         return ur.save( thisUser);
     }
     @Override
-    public User findById(Integer id){return ur.getById(id);}
+    public User findById(Integer id){return ur.findById(id).orElse(null);}
     @Override
     public void delete(Integer id) {
         User user = findById(id);
         user.setIsArchived(true);
         ur.save(user);
     }
+
+    @Override
+    public User findUserBymail(String mail) {
+        return ur.findUserByEmail(mail);
+    }
+
     @Override
     public List<User> findAllActive() {
         return entityManager.createQuery("SELECT u FROM User u WHERE u.isArchived = false", User.class).getResultList();
     }
     @Override
     public Optional<User> findByEmail(String user){return ur.findByEmail(user);}
+
 
 }

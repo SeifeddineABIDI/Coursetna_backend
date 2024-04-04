@@ -19,6 +19,7 @@ import static tn.esprit.pidev.user.Permission.MANAGER_CREATE;
 import static tn.esprit.pidev.user.Permission.MANAGER_DELETE;
 import static tn.esprit.pidev.user.Permission.MANAGER_READ;
 import static tn.esprit.pidev.user.Permission.MANAGER_UPDATE;
+@Getter
 @RequiredArgsConstructor
 public enum Role {
 

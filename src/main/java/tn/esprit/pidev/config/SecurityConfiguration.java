@@ -14,6 +14,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import tn.esprit.pidev.entities.Role;
+import static tn.esprit.pidev.entities.Role.ADMIN;
+import static tn.esprit.pidev.entities.Role.MANAGER;
 
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
@@ -50,11 +52,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
-                                .requestMatchers("/api/v1/management/**").hasAnyRole(String.valueOf(Role.ADMIN))
+                                .requestMatchers("/api/v1/management/**").hasAnyRole(ADMIN.name(), MANAGER.name())
                                 .requestMatchers(GET, "/api/v1/management/**").hasAnyAuthority(Role.ADMIN.toString())
                                 .requestMatchers(POST, "/api/v1/management/**").hasAnyAuthority(Role.ADMIN.toString())
                                 .requestMatchers(PUT, "/api/v1/management/**").hasAnyAuthority(Role.ADMIN.toString())
                                 .requestMatchers(DELETE, "/api/v1/management/**").hasAnyAuthority(Role.ADMIN.toString())
+                                .requestMatchers("/user/**").hasAnyRole(ADMIN.name(), MANAGER.name())
                                 .anyRequest()
                                 .authenticated()
                 )

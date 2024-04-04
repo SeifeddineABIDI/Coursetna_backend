@@ -3,10 +3,13 @@ package tn.esprit.pidev.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.pidev.config.JwtService;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.services.IGestionUser;
 import org.springframework.http.HttpStatus;
+import tn.esprit.pidev.token.Token;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -14,8 +17,26 @@ import java.util.List;
 public class UserController {
     @Autowired
     IGestionUser iGestionUser;
+    @Autowired
+    JwtService jwtService;
+    @GetMapping("/getexpr/{token}")
+    public ResponseEntity<Date> dd(@PathVariable String token)  {
 
-
+        try {
+            return ResponseEntity.ok(jwtService.extractExpiration(token));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }    }
+    // Read all
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> findAll() {
+        try {
+            List<User> users = iGestionUser.findAll();
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     @PostMapping("/add")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         try {
@@ -49,7 +70,7 @@ public class UserController {
     @GetMapping("/allact")
     public ResponseEntity<List<User>> findAllActice() {
         try {
-            List<User> users = iGestionUser.findAllActive();
+            List<User> users = iGestionUser.findAll();
             return ResponseEntity.ok(users);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
