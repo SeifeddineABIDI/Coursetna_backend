@@ -32,7 +32,7 @@ public enum Role {
                     ADMIN_CREATE,
                     MANAGER_READ,
                     MANAGER_UPDATE,
-                    MANAGER_DELETE
+                    MANAGER_DELETE,
                     MANAGER_CREATE
             )
     ),
