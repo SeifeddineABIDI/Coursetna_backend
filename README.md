@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://cdn-icons-png.flaticon.com/512/10270/10270032.png" alt="User Management Logo" width="200">
   <h1>User Management Task</h1>
-  <h4>A simple and efficient user management system built with Spring Boot 3</h4>
+  <p>A simple and efficient user management system built with Spring Boot 3</p>
 </div>
 
 ---
