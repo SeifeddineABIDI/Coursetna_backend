@@ -1,6 +1,6 @@
 <div align="center">
   <img src="https://cdn-icons-png.flaticon.com/512/10270/10270032.png" alt="User Management Logo" width="200">
-  <h1>User Management Task</h1>
+  <h1 style="color: blue;">User Management Task</h1>
   <h3>A simple and efficient user management system built with Spring Boot 3</h3>
 </div>
 
@@ -14,7 +14,6 @@
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-
 
 ---
 
