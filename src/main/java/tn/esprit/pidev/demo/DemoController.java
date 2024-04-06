@@ -16,7 +16,12 @@ public class DemoController {
         return ResponseEntity.ok("Hello from secured endpoint");
     }
 
-
+    @GetMapping("/ping")
+    public String test() {
+        try {
+            return "Welcome";
+        } catch (Exception e) {
+            return "ghalet";
         }
     }
 }
