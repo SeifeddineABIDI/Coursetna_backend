@@ -52,11 +52,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
-                                .requestMatchers("/api/v1/management/**").hasAnyRole(ADMIN.name(), MANAGER.name())
-                                .requestMatchers(GET, "/api/v1/management/**").hasAnyAuthority(Role.ADMIN.toString())
-                                .requestMatchers(POST, "/api/v1/management/**").hasAnyAuthority(Role.ADMIN.toString())
-                                .requestMatchers(PUT, "/api/v1/management/**").hasAnyAuthority(Role.ADMIN.toString())
-                                .requestMatchers(DELETE, "/api/v1/management/**").hasAnyAuthority(Role.ADMIN.toString())
+
                                 .requestMatchers("/user/**").hasAnyRole(ADMIN.name(), MANAGER.name())
                                 .anyRequest()
                                 .authenticated()
