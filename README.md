@@ -53,4 +53,4 @@ Before getting started, ensure you have the following installed on your machine:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/SeifeddineABIDI/pidev-backend/tree/seif.git
+   git clone https://github.com/SeifeddineABIDI/pidev-backend/tree/seif
