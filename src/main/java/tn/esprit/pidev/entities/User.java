@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import tn.esprit.pidev.token.Token;
 
 import java.util.Collection;
@@ -33,7 +34,6 @@ public class User implements UserDetails {
     private String photo;
     private Boolean isArchived = false;
     private Boolean isBanned = false;
-
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;

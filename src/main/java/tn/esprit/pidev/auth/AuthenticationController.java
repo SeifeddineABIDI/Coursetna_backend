@@ -4,6 +4,7 @@ package tn.esprit.pidev.auth;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +42,8 @@ public class AuthenticationController {
     private  AuthenticationService service;
     @Autowired
     private IGestionUser userRepository;
+    @Autowired
+    private UserService userService;
     @Autowired
     private ResourceLoader resourceLoader;
 
@@ -155,6 +160,12 @@ public class AuthenticationController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(imageData);
+    }
+
+    @PatchMapping("/changepass/{userId}")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request,@PathVariable Integer userId) {
+        userService.changePassword(userId, request);
+        return ResponseEntity.ok().build();
     }
 }
 
