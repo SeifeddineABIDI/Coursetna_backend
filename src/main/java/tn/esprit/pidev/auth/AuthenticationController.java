@@ -24,12 +24,8 @@ import java.security.Principal;
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
-    @Autowired
-    IGestionUser iGestionUser;
     private final AuthenticationService service;
-    private final UserService us;
-    private IUserRepository ur;
-    private HttpResponse res;
+
 
 
     @PostMapping("/register")
@@ -54,14 +50,11 @@ public class AuthenticationController {
         service.refreshToken(request, response);
     }
 
-    @PostMapping("/changepass")
-    public ResponseEntity<?> changePassword(
-            @RequestBody ChangePasswordRequest request,
-            User connectedUser
+    @GetMapping("/confirm")
+    public ResponseEntity<String> confirm(
+            @RequestParam("token") String token
     ) {
-        connectedUser = ur.findUserByEmail(request.getEmail());
-        us.changePassword(request, connectedUser);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(service.confirmToken(token));
     }
 }
 

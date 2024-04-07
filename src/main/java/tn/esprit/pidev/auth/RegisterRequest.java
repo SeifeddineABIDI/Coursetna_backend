@@ -1,15 +1,13 @@
 package tn.esprit.pidev.auth;
 
+import lombok.*;
 import tn.esprit.pidev.entities.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class RegisterRequest {
 
     private String firstname;

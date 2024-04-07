@@ -2,10 +2,12 @@ package tn.esprit.pidev.auth;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.json.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,32 +20,45 @@ import org.springframework.stereotype.Service;
 import tn.esprit.pidev.config.JwtService;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.IUserRepository;
+import tn.esprit.pidev.services.EmailService;
 import tn.esprit.pidev.token.Token;
 import tn.esprit.pidev.token.TokenRepository;
 import tn.esprit.pidev.token.TokenType;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+    private final String CONFIRMATION_URL="http://localhost:9000/pidev/api/v1/auth/confirm?token=%s";
     private final IUserRepository repository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-
+    @Autowired
+    private  EmailService emailService;
     public AuthenticationResponse register(RegisterRequest request) {
 
         var user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
+                .isBanned(true)
+                .isArchived(false)
                 .build();
         var savedUser = repository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
+
+
+        emailService.sendConfirmationEmail("sayf.abidi1@gmail.com", user.getUsername(), String.format(CONFIRMATION_URL,jwtToken));
+
+
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
@@ -60,6 +75,15 @@ public class AuthenticationService {
             );
             var user = repository.findByEmail(request.getEmail())
                     .orElseThrow();
+            if (user.getIsBanned()== true)
+            {
+                return AuthenticationResponse.builder()
+                        .user(null)
+                        .accessToken(null)
+                        .refreshToken(null)
+                        .error("user not activated")
+                        .build();
+            }
             var jwtToken = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
             revokeAllUserTokens(user);
@@ -137,6 +161,26 @@ public class AuthenticationService {
                         .build();
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
+        }
+    }
+    public String confirmToken(String token) {
+        Optional<Token> savedToken = tokenRepository.findByToken(token);
+        if (savedToken.get().isExpired()) {
+            String generatedToken = UUID.randomUUID().toString();
+            Token newToken = Token.builder()
+                    .token(generatedToken)
+                    .user(savedToken.get().getUser())
+                    .build();
+            return "Token expired a new token has been sent to your mail";
+        }else if (savedToken.isPresent()) {
+            User user = savedToken.get().getUser();
+            user.setIsBanned(false);
+            repository.save(user);
+            tokenRepository.save(savedToken.get());
+            return "account activated";
+        }
+        else{
+            return "err";
         }
     }
 }
