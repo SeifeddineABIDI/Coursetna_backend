@@ -1,11 +1,16 @@
 package tn.esprit.pidev.auth;
 
 
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
@@ -19,6 +24,7 @@ import tn.esprit.pidev.user.ChangePasswordRequest;
 import tn.esprit.pidev.user.UserService;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,7 +37,12 @@ import java.security.Principal;
 public class AuthenticationController {
     @Autowired
     private  AuthenticationService service;
+    @Autowired
+    private IGestionUser userRepository;
+    @Autowired
+    private ResourceLoader resourceLoader;
 
+    private static final String IMAGE_DIRECTORY = "src/main/resources/static/images";
 
 
 //    @PostMapping("/register")
@@ -117,6 +128,33 @@ public class AuthenticationController {
             @RequestParam("token") String token
     ) {
         return ResponseEntity.ok(service.confirmToken(token));
+    }
+    @GetMapping("/{userId}/image")
+    public ResponseEntity<byte[]> getUserImage(@PathVariable Integer userId) {
+        // Retrieve user by ID
+        User user = userRepository.findById(userId);
+        if (user == null || user.getPhoto() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Read image data from the file system using the path stored in the database
+        Path imagePath = Paths.get(user.getPhoto());
+        byte[] imageData;
+        try {
+            imageData = Files.readAllBytes(imagePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        // Set content type header based on image type (assuming JPEG for now)
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+
+        // Return image data as response
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(imageData);
     }
 }
 

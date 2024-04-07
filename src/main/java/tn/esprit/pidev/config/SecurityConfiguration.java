@@ -4,6 +4,8 @@ package tn.esprit.pidev.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,7 +31,10 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfiguration {
-
+    @Bean
+    public ResourceLoader resourceLoader() {
+        return new DefaultResourceLoader();
+    }
     private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**",
             "/user/**",
             "/v2/api-docs",
