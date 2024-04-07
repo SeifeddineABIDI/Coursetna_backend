@@ -1,6 +1,7 @@
 package tn.esprit.pidev.auth;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.entities.Role;
 
 @Data
@@ -15,4 +16,5 @@ public class RegisterRequest {
     private String email;
     private String password;
     private Role role;
+    private MultipartFile photo;
 }

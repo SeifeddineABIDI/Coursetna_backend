@@ -17,10 +17,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.config.JwtService;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.IUserRepository;
 import tn.esprit.pidev.services.EmailService;
+import tn.esprit.pidev.services.ImageService;
 import tn.esprit.pidev.token.Token;
 import tn.esprit.pidev.token.TokenRepository;
 import tn.esprit.pidev.token.TokenType;
@@ -38,20 +41,31 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private User user;
+    private String jwtToken;
     private final AuthenticationManager authenticationManager;
     @Autowired
+    private ImageService imageService;
+    @Autowired
     private  EmailService emailService;
-    public AuthenticationResponse register(RegisterRequest request) {
-
-        var user = User.builder()
+    public AuthenticationResponse register(RegisterRequest request,  MultipartFile imageFile) {
+        String imagePath = null;
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // Save the uploaded image
+            String imageName = StringUtils.cleanPath(imageFile.getOriginalFilename());
+            imagePath = imageService.saveImage(imageFile, imageName);
+        }
+         user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
                 .isBanned(true)
                 .isArchived(false)
-                .build();
+                 .photo(imagePath) // Set image path if provided
+
+                 .build();
         var savedUser = repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
 
@@ -171,6 +185,8 @@ public class AuthenticationService {
                     .token(generatedToken)
                     .user(savedToken.get().getUser())
                     .build();
+            emailService.sendConfirmationEmail("sayf.abidi1@gmail.com", user.getUsername(), String.format(CONFIRMATION_URL,jwtToken));
+
             return "Token expired a new token has been sent to your mail";
         }else if (savedToken.isPresent()) {
             User user = savedToken.get().getUser();

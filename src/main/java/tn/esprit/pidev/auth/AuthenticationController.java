@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.entities.Role;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.IUserRepository;
@@ -28,12 +29,30 @@ public class AuthenticationController {
 
 
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest request
-    ) {
-        return ResponseEntity.ok(service.register(request));
-    }
+//    @PostMapping("/register")
+//    public ResponseEntity<AuthenticationResponse> register(
+//            @RequestBody RegisterRequest request
+//    ) {
+//        return ResponseEntity.ok(service.register(request));
+//    }
+@PostMapping("/register")
+public ResponseEntity<AuthenticationResponse> register(
+        @RequestParam("nom") String nom,
+        @RequestParam("prenom") String prenom,
+        @RequestParam("email") String email,
+        @RequestParam("password") String password,
+        @RequestParam("role") Role role,
+        @RequestParam("imageFile") MultipartFile imageFile
+) {
+    RegisterRequest request = RegisterRequest.builder()
+            .firstname(nom)
+            .lastname(prenom)
+            .email(email)
+            .password(password)
+            .role(role)
+            .photo(imageFile)
+            .build();
+    return ResponseEntity.ok(service.register(request, imageFile));}
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
