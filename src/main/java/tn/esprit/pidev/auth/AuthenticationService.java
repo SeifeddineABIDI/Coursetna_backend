@@ -23,13 +23,11 @@ import tn.esprit.pidev.config.JwtService;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.IUserRepository;
 import tn.esprit.pidev.services.EmailService;
-import tn.esprit.pidev.services.ImageService;
 import tn.esprit.pidev.token.Token;
 import tn.esprit.pidev.token.TokenRepository;
 import tn.esprit.pidev.token.TokenType;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,24 +43,18 @@ public class AuthenticationService {
     private String jwtToken;
     private final AuthenticationManager authenticationManager;
     @Autowired
-    private ImageService imageService;
-    @Autowired
     private  EmailService emailService;
-    public AuthenticationResponse register(RegisterRequest request,  MultipartFile imageFile) {
-        String imagePath = null;
-        if (imageFile != null && !imageFile.isEmpty()) {
-            // Save the uploaded image
-            String imageName = StringUtils.cleanPath(imageFile.getOriginalFilename());
-            imagePath = imageService.saveImage(imageFile, imageName);
-        }
+    public AuthenticationResponse register(RegisterRequest request) {
+
          user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
+                 .nom(request.getNom())
+                 .prenom(request.getPrenom())
+                 .photo(request.getPhoto())
                 .isBanned(true)
                 .isArchived(false)
-                 .photo(imagePath) // Set image path if provided
-
                  .build();
         var savedUser = repository.save(user);
         jwtToken = jwtService.generateToken(user);

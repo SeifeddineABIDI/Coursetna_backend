@@ -11,10 +11,10 @@ import tn.esprit.pidev.entities.Role;
 @Getter
 public class RegisterRequest {
 
-    private String firstname;
-    private String lastname;
+    private String nom;
+    private String prenom;
     private String email;
     private String password;
     private Role role;
-    private MultipartFile photo;
+    private String photo;
 }
