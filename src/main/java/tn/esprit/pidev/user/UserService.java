@@ -42,9 +42,6 @@ public class UserService {
 public void changePassword(Integer userId, ChangePasswordRequest request) {
     User user = repository.findById(userId)
             .orElseThrow(() -> new NotFoundException("User not found"));
-    System.out.println("////////////////");
-    System.out.println(user.getId());
-    System.out.println(request.getNewPassword());
 
     // Validate old password
     if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
@@ -53,7 +50,6 @@ public void changePassword(Integer userId, ChangePasswordRequest request) {
 
     // Set new password
     user.setPassword(request.getNewPassword());
-    System.out.println(user.getPassword());
     // Save updated user
     repository.save(user);
 }
