@@ -1,6 +1,7 @@
 package tn.esprit.pidev.services;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,8 +36,14 @@ public class GestionUserImpl implements IGestionUser{
     }
 
     @Override
-    public User findUserBymail(String mail) {
-        return ur.findUserByEmail(mail);
+    public User findUserBymail(String email) {
+        try {
+            return entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null; // No user found with the given email
+        }
     }
 
     @Override

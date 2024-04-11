@@ -33,6 +33,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.security.Principal;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -46,6 +48,8 @@ public class AuthenticationController {
     private UserService userService;
     @Autowired
     private ResourceLoader resourceLoader;
+    @Autowired
+    private IUserRepository ur;
 
     private static final String IMAGE_DIRECTORY = "src/main/resources/static/images";
 
@@ -167,5 +171,19 @@ public class AuthenticationController {
         userService.changePassword(userId, request);
         return ResponseEntity.ok().build();
     }
-}
+    @GetMapping("/mailcheck")
+    public ResponseEntity<String> mailcheck(
+            @RequestBody Map<String, String> requestBody
+    ) {
+        String email = requestBody.get("email");
+        User user = userRepository.findUserBymail(email);
+        System.out.println(email);
+        System.out.println(user);
+        if (user == null) {
+            return ResponseEntity.ok("User doesn't exist!");
+        } else {
+            return ResponseEntity.ok("User exists!");
+        }
+    }
+    }
 

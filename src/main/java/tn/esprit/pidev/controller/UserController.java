@@ -2,6 +2,7 @@ package tn.esprit.pidev.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.config.JwtService;
 import tn.esprit.pidev.entities.User;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/user")
 public class UserController {
     @Autowired
@@ -29,6 +31,7 @@ public class UserController {
         }    }
     // Read all
     @GetMapping("/all")
+    @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<List<User>> findAll() {
         try {
             List<User> users = iGestionUser.findAll();
