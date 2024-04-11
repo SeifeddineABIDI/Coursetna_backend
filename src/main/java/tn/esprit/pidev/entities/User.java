@@ -28,10 +28,6 @@ public class User implements Serializable {
     private TypeUser role;
     private String photo;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Post> posts=new ArrayList<>();
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private Set<Comment> comments=new HashSet<>();
 
 }
