@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.config.JwtService;
+import tn.esprit.pidev.entities.CurrentUser;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.IUserRepository;
 import tn.esprit.pidev.services.EmailService;
@@ -92,6 +93,8 @@ public class AuthenticationService {
             }
             var jwtToken = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
+            CurrentUser.setUser(user);
+
             revokeAllUserTokens(user);
             saveUserToken(user, jwtToken);
 

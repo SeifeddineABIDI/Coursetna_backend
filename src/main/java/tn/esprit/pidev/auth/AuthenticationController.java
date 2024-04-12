@@ -1,6 +1,7 @@
 package tn.esprit.pidev.auth;
 
 
+import com.sun.security.auth.UserPrincipal;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,10 +16,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tn.esprit.pidev.config.LogoutService;
+import tn.esprit.pidev.entities.CurrentUser;
 import tn.esprit.pidev.entities.Role;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.IUserRepository;
@@ -35,7 +39,7 @@ import java.security.Principal;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
@@ -50,6 +54,7 @@ public class AuthenticationController {
     private ResourceLoader resourceLoader;
     @Autowired
     private IUserRepository ur;
+
 
     private static final String IMAGE_DIRECTORY = "src/main/resources/static/images";
 
@@ -184,6 +189,10 @@ public class AuthenticationController {
         } else {
             return ResponseEntity.ok("User exists!");
         }
+    }
+    @GetMapping("/current")
+    public User getCurrentUser() {
+        return CurrentUser.getUser();
     }
     }
 
