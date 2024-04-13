@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/score")
+@CrossOrigin
 public class ScoreController {
     @Autowired
     IGestionScore IgScore;
@@ -24,18 +25,10 @@ public class ScoreController {
         return IgScore.retrieveScore(numScore);
     }
 
-    @PostMapping("/addScore")
-    public Score addScore(@RequestBody Score score){
-        return IgScore.addScore(score);
+    @PostMapping("/addScore/{numQuiz}/{numUser}")
+    public Score addScore(@PathVariable("numQuiz")Long numQuiz,@PathVariable("numUser")Long numUser){
+        return IgScore.calculateScore(numQuiz,numUser);
     }
 
-    @PutMapping("/updateScore")
-    public Score updateScore (@RequestBody Score score){
-        return IgScore.updateScore(score);
-    }
 
-    @DeleteMapping("/removeScore/{id}")
-    public void removeScore(@PathVariable("id") Long numScore){
-        IgScore.removeScore(numScore);
-    }
 }

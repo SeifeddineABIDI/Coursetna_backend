@@ -12,5 +12,9 @@ public interface IGestionReponse {
     Reponse updateReponse (Reponse reponse);
     void removeReponse(Long numReponse);
 
+
     Reponse addReponseAndAssignToQuestionAndUser(Reponse reponse,Long numQuestion,Long numUser);
+    List<Reponse> getAllByUser (Long numUser);
+    Reponse getReponseByUserAndQuestion (Long numUser,Long numQuestion);
+
 }

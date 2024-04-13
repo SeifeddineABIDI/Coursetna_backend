@@ -22,7 +22,11 @@ public class Quiz implements Serializable {
     private int duree;
 
     @OneToMany(mappedBy = "quiz",cascade = CascadeType.ALL)
-    List<Question> listQuestions;
+    private List<Question> listQuestion;
+
+    @OneToMany(mappedBy = "quiz")
+    @JsonIgnore
+    private List<Score> listScore;
 
 
 }

@@ -14,6 +14,8 @@ import java.util.List;
 public class GestionQuestionImpl implements IGestionQuestion{
     IQuestionRepository questionRepo;
     IQuizRepository quizRepo;
+
+    /********************** CRUD*******************************************/
     @Override
     public List<Question> retrieveAllQuestions() {
         return questionRepo.findAll();
@@ -29,14 +31,6 @@ public class GestionQuestionImpl implements IGestionQuestion{
         return questionRepo.save(question);
     }
 
-    /*@Override
-    public Question updateQuestion(Long numQuestion,Question question) {
-        if(questionRepo.findById(numQuestion).get()!=null){
-            question.setNumQuestion(numQuestion);
-            return questionRepo.save(question);
-        }
-        return null;
-    }*/
     @Override
     public Question updateQuestion(Question question) {
         return questionRepo.save(question);
@@ -46,11 +40,11 @@ public class GestionQuestionImpl implements IGestionQuestion{
     public void removeQuestion(Long numQuestion) {
         questionRepo.deleteById(numQuestion);
     }
-
+/**********************END CRUD*******************************************/
     @Override
     public Question addQuestionAndAssignToQuiz(Question question,Long numQuiz){
         Quiz quiz=quizRepo.findById(numQuiz).get();
-        quiz.getListQuestions().add(question);
+        quiz.getListQuestion().add(question);
         question.setQuiz(quiz);
 
         return questionRepo.save(question);

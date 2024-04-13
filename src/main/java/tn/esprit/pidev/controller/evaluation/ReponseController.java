@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/response")
+@CrossOrigin
 public class ReponseController {
     @Autowired
     IGestionReponse IgResponse;
@@ -44,4 +45,11 @@ public class ReponseController {
     public Reponse addReponseAndAssignToQuestionAndUser(@RequestBody Reponse reponse,@PathVariable("numQuestion") Long numQuestion,@PathVariable("numUser") Long numUser){
         return IgResponse.addReponseAndAssignToQuestionAndUser(reponse,numQuestion,numUser);
     }
+
+
+    @GetMapping("/getAllByUser/{id}")
+    public List<Reponse> getAllResponsesByUser (@PathVariable("id") Long numUser){
+        return IgResponse.getAllByUser(numUser);
+    }
+
 }

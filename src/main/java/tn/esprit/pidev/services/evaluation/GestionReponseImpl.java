@@ -42,6 +42,7 @@ public class GestionReponseImpl implements IGestionReponse {
         reponseRepo.deleteById(numReponse);
     }
 
+    /**********************END CRUD*******************************************/
     @Override
     public  Reponse addReponseAndAssignToQuestionAndUser(Reponse reponse,Long numQuestion,Long numUser){
         User user= userRepo.findById(numUser).get();
@@ -50,6 +51,16 @@ public class GestionReponseImpl implements IGestionReponse {
         reponse.setQuestion(question);
         reponse.setUser(user);
         return reponseRepo.save(reponse);
+    }
+
+    @Override
+    public List<Reponse> getAllByUser (Long numUser){
+        return reponseRepo.getAllanswersByUser(numUser);
+    }
+
+    @Override
+    public Reponse getReponseByUserAndQuestion (Long numUser,Long numQuestion){
+        return reponseRepo.getAnswerByUserAndQuestion(numUser,numQuestion);
     }
 
 }

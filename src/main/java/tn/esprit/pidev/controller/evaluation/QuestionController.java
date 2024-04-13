@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/question")
+@CrossOrigin
 public class QuestionController {
     @Autowired
     IGestionQuestion IgQuestion;
