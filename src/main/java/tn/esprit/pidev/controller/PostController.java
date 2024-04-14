@@ -1,53 +1,50 @@
 package tn.esprit.pidev.controller;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.pidev.dto.PostRequest;
+import tn.esprit.pidev.dto.PostResponse;
 import tn.esprit.pidev.entities.Post;
 import tn.esprit.pidev.services.IGestionPost;
 
 import java.util.List;
 
+import static org.springframework.web.servlet.function.ServerResponse.status;
+
 @RestController
-@RequestMapping("/post")
+@RequestMapping("/posts")
+
 public class PostController {
+
     @Autowired
     IGestionPost gestionPost;
 
+    @PostMapping
+    public ResponseEntity<Void> createPost(@RequestBody PostRequest postRequest) {
+        gestionPost.create(postRequest);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
     @GetMapping
-    public ResponseEntity<List<Post>> getAllPosts() {
-        List<Post> posts = gestionPost.retrieveAllPosts();
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+    public ResponseEntity<List<PostResponse>> getAllPosts() {
+        List<PostResponse> posts = gestionPost.getAllPosts();
+        return ResponseEntity.ok(posts);
     }
 
-    @PostMapping
-    public ResponseEntity<Post> addPost(@RequestBody Post post) {
-        Post addedPost = gestionPost.addPost(post);
-        return new ResponseEntity<>(addedPost, HttpStatus.CREATED);
+    @GetMapping("/{id}")
+    public ResponseEntity<PostResponse> getPost(@PathVariable Long id) {
+        PostResponse post = gestionPost.getPostById(id);
+        return ResponseEntity.ok(post);
     }
 
-    @GetMapping("/{postId}")
-    public ResponseEntity<Post> getPostById(@PathVariable Long postId) {
-        Post post = gestionPost.retrievePost(postId);
-        if (post != null) {
-            return new ResponseEntity<>(post, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("by-subforum/{id}")
+    public ResponseEntity<List<PostResponse>> getPostsBySubforum(@PathVariable Long id) {
+        List<PostResponse> posts = gestionPost.getPostsBySubforum(id);
+        return ResponseEntity.ok(posts);
     }
 
-    @PutMapping("/{postId}")
-    public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody Post post) {
-        post.setPostId(postId);
-        Post updatedPost = gestionPost.updatePost(post);
-        return new ResponseEntity<>(updatedPost, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
-        gestionPost.removePost(postId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
 }

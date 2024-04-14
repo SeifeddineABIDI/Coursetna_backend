@@ -16,5 +16,5 @@ public class CommentsDto {
     private Instant createdDate;
     @NotBlank
     private String text;
-    private String userName;
+    private String email;
 }

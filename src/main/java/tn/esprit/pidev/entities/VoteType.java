@@ -1,6 +1,6 @@
 package tn.esprit.pidev.entities;
 
-import tn.esprit.pidev.exceptions.SpringTopicException;
+import tn.esprit.pidev.exceptions.SpringSubforumException;
 
 import java.util.Arrays;
 
@@ -17,7 +17,7 @@ public enum VoteType {
         return Arrays.stream(VoteType.values())
                 .filter(value -> value.getDirection().equals(direction))
                 .findAny()
-                .orElseThrow(() -> new SpringTopicException("Vote not found"));
+                .orElseThrow(() -> new SpringSubforumException("Vote not found"));
     }
 
     public Integer getDirection() {
