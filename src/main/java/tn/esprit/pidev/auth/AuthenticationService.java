@@ -122,6 +122,51 @@ public class AuthenticationService {
                     .build();
         }
     }
+    public AuthenticationResponse authenticateWithToken(String token) {
+        try {
+
+            var user = tokenRepository.findUserByToken(token);
+
+            if (user.getIsBanned()== true)
+            {
+                return AuthenticationResponse.builder()
+                        .user(null)
+                        .accessToken(null)
+                        .refreshToken(null)
+                        .error("user not activated")
+                        .build();
+            }
+            var jwtToken = jwtService.generateToken(user);
+            var refreshToken = jwtService.generateRefreshToken(user);
+            CurrentUser.setUser(user);
+
+            revokeAllUserTokens(user);
+            saveUserToken(user, jwtToken);
+
+            return AuthenticationResponse.builder()
+                    .user(user)
+                    .accessToken(jwtToken)
+                    .refreshToken(refreshToken)
+                    .error(null)
+                    .build();
+        } catch (AuthenticationException ex) {
+            // Handle authentication failure
+            return AuthenticationResponse.builder()
+                    .user(null)
+                    .accessToken(null)
+                    .refreshToken(null)
+                    .error("Invalid username or password")
+                    .build();
+        } catch (Exception ex) {
+            // Handle other exceptions
+            return AuthenticationResponse.builder()
+                    .user(null)
+                    .accessToken(null)
+                    .refreshToken(null)
+                    .error("Internal server error")
+                    .build();
+        }
+    }
 
     private void saveUserToken(User user, String jwtToken) {
         var token = Token.builder()

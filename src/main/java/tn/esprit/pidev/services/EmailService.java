@@ -12,6 +12,7 @@ import org.springframework.ui.freemarker.SpringTemplateLoader;
 import org.springframework.util.StringUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import tn.esprit.pidev.entities.CurrentUser;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;

@@ -54,6 +54,8 @@ public class AuthenticationController {
     private ResourceLoader resourceLoader;
     @Autowired
     private IUserRepository ur;
+    @Autowired
+    private LogoutService logoutService;
 
 
     private static final String IMAGE_DIRECTORY = "src/main/resources/static/images";
@@ -128,6 +130,12 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(service.authenticate(request));
     }
+    @PostMapping("/authenticateWithToken")
+    public ResponseEntity<AuthenticationResponse> authenticateWithToken(
+            @RequestBody Map<String,String> token
+    ) {
+        return ResponseEntity.ok(service.authenticateWithToken(token.get("token")));
+    }
 
     @PostMapping("/refresh-token")
     public void refreshToken(
@@ -194,5 +202,12 @@ public class AuthenticationController {
     public User getCurrentUser() {
         return CurrentUser.getUser();
     }
+//    @PostMapping("/sign-out")
+//    public void logout(
+//            HttpServletRequest request,
+//            HttpServletResponse response
+//    ) throws IOException {
+//        logoutService.logout(request, response);
+//    }
     }
 

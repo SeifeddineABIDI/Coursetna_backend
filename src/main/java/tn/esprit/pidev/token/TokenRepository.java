@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import tn.esprit.pidev.entities.User;
 
 public interface TokenRepository extends JpaRepository<Token, Integer> {
 
@@ -15,4 +16,6 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
     List<Token> findAllValidTokenByUser(Integer id);
 
     Optional<Token> findByToken(String token);
+    @Query("SELECT u FROM User u JOIN Token t ON u.id = t.user.id WHERE t.token = :token")
+    User findUserByToken(String token);
 }
