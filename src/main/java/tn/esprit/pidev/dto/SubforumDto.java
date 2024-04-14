@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TopicDto {
+public class SubforumDto {
     private Long id;
     @NotBlank(message = "Community name is required")
     private String name;
