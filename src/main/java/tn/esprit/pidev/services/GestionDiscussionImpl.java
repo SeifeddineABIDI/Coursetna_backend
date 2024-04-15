@@ -129,6 +129,5 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
         } catch(Exception e) {
             return false ;
         }
-
     }
 }
