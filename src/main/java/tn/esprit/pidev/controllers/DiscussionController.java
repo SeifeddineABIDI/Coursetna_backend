@@ -9,6 +9,7 @@ import tn.esprit.pidev.services.IGestionDiscussion;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/discussion")
 public class DiscussionController {
     @Autowired
@@ -25,8 +26,8 @@ public class DiscussionController {
     }
 
     @PostMapping("/startDiscussionCommunity")
-    public Discussion cstartDiscussionCommunity(@RequestParam Long userStart,@RequestParam String title, @RequestBody List<Long> userList) {
-        return iGestionDiscussion.startDiscussionCommunity(userStart,title,userList);
+    public Discussion cstartDiscussionCommunity(@RequestParam Long userStart,@RequestParam String title, @RequestBody List<Long> userList,@RequestParam String discussionList) {
+        return iGestionDiscussion.startDiscussionCommunity(userStart,title,userList,discussionList);
     }
 
     @PutMapping("/addUserToDiscussion")
@@ -34,15 +35,21 @@ public class DiscussionController {
         return iGestionDiscussion.addUserToDiscussion(id,userList);
     }
 
+    @PutMapping("/addDiscussionToCommunity")
+    public Discussion caddDiscussionToCommunity(@RequestParam Long id, @RequestParam String discussionList) {
+        return iGestionDiscussion.addDiscussionToCommunity(id,discussionList);
+    }
+
     @GetMapping("/retrieveAllDiscussions")
     public List<Discussion> cretrieveAllDiscussions(@RequestParam Long id) {
         return iGestionDiscussion.retrieveAllDiscussions(id);
     }
 
-    @GetMapping("/retrieveAllMessages")
-    public List<Message> cretrieveAllMessages(@RequestParam Long id) {
-        return iGestionDiscussion.retrieveAllMessages(id);
+    @GetMapping("/retrieveAllCommunities")
+    public List<Discussion> cretrieveAllCommunities(@RequestParam Long id) {
+        return iGestionDiscussion.retrieveAllCommunities(id);
     }
+
 
     @PutMapping("/renameDiscussion")
     public Discussion crenameDiscussion(@RequestParam Long id,@RequestParam String title) {

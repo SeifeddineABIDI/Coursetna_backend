@@ -14,13 +14,15 @@ public interface IGestionDiscussion {
 
     public Discussion startDiscussionGroup(Long userStart, String title, List<Long> userList);
 
-    public Discussion startDiscussionCommunity(Long userStart,String title, List<Long> userList);
+    public Discussion startDiscussionCommunity(Long userStart, String title, List<Long> userList, String discussionList);
 
     public Discussion addUserToDiscussion(Long id, List<Long> userList);
 
+    public Discussion addDiscussionToCommunity(Long id, String discussionList);
+
     public List<Discussion> retrieveAllDiscussions(Long id);
 
-    public List<Message> retrieveAllMessages(Long id);
+    public List<Discussion> retrieveAllCommunities(Long id);
 
     public Discussion renameDiscussion(Long id,String title);
 

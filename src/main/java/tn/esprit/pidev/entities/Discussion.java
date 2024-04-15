@@ -21,25 +21,24 @@ public class Discussion implements Serializable {
     private Long id;
     private String title;
     private LocalDateTime dateStart;
+    private String photo = "";
     @Enumerated(EnumType.STRING)
     private TypeDiscussion typeDiscussion;
     @ManyToMany(cascade = CascadeType.DETACH)
     private List<User> users = new ArrayList<User>();
-    @ManyToMany(cascade = CascadeType.DETACH)
-    private List<User> acceptedUsers = new ArrayList<User>();
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "discussion")
-    private List<Message> messages = new ArrayList<Message>();
+    @OneToMany
+    private List<Discussion> community = new ArrayList<Discussion>();
     private boolean archived = false ;
 
     @Override
     public String toString() {
         return "Discussion{" +
                 "id=" + id +
-                ", title=" + title +
+                ", title='" + title + '\'' +
                 ", dateStart=" + dateStart +
+                ", photo='" + photo + '\'' +
                 ", typeDiscussion=" + typeDiscussion +
                 ", users=" + users +
-                ", messages=" + messages +
                 ", archived=" + archived +
                 '}';
     }

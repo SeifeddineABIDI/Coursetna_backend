@@ -10,6 +10,7 @@ import tn.esprit.pidev.repository.IDiscussionRepository;
 import tn.esprit.pidev.repository.IUserRepository;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,13 +48,26 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
     }
 
     @Override
-    public Discussion startDiscussionCommunity(Long userStart, String title, List<Long> userList) {
+    public Discussion startDiscussionCommunity(Long userStart, String title, List<Long> userList, String discussionList) {
         Discussion discussion = new Discussion();
         discussion.setTypeDiscussion(TypeDiscussion.Community);
         discussion.setTitle(title);
         discussion.getUsers().add(iUserRepository.findById(userStart).get());
         for (Long user : userList) {
             discussion.getUsers().add(iUserRepository.findById(user).get());
+        }
+
+        String[] splitArray = discussionList.split("_");
+        List<String> discussionListo = Arrays.asList(splitArray);
+
+        for (String discussionx : discussionListo) {
+            Discussion discussiono = new Discussion();
+            discussiono.setTypeDiscussion(TypeDiscussion.CommunitySlave);
+            discussiono.setTitle(discussionx);
+            discussiono.setDateStart(LocalDateTime.now());
+            discussiono.setArchived(false);
+            discussion.getCommunity().add(discussiono);
+           iDiscussionRepository.save(discussiono) ;
         }
         discussion.setDateStart(LocalDateTime.now());
         discussion.setArchived(false);
@@ -69,25 +83,34 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
         return iDiscussionRepository.save(discussion) ;
     }
 
+    @Override
+    public Discussion addDiscussionToCommunity(Long id, String discussionList) {
+        Discussion discussion = iDiscussionRepository.findById(id).get();
+        String[] splitArray = discussionList.split("|");
+        List<String> discussionListo = Arrays.asList(splitArray);
+
+        for (String discussionx : discussionListo) {
+            Discussion discussiono = new Discussion();
+            discussiono.setTypeDiscussion(TypeDiscussion.CommunitySlave);
+            discussion.setTitle(discussionx);
+            discussion.setDateStart(LocalDateTime.now());
+            discussion.setArchived(false);
+            discussion.getCommunity().add(discussiono);
+            iDiscussionRepository.save(discussiono) ;
+        }
+        return iDiscussionRepository.save(discussion) ;
+    }
+
     public List<Discussion> retrieveAllDiscussions(Long id){
         User user = iUserRepository.findById(id).get();
-        return iDiscussionRepository.findAll()
-                .stream()
-                .filter(discussion -> !discussion.isArchived() && discussion.getAcceptedUsers().contains(user))
-                .collect(Collectors.toList());
+        return iDiscussionRepository.findByUsersContainingAndArchivedIsFalseAndTypeDiscussionIsNot(user,TypeDiscussion.Community);
     }
 
+    public List<Discussion> retrieveAllCommunities(Long id){
+        User user = iUserRepository.findById(id).get();
+        return iDiscussionRepository.findByUsersContainingAndArchivedIsFalseAndTypeDiscussionIs(user,TypeDiscussion.Community);
 
-    public List<Message> retrieveAllMessages(Long id){
-        return iDiscussionRepository.findById(id)
-                .map(Discussion::getMessages)
-                .orElseThrow(() -> new IllegalArgumentException("Discussion not found with id: " + id))
-                .stream()
-                .filter(message -> !message.isArchived())
-                .collect(Collectors.toList());
     }
-
-
 
     @Override
     public Discussion renameDiscussion(Long id, String title) {

@@ -26,7 +26,6 @@ public class Message {
     @ManyToOne
     private User user;
     @ManyToOne
-    @JsonIgnore
     private Discussion discussion;
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "message")
     private List<Reaction> reactions = new ArrayList<Reaction>();

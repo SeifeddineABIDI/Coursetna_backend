@@ -6,9 +6,11 @@ import tn.esprit.pidev.entities.Message;
 import tn.esprit.pidev.entities.Message;
 import tn.esprit.pidev.services.IGestionMessage;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/message")
 public class MessageController {
     @Autowired
@@ -33,4 +35,25 @@ public class MessageController {
     public Message creplyMessage(@RequestParam Long userSender,@RequestParam Long discussion,@RequestParam Long message,@RequestBody String reply) {
         return iGestionMessage.replyMessage(userSender,discussion,message,reply);
     }
+
+    @GetMapping("/retrieveAllMessages")
+    public List<Message> cretrieveAllMessages(@RequestParam Long id) {
+        return iGestionMessage.retrieveAllMessages(id);
+    }
+
+    @GetMapping("/retrieve20Messages")
+    public List<Message> cretrieve20Messages(@RequestParam Long id) {
+        return iGestionMessage.retrieve20Messages(id);
+    }
+
+    @GetMapping("/retrieveA20Messages")
+    public List<Message> cretrieveA20Messages(@RequestParam Long id,@RequestParam int pageNumber) {
+        return iGestionMessage.retrieveA20Messages(id,pageNumber);
+    }
+
+    @GetMapping("/retrieveRecentMessages")
+    public List<Message> cretrieveRecentMessages(@RequestParam Long id,@RequestParam String recentDate) {
+        return iGestionMessage.retrieveRecentMessages(id,recentDate);
+    }
+
 }
