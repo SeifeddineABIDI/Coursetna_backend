@@ -22,7 +22,7 @@ public class User implements Serializable {
     private Long id;
     private String nom;
     private String prenom;
-    private String email;
+    public String email;
     private String password;
     @Enumerated(EnumType.STRING)
     private TypeUser role;

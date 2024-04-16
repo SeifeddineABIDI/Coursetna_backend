@@ -9,6 +9,7 @@ import tn.esprit.pidev.entities.User;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "text", source = "commentsDto.text")
     @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")

@@ -8,5 +8,5 @@ import tn.esprit.pidev.entities.Subforum;
 import java.util.Optional;
 @Repository
 public interface ISubforumRepository extends JpaRepository<Subforum, Long> {
-    Optional<Subforum> findByName(String topicName);
+    Optional<Subforum> findByName(String subforumName);
 }

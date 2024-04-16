@@ -25,6 +25,7 @@ public class Subforum implements Serializable {
     private Long id;
     private String name;
     private String description;
+    //@OneToMany(mappedBy = "subforum", fetch = LAZY, cascade = CascadeType.ALL)
     @OneToMany(fetch = LAZY)
     private List<Post> posts;
     private Instant createdDate;
