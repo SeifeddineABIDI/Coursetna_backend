@@ -46,7 +46,7 @@ public class ReponseController {
     //********** ---addReponseAndAssignToReclamationAndUser---**********//
 
 
-    //***************** --- addReponseAndAssignToReclamtion --- ****************
+    //***************** --- addReponseAndAssignToReclamtion --- ***************
     @PostMapping("/addReponseAndAssignToReclamtion/{idrep}")
     public Reponse addReponseAndAssignToReclamtion(@RequestBody Reponse reponse,@PathVariable("idrep") long idrep)
     {
