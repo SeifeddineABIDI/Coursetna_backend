@@ -15,9 +15,8 @@ public interface IGestionReponse {
 
     Reponse RetrieveReponse(long idrep);
     void deleteReponse(long idrep);
-
-    Reponse addReponseAndAssignToReclamationAndUser(Reponse reponse, long numReclamtion, long numUser);
-    Reponse addReponseAndAssignToReclamtion(Reponse reponse,long numReclamtion);
+    //Reponse addReponseAndAssignToReclamationAndUser(Reponse reponse, long numReclamtion, long numUser);
+    Reponse addReponseAndAssignToReclamtion(Reponse reponse,long idrep);
 }
 
 

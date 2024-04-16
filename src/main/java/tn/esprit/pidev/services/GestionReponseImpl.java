@@ -15,6 +15,7 @@ import java.util.List;
 public class GestionReponseImpl implements IGestionReponse{
     @Autowired
     IReponseRepository iReponseRepository;
+    @Autowired
     IReclamationRepository iReclamationRepository;
     IUserRepository iUserRepository;
 
@@ -45,19 +46,10 @@ public class GestionReponseImpl implements IGestionReponse{
 
     }
 
-    @Override
-    public Reponse addReponseAndAssignToReclamationAndUser(Reponse reponse, long numReclamtion, long numUser) {
-        User user=iUserRepository.findById(numUser).get();
-        Reclamtion reclamtion=iReclamationRepository.findById(numReclamtion).get();
-        reponse.setUser(user);
-        reponse.setReclamtion(reclamtion);
-
-        return iReponseRepository.save(reponse);
-    }
 
     @Override
-    public Reponse addReponseAndAssignToReclamtion(Reponse reponse, long numReclamtion) {
-        Reclamtion reclamtion=iReclamationRepository.findById(numReclamtion).get();
+    public Reponse addReponseAndAssignToReclamtion(Reponse reponse, long idrep) {
+        Reclamtion reclamtion=iReclamationRepository.findById(idrep).get();
         reponse.setReclamtion(reclamtion);
         return iReponseRepository.save(reponse);
     }

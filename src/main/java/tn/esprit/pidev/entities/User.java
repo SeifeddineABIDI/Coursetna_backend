@@ -1,5 +1,6 @@
 package tn.esprit.pidev.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,10 +25,9 @@ public class User implements Serializable {
     @Enumerated(EnumType.STRING)
     private TypeUser role;
     private String photo;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "user") // user 1 ------ * reclamtion
     private List<Reclamtion> reclamtionList;
 
-    @OneToMany(mappedBy = "user")
-    private List<Reponse> reponseList;
+
 }

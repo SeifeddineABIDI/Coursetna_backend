@@ -20,7 +20,7 @@ public class ReponseController {
     }
     //*************---add response *******////
 
-    @PostMapping("/addReponse/{id}")
+    @PostMapping("/addReponse")
     public Reponse addReponse(@RequestBody Reponse reponse) {
         return iGestionReponse.addReponse(reponse);
     }
@@ -44,17 +44,13 @@ public class ReponseController {
 
     }
     //********** ---addReponseAndAssignToReclamationAndUser---**********//
-    @PostMapping("/addReponseAndAssignToReclamationAndUser/{numReclamtion}/{numUser}")
-    public Reponse addReponseAndAssignToReclamationAndUser(@RequestBody Reponse reponse,@PathVariable("numReclamtion") long numReclamtion,@PathVariable("numUser") long numUser)
-    {
-        return iGestionReponse.addReponseAndAssignToReclamationAndUser(reponse,numReclamtion,numUser);
-    }
+
 
     //***************** --- addReponseAndAssignToReclamtion --- ****************
-    @PostMapping("/addReponseAndAssignToReclamtion/{numReclamtion}")
-    public Reponse addReponseAndAssignToReclamtion(@RequestBody Reponse reponse,@PathVariable("numReclamtion") long numReclamtion)
+    @PostMapping("/addReponseAndAssignToReclamtion/{idrep}")
+    public Reponse addReponseAndAssignToReclamtion(@RequestBody Reponse reponse,@PathVariable("idrep") long idrep)
     {
-        return iGestionReponse.addReponseAndAssignToReclamtion(reponse,numReclamtion);
+        return iGestionReponse.addReponseAndAssignToReclamtion(reponse,idrep);
     }
 
 }

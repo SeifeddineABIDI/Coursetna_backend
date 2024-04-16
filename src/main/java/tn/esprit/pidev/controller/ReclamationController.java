@@ -21,7 +21,7 @@ public class ReclamationController {
     }
 
     //******************* ---addReclamation--- ************
-    @PostMapping("addReclamation")
+    @PostMapping("/addReclamation")
     public Reclamtion addReclamation(@RequestBody Reclamtion reclamtion){
         return  iGestionReclamation.addReclamation(reclamtion);
     }
@@ -44,10 +44,22 @@ public class ReclamationController {
         iGestionReclamation.deleteReclamation(idrec);
     }
 
+    @PostMapping("/addReclamtionAndAssignToUser/{id}")
+    public Reclamtion addReclamtionAndAssignToUser(@RequestBody Reclamtion reclamtion,@PathVariable("id") Long id)
+    {
+        return iGestionReclamation.addReclamtionAndAssignToUser(reclamtion,id);
+    }
 
 
+    @GetMapping("/getReclamationByUserAndResponse/{userId}/{responseId}")
+    public Reclamtion getReclamationByUserandReponse(@PathVariable("userId") Long userId, @PathVariable("responseId") Long responseId) {
+        return iGestionReclamation.getReclamationByUserandReponse(userId, responseId);
+    }
 
-
+    @GetMapping("/reclamationsWithUserAndResponse")
+    public List<Reclamtion> findAllReclamationsWithUserAndResponse() {
+        return iGestionReclamation.findAllReclamationsWithUserAndResponse();
+    }
 
 
 }

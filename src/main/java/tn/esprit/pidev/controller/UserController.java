@@ -16,7 +16,7 @@ public class UserController {
     @GetMapping("/getAll")
     public List<User> getAll(){return iGestionUser.getAll();}
 
-    @PostMapping("/addUser")
+        @PostMapping("/addUser")
     public User add(@RequestBody User user) {
         return iGestionUser.add(user);
     }
