@@ -43,13 +43,11 @@ public class ReclamationController {
     public void deleteReclamation(@PathVariable("id") long idrec) {
         iGestionReclamation.deleteReclamation(idrec);
     }
-
+    //************* ----addReclamtionAndAssignToUser---*************//
     @PostMapping("/addReclamtionAndAssignToUser/{id}")
-    public Reclamtion addReclamtionAndAssignToUser(@RequestBody Reclamtion reclamtion,@PathVariable("id") Long id)
-    {
-        return iGestionReclamation.addReclamtionAndAssignToUser(reclamtion,id);
+    public Reclamtion addReclamtionAndAssignToUser(@RequestBody Reclamtion reclamtion,@PathVariable("id") Long id) {
+        return iGestionReclamation.addReclamtionAndAssignToUser(reclamtion, id);
     }
-
 
     @GetMapping("/getReclamationByUserAndResponse/{userId}/{responseId}")
     public Reclamtion getReclamationByUserandReponse(@PathVariable("userId") Long userId, @PathVariable("responseId") Long responseId) {
