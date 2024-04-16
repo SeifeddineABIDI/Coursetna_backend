@@ -48,7 +48,7 @@ public class ReclamationController {
     public Reclamtion addReclamtionAndAssignToUser(@RequestBody Reclamtion reclamtion,@PathVariable("id") Long id) {
         return iGestionReclamation.addReclamtionAndAssignToUser(reclamtion, id);
     }
-
+    //************* ----getReclamationByUserAndRespons---*************//
     @GetMapping("/getReclamationByUserAndResponse/{userId}/{responseId}")
     public Reclamtion getReclamationByUserandReponse(@PathVariable("userId") Long userId, @PathVariable("responseId") Long responseId) {
         return iGestionReclamation.getReclamationByUserandReponse(userId, responseId);
