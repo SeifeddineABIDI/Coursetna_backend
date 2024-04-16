@@ -47,7 +47,7 @@ public class GestionReclamationImpl implements IGestionReclamation {
         return iReclamationRepository.save(reclamtion);
 
     }
-
+    /*getReclamationByUserandReponse*/
     @Override
     public Reclamtion getReclamationByUserandReponse(Long id, long idrep) {
         return iReclamationRepository.getReclamationByUserAndResponse(id,idrep);
