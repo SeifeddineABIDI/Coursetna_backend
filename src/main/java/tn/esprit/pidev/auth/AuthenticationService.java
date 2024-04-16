@@ -39,8 +39,9 @@ public class AuthenticationService {
     private final String CONFIRMATION_URL="http://localhost:9000/pidev/api/v1/auth/confirm?token=%s";
     private final IUserRepository repository;
     private final TokenRepository tokenRepository;
-    private final PasswordEncoder passwordEncoder;
+     final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private Boolean userExists;
     private User user;
     private String jwtToken;
     private final AuthenticationManager authenticationManager;
@@ -58,6 +59,16 @@ public class AuthenticationService {
                 .isBanned(true)
                 .isArchived(false)
                  .build();
+         userExists = repository.existsByEmail(request.getEmail());
+        System.out.println("exiiiiiist"+userExists);
+         if (userExists){
+             return AuthenticationResponse.builder()
+                     .user(null)
+                     .accessToken(null)
+                     .refreshToken(null)
+                     .error("User already signed up")
+                     .build();
+         }
         var savedUser = repository.save(user);
         jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
@@ -96,6 +107,7 @@ public class AuthenticationService {
             var refreshToken = jwtService.generateRefreshToken(user);
             CurrentUser.setUser(user);
             CurrentUser.getUser().getPrenom();
+            System.out.println("uuuuuuuuuuuuuuuuuuuuuuu"+CurrentUser.getUser().getNom());
             revokeAllUserTokens(user);
             saveUserToken(user, jwtToken);
 
@@ -220,19 +232,78 @@ public class AuthenticationService {
     }
     public String confirmToken(String token) {
         Optional<Token> savedToken = tokenRepository.findByToken(token);
-        if (savedToken.get().isExpired()) {
-            String generatedToken = UUID.randomUUID().toString();
-            Token newToken = Token.builder()
-                    .token(generatedToken)
-                    .user(savedToken.get().getUser())
-                    .build();
-            emailService.sendConfirmationEmail("sayf.abidi1@gmail.com", user.getPrenom(),user.getNom() ,user.getUsername(), String.format(CONFIRMATION_URL,jwtToken));
+        if (savedToken.get().isRevoked()) {
 
-            return "Token expired a new token has been sent to your mail";
-        }else if (savedToken.isPresent()) {
+            return "<!DOCTYPE html>\n" +
+                    "<html lang=\"en\">\n" +
+                    "<head>\n" +
+                    "    <meta charset=\"UTF-8\">\n" +
+                    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                    "    <title>Account Already Activated</title>\n" +
+                    "    <style>\n" +
+                    "        body {\n" +
+                    "            font-family: Arial, sans-serif;\n" +
+                    "            background-color: #f4f4f4;\n" +
+                    "            margin: 0;\n" +
+                    "            padding: 0;\n" +
+                    "            display: flex;\n" +
+                    "            justify-content: center;\n" +
+                    "            align-items: center;\n" +
+                    "            height: 100vh;\n" +
+                    "        }\n" +
+                    "        .container {\n" +
+                    "            text-align: center;\n" +
+                    "            background-color: #2196F3; /* Blue color */\n" +
+                    "            color: #fff; /* White text color */\n" +
+                    "            border-radius: 8px;\n" +
+                    "            padding: 40px;\n" +
+                    "            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);\n" +
+                    "        }\n" +
+                    "        h1 {\n" +
+                    "            color: #fff; /* White text color */\n" +
+                    "        }\n" +
+                    "        .button {\n" +
+                    "            display: inline-block;\n" +
+                    "            padding: 10px 20px;\n" +
+                    "            background-color: #fff; /* White background color */\n" +
+                    "            color: #2196F3; /* Blue text color */\n" +
+                    "            text-decoration: none;\n" +
+                    "            border-radius: 5px;\n" +
+                    "            transition: background-color 0.3s ease;\n" +
+                    "            margin-top: 20px;\n" +
+                    "        }\n" +
+                    "        .button:hover {\n" +
+                    "            background-color: #f0f0f0; /* Light gray background color on hover */\n" +
+                    "        }\n" +
+                    "    </style>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "    <div class=\"container\">\n" +
+                    "        <h1>Account Already Activated</h1>\n" +
+                    "        <p>Your account has already been activated.</p>\n" +
+                    "        <a href=\"http://localhost:4200/sign-in\" class=\"button\">Sign In</a>\n" +
+                    "    </div>\n" +
+                    "</body>\n" +
+                    "</html>\n";
+        }
+//        if (savedToken.get().isExpired()) {
+//            String generatedToken = UUID.randomUUID().toString();
+//            Token newToken = Token.builder()
+//                    .token(generatedToken)
+//                    .user(savedToken.get().getUser())
+//                    .build();
+//            tokenRepository.save(newToken); // Save the new token to the repository
+//
+//            emailService.sendConfirmationEmail("sayf.abidi1@gmail.com", user.getPrenom(),user.getNom() ,user.getUsername(), String.format(CONFIRMATION_URL,jwtToken));
+//
+//            return "Token expired a new token has been sent to your mail";}
+        else if (savedToken.isPresent()) {
             User user = savedToken.get().getUser();
             user.setIsBanned(false);
             repository.save(user);
+            tokenRepository.save(savedToken.get());
+            savedToken.get().setExpired(true);
+            savedToken.get().setRevoked(true);
             tokenRepository.save(savedToken.get());
             return "<!DOCTYPE html>\n" +
                     "<html lang=\"en\">\n" +
@@ -279,8 +350,29 @@ public class AuthenticationService {
                     "    <div class=\"container\">\n" +
                     "        <h1>Your account has been verified successfully!</h1>\n" +
                     "        <p>You can now sign in to your account.</p>\n" +
+                    "        <p id=\"countdown\"></p>\n" +
                     "        <a href=\"http://localhost:4200/sign-in\" class=\"button\">Sign In</a>\n" +
                     "    </div>\n" +
+                    "    <script>\n" +
+                    "        // Function to close the page after a specified number of milliseconds\n" +
+                    "        function closePageAfterTimeout(timeout) {\n" +
+                    "            let remainingTime = Math.ceil(timeout / 1000); // Convert milliseconds to seconds and round up\n" +
+                    "            const countdownElement = document.getElementById(\"countdown\");\n" +
+                    "\n" +
+                    "            const countdownInterval = setInterval(function() {\n" +
+                    "                remainingTime--;\n" +
+                    "                countdownElement.textContent = `This page will close in ${remainingTime} seconds.`;\n" +
+                    "\n" +
+                    "                if (remainingTime <= 0) {\n" +
+                    "                    clearInterval(countdownInterval);\n" +
+                    "                    window.close(); // Close the current window\n" +
+                    "                }\n" +
+                    "            }, 1000); // Update the countdown every second\n" +
+                    "        }\n" +
+                    "\n" +
+                    "        // Call the function to close the page after 5 seconds (5000 milliseconds)\n" +
+                    "        closePageAfterTimeout(5000); // Change 5000 to the desired number of milliseconds\n" +
+                    "    </script>\n" +
                     "</body>\n" +
                     "</html>\n";
         }
@@ -288,4 +380,5 @@ public class AuthenticationService {
             return "err";
         }
     }
+
 }

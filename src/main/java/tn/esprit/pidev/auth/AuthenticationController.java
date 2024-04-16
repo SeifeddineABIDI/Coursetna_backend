@@ -39,6 +39,8 @@ import java.security.Principal;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
+
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -56,7 +58,8 @@ public class AuthenticationController {
     private IUserRepository ur;
     @Autowired
     private LogoutService logoutService;
-
+    private Boolean userExists;
+    private String imagePath= "";
 
     private static final String IMAGE_DIRECTORY = "src/main/resources/static/images";
 
@@ -76,8 +79,10 @@ public class AuthenticationController {
             @RequestParam("password") String password,
             @RequestParam("photo") MultipartFile imageFile
     ) {
+        userExists = ur.existsByEmail(email);
+        if(userExists == false){
         // Save the image and get the path
-        String imagePath = saveImage(imageFile);
+        imagePath = saveImage(imageFile);}
 
         // Create a RegisterRequest object
         RegisterRequest request = RegisterRequest.builder()
@@ -109,8 +114,25 @@ public class AuthenticationController {
             // Get the original filename of the uploaded file
             String originalFileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
 
+            // Generate a unique identifier
+            String uniqueId = UUID.randomUUID().toString().replace("-", "");
+
+            // Extract file extension
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+
+            // Append unique identifier to the filename
+            String modifiedFileName = uniqueId + "_" + originalFileName;
+
             // Get the path to save the image
-            Path filePath = uploadPath.resolve(originalFileName);
+            Path filePath = uploadPath.resolve(modifiedFileName);
+
+            // Check if the file with the modified name already exists
+            int count = 1;
+            while (Files.exists(filePath)) {
+                modifiedFileName = uniqueId + "_" + count + "_" + originalFileName;
+                filePath = uploadPath.resolve(modifiedFileName);
+                count++;
+            }
 
             // Save the image to the specified path
             Files.copy(imageFile.getInputStream(), filePath);
@@ -121,6 +143,7 @@ public class AuthenticationController {
             throw new RuntimeException("Failed to save image", ex);
         }
     }
+
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
