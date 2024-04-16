@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.config.JwtService;
 import tn.esprit.pidev.entities.CurrentUser;
+import tn.esprit.pidev.entities.Role;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.IUserRepository;
 import tn.esprit.pidev.services.EmailService;
@@ -50,7 +51,7 @@ public class AuthenticationService {
          user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
+                .role(Role.ADMIN)
                  .nom(request.getNom())
                  .prenom(request.getPrenom())
                  .photo(request.getPhoto())
@@ -63,7 +64,7 @@ public class AuthenticationService {
         saveUserToken(savedUser, jwtToken);
 
 
-        emailService.sendConfirmationEmail("sayf.abidi1@gmail.com", user.getUsername(), String.format(CONFIRMATION_URL,jwtToken));
+        emailService.sendConfirmationEmail("sayf.abidi1@gmail.com", user.getPrenom(), user.getNom(),user.getUsername(), String.format(CONFIRMATION_URL,jwtToken));
 
 
         return AuthenticationResponse.builder()
@@ -94,7 +95,7 @@ public class AuthenticationService {
             var jwtToken = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
             CurrentUser.setUser(user);
-
+            CurrentUser.getUser().getPrenom();
             revokeAllUserTokens(user);
             saveUserToken(user, jwtToken);
 
@@ -225,7 +226,7 @@ public class AuthenticationService {
                     .token(generatedToken)
                     .user(savedToken.get().getUser())
                     .build();
-            emailService.sendConfirmationEmail("sayf.abidi1@gmail.com", user.getUsername(), String.format(CONFIRMATION_URL,jwtToken));
+            emailService.sendConfirmationEmail("sayf.abidi1@gmail.com", user.getPrenom(),user.getNom() ,user.getUsername(), String.format(CONFIRMATION_URL,jwtToken));
 
             return "Token expired a new token has been sent to your mail";
         }else if (savedToken.isPresent()) {
@@ -233,7 +234,55 @@ public class AuthenticationService {
             user.setIsBanned(false);
             repository.save(user);
             tokenRepository.save(savedToken.get());
-            return "account activated";
+            return "<!DOCTYPE html>\n" +
+                    "<html lang=\"en\">\n" +
+                    "<head>\n" +
+                    "    <meta charset=\"UTF-8\">\n" +
+                    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                    "    <title>Account Verified Successfully</title>\n" +
+                    "    <style>\n" +
+                    "        body {\n" +
+                    "            font-family: Arial, sans-serif;\n" +
+                    "            background-color: #f4f4f4;\n" +
+                    "            margin: 0;\n" +
+                    "            padding: 0;\n" +
+                    "            display: flex;\n" +
+                    "            justify-content: center;\n" +
+                    "            align-items: center;\n" +
+                    "            height: 100vh;\n" +
+                    "        }\n" +
+                    "        .container {\n" +
+                    "            text-align: center;\n" +
+                    "            background-color: #fff;\n" +
+                    "            border-radius: 8px;\n" +
+                    "            padding: 40px;\n" +
+                    "            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);\n" +
+                    "        }\n" +
+                    "        h1 {\n" +
+                    "            color: #2196F3;\n" +
+                    "        }\n" +
+                    "        .button {\n" +
+                    "            display: inline-block;\n" +
+                    "            padding: 10px 20px;\n" +
+                    "            background-color: #2196F3;\n" +
+                    "            color: #fff;\n" +
+                    "            text-decoration: none;\n" +
+                    "            border-radius: 5px;\n" +
+                    "            transition: background-color 0.3s ease;\n" +
+                    "        }\n" +
+                    "        .button:hover {\n" +
+                    "            background-color: #1976D2;\n" +
+                    "        }\n" +
+                    "    </style>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "    <div class=\"container\">\n" +
+                    "        <h1>Your account has been verified successfully!</h1>\n" +
+                    "        <p>You can now sign in to your account.</p>\n" +
+                    "        <a href=\"http://localhost:4200/sign-in\" class=\"button\">Sign In</a>\n" +
+                    "    </div>\n" +
+                    "</body>\n" +
+                    "</html>\n";
         }
         else{
             return "err";

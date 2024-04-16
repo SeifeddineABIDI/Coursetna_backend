@@ -74,7 +74,6 @@ public class AuthenticationController {
             @RequestParam("prenom") String prenom,
             @RequestParam("email") String email,
             @RequestParam("password") String password,
-            @RequestParam("role") Role role,
             @RequestParam("photo") MultipartFile imageFile
     ) {
         // Save the image and get the path
@@ -86,7 +85,6 @@ public class AuthenticationController {
                 .prenom(prenom)
                 .email(email)
                 .password(password)
-                .role(role)
                 .photo(imagePath)
                 .build();
 

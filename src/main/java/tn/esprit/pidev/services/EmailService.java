@@ -26,11 +26,12 @@ public class EmailService {
     @Autowired
     private TemplateEngine templateEngine;
 
-    public void sendConfirmationEmail(String to, String username, String confirmationLink) {
+    public void sendConfirmationEmail(String to,String prenom,String nom, String username, String confirmationLink) {
         Context context = new Context();
+        context.setVariable("prenom",prenom);
+        context.setVariable("nom",nom);
         context.setVariable("username", username);
         context.setVariable("confirmationLink", confirmationLink);
-
         String htmlContent = templateEngine.process("confirmation-email", context);
 
         MimeMessage message = javaMailSender.createMimeMessage();
