@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.IUserRepository;
@@ -21,10 +22,28 @@ public class GestionUserImpl implements IGestionUser{
     public List<User> findAll(){return ur.findAll();}
     @Override
     public User add(User user){return ur.save(user);}
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
-    public  User update(User user){
-        User thisUser = ur.findUserByEmail(user.getEmail());
-        return ur.save( thisUser);
+    public User update(User user) {
+        // Check if the user exists
+        Optional<User> optionalUser = ur.findById(user.getId());
+        if (optionalUser.isPresent()) {
+            // Get the existing user
+            User existingUser = optionalUser.get();
+
+            // Update the existing user with the new details
+            existingUser.setNom(user.getNom());
+            existingUser.setPrenom(user.getPrenom());
+
+                   // Set other properties that you want to update
+
+            // Save the updated user
+            return ur.save(existingUser);
+        } else {
+            // Handle the case where the user with the given ID doesn't exist
+            throw new IllegalArgumentException("User with ID " + user.getId() + " not found");
+        }
     }
     @Override
     public User findById(Integer id){return ur.findById(id).orElse(null);}
