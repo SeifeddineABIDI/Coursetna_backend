@@ -51,7 +51,7 @@ public class GestionReponseImpl implements IGestionReponse{
     @Override
     public Reponse addReponseAndAssignToReclamtion(Reponse reponse, long idrep) {
         Reclamtion reclamtion=iReclamationRepository.findById(idrep).get();
-        reclamtion.setStatus(TypeStatus.traite);
+        //reclamtion.setStatus(TypeStatus.traite);
         reponse.setReclamtion(reclamtion);
         return iReponseRepository.save(reponse);
     }
