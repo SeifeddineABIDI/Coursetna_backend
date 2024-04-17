@@ -26,6 +26,6 @@ public class Post implements Serializable {
     private User user;
     private Instant createdDate;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subforum_id", referencedColumnName = "id")
+    //@JoinColumn(name = "subforum_id", referencedColumnName = "id")
     private Subforum subforum;
 }

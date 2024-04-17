@@ -11,6 +11,7 @@ import tn.esprit.pidev.entities.Subforum;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.exceptions.PostNotFoundException;
 import tn.esprit.pidev.exceptions.SubforumNotFoundException;
+import tn.esprit.pidev.exceptions.UserNotFoundException;
 import tn.esprit.pidev.mapper.PostMapper;
 import tn.esprit.pidev.repository.IPostRepository;
 import tn.esprit.pidev.repository.ISubforumRepository;
@@ -32,11 +33,20 @@ public class GestionPostImpl implements IGestionPost {
 
     @Override
     public void create(PostRequest postRequest) {
-        Subforum subforum = subforumRepository.findByName(postRequest.getSubforumName()).orElseThrow(() -> new SubforumNotFoundException(postRequest.getSubforumName()));
-        //User currentUser = GestionUserImpl.getCurrentUser();
-        User currentUser = CurrentUser.getUser();
-        postRepository.save(postMapper.map(postRequest, subforum, currentUser));
+        Subforum subforum = subforumRepository.findByName(postRequest.getSubforumName())
+                .orElseThrow(() -> new SubforumNotFoundException(postRequest.getSubforumName()));
+
+
+        User user = userRepository.findByEmail(postRequest.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + postRequest.getEmail()));
+
+
+        Post post = postMapper.map(postRequest, subforum, user);
+
+
+        postRepository.save(post);
     }
+
 
     @Override
     public List<PostResponse> getAllPosts() {

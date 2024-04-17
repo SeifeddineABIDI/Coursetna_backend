@@ -25,7 +25,10 @@ public interface SubforumMapper {
     }
 
     @InheritInverseConfiguration
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "posts", ignore = true)
-    Subforum mapDtoToSubforum(SubforumDto subredditDto);
+    @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
+    @Mapping(target = "user", source = "user")
+    public abstract Subforum mapDtoToSubforum(SubforumDto subforumDto, User user);
 
 }

@@ -4,10 +4,11 @@ import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 import tn.esprit.pidev.dto.SubforumDto;
 import tn.esprit.pidev.entities.Subforum;
+import tn.esprit.pidev.entities.User;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-15T13:54:26+0100",
+    date = "2024-04-17T01:57:22+0100",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.8 (Oracle Corporation)"
 )
 @Component
@@ -31,16 +32,19 @@ public class SubforumMapperImpl implements SubforumMapper {
     }
 
     @Override
-    public Subforum mapDtoToSubforum(SubforumDto subredditDto) {
-        if ( subredditDto == null ) {
+    public Subforum mapDtoToSubforum(SubforumDto subforumDto, User user) {
+        if ( subforumDto == null && user == null ) {
             return null;
         }
 
         Subforum subforum = new Subforum();
 
-        subforum.setId( subredditDto.getId() );
-        subforum.setName( subredditDto.getName() );
-        subforum.setDescription( subredditDto.getDescription() );
+        if ( subforumDto != null ) {
+            subforum.setName( subforumDto.getName() );
+            subforum.setDescription( subforumDto.getDescription() );
+        }
+        subforum.setUser( user );
+        subforum.setCreatedDate( java.time.Instant.now() );
 
         return subforum;
     }

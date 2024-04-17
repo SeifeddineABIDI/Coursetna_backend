@@ -11,4 +11,5 @@ import tn.esprit.pidev.entities.VoteType;
 public class VoteDto {
     private VoteType voteType;
     private Long postId;
+    private String email;
 }

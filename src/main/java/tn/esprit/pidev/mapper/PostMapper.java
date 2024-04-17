@@ -10,6 +10,7 @@ import tn.esprit.pidev.entities.Post;
 import tn.esprit.pidev.entities.Subforum;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.ICommentRepository;
+import tn.esprit.pidev.repository.IUserRepository;
 import tn.esprit.pidev.repository.IVoteRepository;
 
 import static tn.esprit.pidev.entities.VoteType.UPVOTE;
@@ -22,6 +23,8 @@ public abstract class PostMapper {
     private ICommentRepository commentRepository;
     @Autowired
     private IVoteRepository voteRepository;
+    @Autowired
+    private IUserRepository userRepository;
 
 
     //Mapping from DTO to Entity (PostRequest)

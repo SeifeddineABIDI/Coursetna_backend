@@ -17,4 +17,5 @@ public class SubforumDto {
     @NotBlank(message = "Description is required")
     private String description;
     private Integer numberOfPosts;
+    private String email;
 }
