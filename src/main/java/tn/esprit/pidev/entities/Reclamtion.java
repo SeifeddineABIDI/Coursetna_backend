@@ -31,7 +31,7 @@ public class Reclamtion implements Serializable {
     @ManyToOne
     private User user;
     @JsonIgnore
-    @OneToMany(mappedBy ="reclamtion")
+    @OneToMany(mappedBy ="reclamtion" , cascade = CascadeType.ALL)
     private List<Reponse> responses;
 
 }
