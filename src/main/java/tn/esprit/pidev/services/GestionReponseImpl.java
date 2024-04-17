@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.pidev.entities.Reclamtion;
 import tn.esprit.pidev.entities.Reponse;
+import tn.esprit.pidev.entities.TypeStatus;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.IReclamationRepository;
 import tn.esprit.pidev.repository.IReponseRepository;
@@ -50,6 +51,7 @@ public class GestionReponseImpl implements IGestionReponse{
     @Override
     public Reponse addReponseAndAssignToReclamtion(Reponse reponse, long idrep) {
         Reclamtion reclamtion=iReclamationRepository.findById(idrep).get();
+        reclamtion.setStatus(TypeStatus.traite);
         reponse.setReclamtion(reclamtion);
         return iReponseRepository.save(reponse);
     }
