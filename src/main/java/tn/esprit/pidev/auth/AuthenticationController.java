@@ -223,6 +223,7 @@ public class AuthenticationController {
     public User getCurrentUser() {
         return CurrentUser.getUser();
     }
+
 //    @PostMapping("/sign-out")
 //    public void logout(
 //            HttpServletRequest request,

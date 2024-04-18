@@ -47,6 +47,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     @Autowired
     private  EmailService emailService;
+
     public AuthenticationResponse register(RegisterRequest request) {
 
          user = User.builder()
@@ -103,11 +104,11 @@ public class AuthenticationService {
                         .error("user not activated")
                         .build();
             }
+
             var jwtToken = jwtService.generateToken(user);
             var refreshToken = jwtService.generateRefreshToken(user);
             CurrentUser.setUser(user);
             CurrentUser.getUser().getPrenom();
-            System.out.println("uuuuuuuuuuuuuuuuuuuuuuu"+CurrentUser.getUser().getNom());
             revokeAllUserTokens(user);
             saveUserToken(user, jwtToken);
 
