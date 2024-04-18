@@ -71,6 +71,11 @@ public class GestionUserImpl implements IGestionUser{
     }
     @Override
     public Optional<User> findByEmail(String user){return ur.findByEmail(user);}
+    @Override
+    public List<User> findByNomOrPrenom(String name,String prename) {
+        // Use your repository method to query the database
+        return ur.findByNomContainingIgnoreCaseOrPrenomContainingIgnoreCase(name,prename);
+    }
 
 
 }

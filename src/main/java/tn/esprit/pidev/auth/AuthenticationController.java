@@ -37,6 +37,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -223,7 +224,12 @@ public class AuthenticationController {
     public User getCurrentUser() {
         return CurrentUser.getUser();
     }
-
+    @GetMapping("/gettu")
+    public ResponseEntity<List<User>> gettu(@RequestBody Map<String,String> request) {
+        String name = request.get("name");
+        List<User> users = userRepository.findByNomOrPrenom(name,name);
+        return ResponseEntity.ok(users);
+    }
 //    @PostMapping("/sign-out")
 //    public void logout(
 //            HttpServletRequest request,
