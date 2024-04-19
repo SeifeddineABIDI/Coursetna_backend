@@ -25,8 +25,13 @@ public class ScoreController {
         return IgScore.retrieveScore(numScore);
     }
 
+    @GetMapping("getScoreByUserAndQuiz/{numU}/{numQ}")
+    public Score retrieveScoreByUserAndQuiz(@PathVariable("numU")Integer numUser,@PathVariable("numQ")Long numQuiz) {
+        return IgScore.retrieveScoreByUserAndQuiz(numUser,numQuiz);
+    }
+
     @PostMapping("/addScore/{numQuiz}/{numUser}")
-    public Score addScore(@PathVariable("numQuiz")Long numQuiz,@PathVariable("numUser")Long numUser){
+    public Score addScore(@PathVariable("numQuiz")Long numQuiz,@PathVariable("numUser")Integer numUser){
         return IgScore.calculateScore(numQuiz,numUser);
     }
 

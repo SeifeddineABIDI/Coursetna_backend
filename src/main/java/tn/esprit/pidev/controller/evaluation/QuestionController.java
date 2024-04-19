@@ -24,15 +24,6 @@ public class QuestionController {
         return IgQuestion.retrieveQuestion(numQuestion);
     }
 
-    @PostMapping("/addQuestion")
-    public Question addQuestion(@RequestBody Question question) {
-        return IgQuestion.addQuestion(question);
-    }
-
-   /* @PutMapping("/updateQuestion/{id}")
-    public Question updateQuestion(@RequestBody Question question,@PathVariable("id") Long numQuestion) {
-        return IgQuestion.updateQuestion(numQuestion,question);
-    }*/
     @PutMapping("/updateQuestion")
     public Question updateQuestion(@RequestBody Question question) {
         return IgQuestion.updateQuestion(question);
@@ -46,6 +37,11 @@ public class QuestionController {
     @PostMapping("addQuestionAndAssignToQuiz/{idQuiz}")
     public Question addQuestionAndAssignToQuiz(@RequestBody Question question,@PathVariable("idQuiz") Long numQuiz){
         return IgQuestion.addQuestionAndAssignToQuiz(question,numQuiz);
+    }
+
+    @GetMapping("getAllQuestions/{id}")
+    public List<Question> getQuestionsByQuiz(@PathVariable("id") Long numQuiz){
+        return IgQuestion.getQuestionsByQuiz(numQuiz);
     }
 
 }

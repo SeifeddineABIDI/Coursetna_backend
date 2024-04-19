@@ -1,15 +1,14 @@
 package tn.esprit.pidev.entities.evaluation;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tn.esprit.pidev.entities.User;
+
+import tn.esprit.pidev.entities.user.User;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Getter

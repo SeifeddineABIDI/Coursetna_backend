@@ -23,11 +23,6 @@ public class QuizController {
         return IgQuiz.retrieveQuiz(numQuiz);
     }
 
-    @PostMapping("/addQuiz")
-    Quiz addQuiz(@RequestBody Quiz quiz){
-        return IgQuiz.addQuiz(quiz);
-    }
-
     @PutMapping("/updateQuiz")
     Quiz updateQuiz (@RequestBody Quiz quiz){
         return IgQuiz.updateQuiz(quiz);
@@ -37,4 +32,8 @@ public class QuizController {
     void removeQuiz(@PathVariable("id") Long numQuiz){
         IgQuiz.removeQuiz(numQuiz);
     }
+
+    @PostMapping("/addQuizAndAssignToTopic/{numTopic}")
+    public Quiz addQuizAndAssignToTopic(@RequestBody Quiz quiz,@PathVariable("numTopic") Long numTopic) { return IgQuiz.addQuizAndAssignToTopic(quiz, numTopic); }
+
 }
