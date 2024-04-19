@@ -62,5 +62,11 @@ public class GestionScoreImpl implements IGestionScore{
         //return (double) score / totalQuestions * 100; // Assuming scoring out of 100
     }
 
+    @Override
+    public Score retrieveScoreByUserAndQuiz(Integer numUser,Long numQuiz){
+        return scoreRepo.getScoreByUserAndQuiz(numUser,numQuiz);
+    }
+
+
 
 }

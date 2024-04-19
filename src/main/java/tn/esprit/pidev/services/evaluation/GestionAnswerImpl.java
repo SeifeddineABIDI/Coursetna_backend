@@ -28,11 +28,6 @@ public class GestionAnswerImpl implements IGestionAnswer {
     }
 
     @Override
-    public Answer addReponse(Answer reponse) {
-        return reponseRepo.save(reponse);
-    }
-
-    @Override
     public Answer updateReponse(Answer reponse) {
         return reponseRepo.save(reponse);
     }
@@ -57,10 +52,9 @@ public class GestionAnswerImpl implements IGestionAnswer {
     public List<Answer> getAllByUser (Integer numUser){
         return reponseRepo.getAllanswersByUser(numUser);
     }
-
     @Override
-    public Answer getReponseByUserAndQuestion (Integer numUser,Long numQuestion){
-        return reponseRepo.getAnswerByUserAndQuestion(numUser,numQuestion);
+    public List<Answer> getAnswersByUserAndQuiz (Integer numUser,Long numQuiz){
+        return reponseRepo.getAllAnswerByUserAndQuiz(numUser,numQuiz);
     }
 
 }

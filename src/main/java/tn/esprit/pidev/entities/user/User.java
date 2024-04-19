@@ -35,9 +35,9 @@ public class User implements Serializable {
     private Boolean isBanned = false;
 
     /********evaluation*******************/
-    @OneToMany(mappedBy="user")
+    /*@OneToMany(mappedBy="user")
     @JsonIgnore
-    private List<Answer> listAnswer;
+    private List<Answer> listAnswer;*/
 
     @OneToMany(mappedBy="user")
     @JsonIgnore

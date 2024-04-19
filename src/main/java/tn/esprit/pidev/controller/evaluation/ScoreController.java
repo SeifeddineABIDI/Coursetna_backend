@@ -1,4 +1,4 @@
-package tn.esprit.pidev.controller.user.evaluation;
+package tn.esprit.pidev.controller.evaluation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,6 @@ public class ScoreController {
     @Autowired
     IGestionScore IgScore;
 
-
     @GetMapping("/getAll")
     public List<Score> retrieveAllScores(){
         return IgScore.retrieveAllScores();
@@ -23,6 +22,11 @@ public class ScoreController {
     @GetMapping("/getScore/{id}")
     public Score retrieveScore (@PathVariable("id") Long numScore){
         return IgScore.retrieveScore(numScore);
+    }
+
+    @GetMapping("getScoreByUserAndQuiz/{numU}/{numQ}")
+    public Score retrieveScoreByUserAndQuiz(@PathVariable("numU")Integer numUser,@PathVariable("numQ")Long numQuiz) {
+        return IgScore.retrieveScoreByUserAndQuiz(numUser,numQuiz);
     }
 
     @PostMapping("/addScore/{numQuiz}/{numUser}")

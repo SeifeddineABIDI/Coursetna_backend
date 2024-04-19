@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import tn.esprit.pidev.entities.evaluation.Quiz;
 
 import java.io.Serializable;
 import java.util.List;
@@ -26,5 +27,9 @@ public class Topic implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Ressource> ressources;
+
+    /**** evaluation ***/
+    @OneToMany
+    private List<Quiz> listQuiz;
 
 }
