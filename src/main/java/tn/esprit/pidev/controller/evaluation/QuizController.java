@@ -36,4 +36,4 @@ public class QuizController {
     @PostMapping("/addQuizAndAssignToTopic/{numTopic}")
     public Quiz addQuizAndAssignToTopic(@RequestBody Quiz quiz,@PathVariable("numTopic") Long numTopic) { return IgQuiz.addQuizAndAssignToTopic(quiz, numTopic); }
 
-    }
+}

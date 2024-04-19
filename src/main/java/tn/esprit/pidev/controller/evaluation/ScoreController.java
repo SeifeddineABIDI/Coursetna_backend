@@ -14,6 +14,7 @@ public class ScoreController {
     @Autowired
     IGestionScore IgScore;
 
+
     @GetMapping("/getAll")
     public List<Score> retrieveAllScores(){
         return IgScore.retrieveAllScores();

@@ -45,6 +45,7 @@ public class GestionQuestionImpl implements IGestionQuestion{
         return questionRepo.save(question);
     }
 
+
     @Override
     public List<Question> getQuestionsByQuiz(Long numQuiz){
         return questionRepo.getQuestionsByQuiz(numQuiz);

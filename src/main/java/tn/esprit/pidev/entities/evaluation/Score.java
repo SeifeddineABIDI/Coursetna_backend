@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import tn.esprit.pidev.entities.user.User;
 
 import java.io.Serializable;

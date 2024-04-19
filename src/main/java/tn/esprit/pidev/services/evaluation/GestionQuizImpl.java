@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 public class GestionQuizImpl implements IGestionQuiz{
     IQuizRepository quizRepo;
+
     ItopicRepository topicRepo;
     @Override
     public List<Quiz> retrieveAllQuizs() {

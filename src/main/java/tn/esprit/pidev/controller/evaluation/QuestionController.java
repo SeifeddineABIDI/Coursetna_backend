@@ -34,7 +34,6 @@ public class QuestionController {
         IgQuestion.removeQuestion(numQuestion);
     }
 
-
     @PostMapping("addQuestionAndAssignToQuiz/{idQuiz}")
     public Question addQuestionAndAssignToQuiz(@RequestBody Question question,@PathVariable("idQuiz") Long numQuiz){
         return IgQuestion.addQuestionAndAssignToQuiz(question,numQuiz);

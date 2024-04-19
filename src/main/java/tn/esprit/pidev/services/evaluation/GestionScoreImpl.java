@@ -2,6 +2,7 @@ package tn.esprit.pidev.services.evaluation;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import tn.esprit.pidev.entities.evaluation.Answer;
 import tn.esprit.pidev.entities.evaluation.Question;
 import tn.esprit.pidev.entities.evaluation.Quiz;
@@ -66,7 +67,6 @@ public class GestionScoreImpl implements IGestionScore{
     public Score retrieveScoreByUserAndQuiz(Integer numUser,Long numQuiz){
         return scoreRepo.getScoreByUserAndQuiz(numUser,numQuiz);
     }
-
 
 
 }
