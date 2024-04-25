@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 public class GestionQuizImpl implements IGestionQuiz{
     IQuizRepository quizRepo;
-
     ItopicRepository topicRepo;
     @Override
     public List<Quiz> retrieveAllQuizs() {
@@ -30,9 +29,20 @@ public class GestionQuizImpl implements IGestionQuiz{
         return quizRepo.save(quiz);
     }
 
-    @Override
+    /*@Override
     public void removeQuiz(Long numQuiz) {
         quizRepo.deleteById(numQuiz);
+    }*/
+    @Override
+    public void removeQuiz(Long numQuiz) {
+        Quiz q = quizRepo.findById(numQuiz).get();
+        Topic topic = topicRepo.findTopicByQuizId(numQuiz);
+
+            if (topic != null) {
+                topic.getListQuiz().remove(q);
+                topicRepo.save(topic); // Save the updated topic
+            }
+        quizRepo.delete(q); // Delete the quiz
     }
 
     @Override

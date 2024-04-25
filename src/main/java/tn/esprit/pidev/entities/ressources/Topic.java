@@ -29,7 +29,8 @@ public class Topic implements Serializable {
     private List<Ressource> ressources;
 
     /**** evaluation ***/
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "topic_id") // Define the foreign key column
     private List<Quiz> listQuiz;
 
 }

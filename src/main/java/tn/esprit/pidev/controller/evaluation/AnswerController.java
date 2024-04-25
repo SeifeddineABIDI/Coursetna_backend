@@ -48,5 +48,4 @@ public class AnswerController {
         return IgResponse.getAnswersByUserAndQuiz(numUser,numQuiz);
     }
 
-
     }
