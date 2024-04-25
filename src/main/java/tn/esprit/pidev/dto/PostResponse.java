@@ -11,6 +11,7 @@ public class PostResponse {
     private Long id;
     private String postName;
     private String url;
+    private String imageUrl;
     private String description;
     private String email;
     private String subforumName;
@@ -19,5 +20,6 @@ public class PostResponse {
     private String duration;
     private boolean upVote;
     private boolean downVote;
+
 
 }

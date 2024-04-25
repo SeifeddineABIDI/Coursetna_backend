@@ -33,6 +33,7 @@ public abstract class PostMapper {
     @Mapping(target = "subforum", source = "subforum")
     @Mapping(target = "voteCount", constant = "0")
     @Mapping(target = "user", source = "user")
+    @Mapping(target = "imageUrl", source = "postRequest.imageUrl")
     public abstract Post map(PostRequest postRequest, Subforum subforum, User user);
 
     //Mapping from Entity to DTO (PostResponse)
@@ -41,6 +42,7 @@ public abstract class PostMapper {
     @Mapping(target = "email", source = "user.email")
     @Mapping(target = "commentCount", expression = "java(commentCount(post))")
     @Mapping(target = "duration", expression = "java(getDuration(post))")
+    @Mapping(target = "imageUrl", source = "post.imageUrl")
     public abstract PostResponse mapToDto(Post post);
 
     Integer commentCount(Post post) {

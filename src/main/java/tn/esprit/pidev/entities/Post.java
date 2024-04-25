@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,6 +19,8 @@ public class Post implements Serializable {
     private Long postId;
     private String postName;
     private String url;
+    private String imageUrl;
+
     @Lob
     private String description;
     private Integer voteCount = 0;
@@ -28,4 +31,9 @@ public class Post implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     //@JoinColumn(name = "subforum_id", referencedColumnName = "id")
     private Subforum subforum;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
+
+
+
 }

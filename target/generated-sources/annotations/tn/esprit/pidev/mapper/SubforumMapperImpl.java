@@ -8,7 +8,7 @@ import tn.esprit.pidev.entities.User;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-17T01:57:22+0100",
+    date = "2024-04-25T01:43:45+0100",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.8 (Oracle Corporation)"
 )
 @Component

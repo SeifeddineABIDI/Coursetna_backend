@@ -44,9 +44,12 @@ public class GestionCommentImpl implements IGestionComment {
         sendCommentNotification(message, post.getUser());
     }
     private void sendCommentNotification(String message, User user) {
-        String fullName = user.getPrenom() + " " + user.getNom();
-        mailService.sendMail(new NotificationEmail(fullName + " Commented on your post", user.getEmail(), message));
+        if (user != null) {
+            String fullName = user.getPrenom() + " " + user.getNom();
+            mailService.sendMail(new NotificationEmail(fullName + " Commented on your post", user.getEmail(), message));
+        }
     }
+
     @Override
     public List<CommentsDto> getAllCommentsForPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId.toString()));
@@ -58,4 +61,6 @@ public class GestionCommentImpl implements IGestionComment {
     public void deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
     }
+
+
 }
