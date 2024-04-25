@@ -12,9 +12,9 @@ import java.util.List;
 public interface IGestionDiscussion {
     public Discussion startDiscussionDuo(Long userStart, Long userEnd);
 
-    public Discussion startDiscussionGroup(Long userStart, String title, List<Long> userList);
+    public Discussion startDiscussionGroup(Long userStart, String title, String userList, String image);
 
-    public Discussion startDiscussionCommunity(Long userStart, String title, List<Long> userList, String discussionList);
+    public Discussion startDiscussionCommunity(Long userStart, String title, String userList, String discussionList, String image);
 
     public Discussion addUserToDiscussion(Long id, List<Long> userList);
 

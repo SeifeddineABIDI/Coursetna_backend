@@ -21,13 +21,13 @@ public class DiscussionController {
     }
 
     @PostMapping("/startDiscussionGroup")
-    public Discussion cstartDiscussionGroup(@RequestParam Long userStart,@RequestParam String title, @RequestBody List<Long> userList) {
-        return iGestionDiscussion.startDiscussionGroup(userStart,title,userList);
+    public Discussion cstartDiscussionGroup(@RequestParam Long userStart, @RequestParam String title, @RequestParam String userList, @RequestBody String image) {
+        return iGestionDiscussion.startDiscussionGroup(userStart,title,userList,image);
     }
 
     @PostMapping("/startDiscussionCommunity")
-    public Discussion cstartDiscussionCommunity(@RequestParam Long userStart,@RequestParam String title, @RequestBody List<Long> userList,@RequestParam String discussionList) {
-        return iGestionDiscussion.startDiscussionCommunity(userStart,title,userList,discussionList);
+    public Discussion cstartDiscussionCommunity(@RequestParam Long userStart,@RequestParam String title, @RequestParam String userList,@RequestParam String discussionList, @RequestBody String image) {
+        return iGestionDiscussion.startDiscussionCommunity(userStart,title,userList,discussionList,image);
     }
 
     @PutMapping("/addUserToDiscussion")

@@ -7,19 +7,15 @@ import tn.esprit.pidev.entities.Reaction;
 import tn.esprit.pidev.services.IGestionReaction;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/reaction")
 public class ReactionController {
     @Autowired
     IGestionReaction iGestionReaction ;
 
-    @PostMapping("/addReaction")
-    public Reaction caddReaction(@RequestParam Long user, @RequestParam Long message, @RequestBody String reaction) {
-        return iGestionReaction.addReaction(user,message,reaction);
-    }
-
-    @PutMapping("/deleteReaction")
-    public boolean cdeleteReaction(@RequestParam Long id) {
-        return iGestionReaction.deleteReaction(id);
+    @PostMapping("/reacting")
+    public Reaction creacting(@RequestParam Long user, @RequestParam Long message, @RequestBody String reaction) {
+        return iGestionReaction.reacting(user,message,reaction);
     }
 
 }

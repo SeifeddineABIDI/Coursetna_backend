@@ -31,7 +31,7 @@ public class MessageController {
         return iGestionMessage.deleteMessage(id);
     }
 
-    @PostMapping("/replyMessage")
+        @PostMapping("/replyMessage")
     public Message creplyMessage(@RequestParam Long userSender,@RequestParam Long discussion,@RequestParam Long message,@RequestBody String reply) {
         return iGestionMessage.replyMessage(userSender,discussion,message,reply);
     }
@@ -55,5 +55,10 @@ public class MessageController {
     public List<Message> cretrieveRecentMessages(@RequestParam Long id,@RequestParam String recentDate) {
         return iGestionMessage.retrieveRecentMessages(id,recentDate);
     }
+    @PutMapping("/pinMessage")
+    public Message cpinMessage(@RequestParam Long id) {
+        return iGestionMessage.pinMessage(id);
+    }
 
+    
 }

@@ -29,8 +29,9 @@ public class Message {
     private Discussion discussion;
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "message")
     private List<Reaction> reactions = new ArrayList<Reaction>();
-    @OneToOne
-    private Message reply = null;
+    @ManyToOne
+    private Message reply;
+    private boolean pinned;
     private boolean archived;
 
     @Override

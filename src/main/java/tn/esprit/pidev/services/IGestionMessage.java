@@ -24,6 +24,8 @@ public interface IGestionMessage {
 
     public List<Message> retrieveRecentMessages(Long id, String recentDate);
 
+    public Message pinMessage(Long id);
+
 
 
     }

@@ -33,6 +33,7 @@ public class GestionMessageImpl implements IGestionMessage {
 
         messageo.setDateSent(LocalDateTime.now());
         messageo.setArchived(false);
+        messageo.setPinned(false);
         messageo.setUser(iUserRepository.findById(userSender).get());
 
         Discussion discussiono = iDiscussionRepository.findById(discussion).get();
@@ -67,6 +68,7 @@ public class GestionMessageImpl implements IGestionMessage {
         messageo.setArchived(false);
         messageo.setUser(iUserRepository.findById(userSender).get());
         messageo.setReply(iMessageRepository.findById(message).get());
+        messageo.setPinned(false);
 
         Discussion discussiono = iDiscussionRepository.findById(discussion).get();
         messageo.setDiscussion(discussiono);
@@ -95,6 +97,11 @@ public class GestionMessageImpl implements IGestionMessage {
         return iMessageRepository.findByDiscussionIdAndDateSentAfterOrderByDateSent(id, recentDateo);
     }
 
+    public Message pinMessage(Long id) {
+        Message messageo = iMessageRepository.findById(id).get();
+        messageo.setPinned(!messageo.isPinned());
+        return iMessageRepository.save(messageo);
+    }
 
 
 }

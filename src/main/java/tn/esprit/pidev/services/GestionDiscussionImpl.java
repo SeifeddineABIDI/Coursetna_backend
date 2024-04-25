@@ -34,27 +34,46 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
     }
 
     @Override
-    public Discussion startDiscussionGroup(Long userStart, String title, List<Long> userList) {
+    public Discussion startDiscussionGroup(Long userStart, String title, String userList, String image) {
         Discussion discussion = new Discussion();
         discussion.setTypeDiscussion(TypeDiscussion.Group);
         discussion.setTitle(title);
+
         discussion.getUsers().add(iUserRepository.findById(userStart).get());
-        for (Long user : userList) {
-            discussion.getUsers().add(iUserRepository.findById(user).get());
+
+        if (userList != null && !userList.isEmpty()) {
+            String[] userIdStrings = userList.split("_");
+
+            for (String userIdString : userIdStrings) {
+                Long userId = Long.parseLong(userIdString);
+                if (iUserRepository.existsById(userId)) {
+                    discussion.getUsers().add(iUserRepository.findById(userId).get());
+                }
+            }
         }
+
         discussion.setDateStart(LocalDateTime.now());
         discussion.setArchived(false);
-        return iDiscussionRepository.save(discussion) ;
+        discussion.setPhoto(image);
+
+        return iDiscussionRepository.save(discussion);
     }
 
     @Override
-    public Discussion startDiscussionCommunity(Long userStart, String title, List<Long> userList, String discussionList) {
+    public Discussion startDiscussionCommunity(Long userStart, String title, String userList, String discussionList,String image) {
         Discussion discussion = new Discussion();
         discussion.setTypeDiscussion(TypeDiscussion.Community);
         discussion.setTitle(title);
         discussion.getUsers().add(iUserRepository.findById(userStart).get());
-        for (Long user : userList) {
-            discussion.getUsers().add(iUserRepository.findById(user).get());
+        if (userList != null && !userList.isEmpty()) {
+            String[] userIdStrings = userList.split("_");
+
+            for (String userIdString : userIdStrings) {
+                Long userId = Long.parseLong(userIdString);
+                if (iUserRepository.existsById(userId)) {
+                    discussion.getUsers().add(iUserRepository.findById(userId).get());
+                }
+            }
         }
 
         String[] splitArray = discussionList.split("_");
@@ -69,6 +88,8 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
             discussion.getCommunity().add(discussiono);
            iDiscussionRepository.save(discussiono) ;
         }
+
+        discussion.setPhoto(image);
         discussion.setDateStart(LocalDateTime.now());
         discussion.setArchived(false);
         return iDiscussionRepository.save(discussion) ;

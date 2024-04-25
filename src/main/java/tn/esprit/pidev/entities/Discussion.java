@@ -21,6 +21,8 @@ public class Discussion implements Serializable {
     private Long id;
     private String title;
     private LocalDateTime dateStart;
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String photo = "";
     @Enumerated(EnumType.STRING)
     private TypeDiscussion typeDiscussion;
