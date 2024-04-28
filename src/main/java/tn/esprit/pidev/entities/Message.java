@@ -20,6 +20,8 @@ public class Message {
     @Id
     @GeneratedValue
     private Long id;
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String message;
     private LocalDateTime dateSent;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ;
     private LocalDateTime dateModified;

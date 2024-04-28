@@ -30,9 +30,9 @@ public class DiscussionController {
         return iGestionDiscussion.startDiscussionCommunity(userStart,title,userList,discussionList,image);
     }
 
-    @PutMapping("/addUserToDiscussion")
-    public Discussion caddUserToDiscussion(@RequestParam Long id, @RequestBody List<Long> userList) {
-        return iGestionDiscussion.addUserToDiscussion(id,userList);
+    @PutMapping("/modifyDiscussionGroup")
+    public Discussion cmodifyDiscussionGroup(@RequestParam Long discussion, @RequestParam Long userStart, @RequestParam String title, @RequestParam String userList, @RequestBody String image) {
+        return iGestionDiscussion.modifyDiscussionGroup(discussion,userStart,title,userList,image);
     }
 
     @PutMapping("/addDiscussionToCommunity")

@@ -30,11 +30,9 @@ public class GestionReactionImpl implements IGestionReaction {
 
         Optional<Reaction> existingReaction = iReactionRepository.findFirstByUserAndReactionAndMessage(user, reaction, messageo);
         if (existingReaction.isPresent()) {
-            System.out.println("lol");
             existingReaction.get().setArchived(!existingReaction.get().isArchived());
             return iReactionRepository.save(existingReaction.get());
         } else {
-            System.out.println("lolxxx");
             Reaction reactiono = new Reaction();
             reactiono.setReaction(reaction);
             reactiono.setDateReact(LocalDateTime.now());

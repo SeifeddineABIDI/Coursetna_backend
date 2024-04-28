@@ -16,10 +16,8 @@ public interface IGestionDiscussion {
 
     public Discussion startDiscussionCommunity(Long userStart, String title, String userList, String discussionList, String image);
 
-    public Discussion addUserToDiscussion(Long id, List<Long> userList);
-
-    public Discussion addDiscussionToCommunity(Long id, String discussionList);
-
+    public Discussion modifyDiscussionGroup(Long discussion, Long userStart, String title, String userList, String image);
+        public Discussion addDiscussionToCommunity(Long id, String discussionList);
     public List<Discussion> retrieveAllDiscussions(Long id);
 
     public List<Discussion> retrieveAllCommunities(Long id);

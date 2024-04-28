@@ -96,12 +96,27 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
     }
 
     @Override
-    public Discussion addUserToDiscussion(Long id, List<Long> userList) {
-        Discussion discussion = iDiscussionRepository.findById(id).get();
-        for (Long user : userList) {
-            discussion.getUsers().add(iUserRepository.findById(user).get());
+    public Discussion modifyDiscussionGroup(Long discussion, Long userStart, String title, String userList, String image) {
+        Discussion discussiono =iDiscussionRepository.findById(discussion).get();
+        discussiono.setTitle(title);
+
+        discussiono.getUsers().clear();
+        discussiono.getUsers().add(iUserRepository.findById(userStart).get());
+
+        if (userList != null && !userList.isEmpty()) {
+            String[] userIdStrings = userList.split("_");
+
+            for (String userIdString : userIdStrings) {
+                Long userId = Long.parseLong(userIdString);
+                if (iUserRepository.existsById(userId)) {
+                    discussiono.getUsers().add(iUserRepository.findById(userId).get());
+                }
+            }
         }
-        return iDiscussionRepository.save(discussion) ;
+
+        discussiono.setPhoto(image);
+
+        return iDiscussionRepository.save(discussiono);
     }
 
     @Override
