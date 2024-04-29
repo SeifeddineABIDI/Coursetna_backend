@@ -14,4 +14,7 @@ public interface IGestionQuiz {
     void removeQuiz(Long numQuiz);
     Quiz addQuizAndAssignToTopic(Quiz quiz, Long numTopic);
 
+
+    void removeQuizWithNoQuestion();
+
 }

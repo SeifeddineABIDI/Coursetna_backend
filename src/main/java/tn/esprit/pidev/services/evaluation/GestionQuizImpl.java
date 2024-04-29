@@ -1,7 +1,10 @@
 package tn.esprit.pidev.services.evaluation;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.pidev.entities.evaluation.Quiz;
 import tn.esprit.pidev.entities.ressources.Topic;
 import tn.esprit.pidev.repository.evaluation.IQuizRepository;
@@ -10,6 +13,7 @@ import tn.esprit.pidev.repository.ressources.ItopicRepository;
 import java.util.List;
 
 @AllArgsConstructor
+@Slf4j//LOGGER
 @Service
 public class GestionQuizImpl implements IGestionQuiz{
     IQuizRepository quizRepo;
@@ -51,6 +55,20 @@ public class GestionQuizImpl implements IGestionQuiz{
         topic.getListQuiz().add(quiz);
 
         return quizRepo.save(quiz);
+    }
+
+    @Transactional
+    @Scheduled(cron="*/30 * * * * *")
+    @Override
+    public void removeQuizWithNoQuestion(){
+      List<Quiz>listQuiz=quizRepo.findAll();
+
+        for(Quiz q:listQuiz)
+          if (q.getListQuestion()==null||q.getListQuestion().isEmpty())
+          {
+              log.info("le quiz supprimé est :" +q.getNumQuiz());
+              quizRepo.delete(q);
+          }
     }
 
 }
