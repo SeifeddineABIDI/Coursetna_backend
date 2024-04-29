@@ -56,9 +56,9 @@ public class GestionQuizImpl implements IGestionQuiz{
 
         return quizRepo.save(quiz);
     }
-
+/**************************************************/
     @Transactional
-    @Scheduled(cron="*/30 * * * * *")
+    @Scheduled(cron="*/60 * * * * *")
     @Override
     public void removeQuizWithNoQuestion(){
       List<Quiz>listQuiz=quizRepo.findAll();
@@ -70,5 +70,11 @@ public class GestionQuizImpl implements IGestionQuiz{
               quizRepo.delete(q);
           }
     }
+
+    @Override
+    public List<Quiz> getQuizNotEmpty(){
+        return quizRepo.findByListQuestionNotNull();
+    }
+
 
 }
