@@ -43,18 +43,21 @@ public class GestionScoreImpl implements IGestionScore{
 
         List<Question>questions=quiz.getListQuestion();
         int totalQuestions = questions.size();
-        int pts = 0;
+        int totalpts =0;
+        double pts = 0;
 
         for (int i = 0; i < totalQuestions; i++) {
             Question question = questions.get(i);
             Answer answer = reponseRepo.getAnswerByUserAndQuestion(user.getId(), question.getNumQuestion());
+            totalpts=totalpts+question.getPoints();
 
             if (answer.getSelectedChoice().equals(question.getCorrectAnswer()))
                 pts = pts + question.getPoints();
         }
+        double s=pts/totalpts*100;
 
         Score score=new Score();
-        score.setScore(pts);
+        score.setScore(s);
         score.setDateTime(LocalDateTime.now());
         score.setUser(user);
         score.setQuiz(quiz);

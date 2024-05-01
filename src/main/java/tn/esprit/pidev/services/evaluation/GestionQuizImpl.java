@@ -75,6 +75,11 @@ public class GestionQuizImpl implements IGestionQuiz{
     public List<Quiz> getQuizNotEmpty(){
         return quizRepo.findByListQuestionNotNull();
     }
+    @Override
+    public int getdureeByQuiz(Long numQuiz){
+        return quizRepo.findById(numQuiz).get().getDuree();
+    }
+
 
 
 }

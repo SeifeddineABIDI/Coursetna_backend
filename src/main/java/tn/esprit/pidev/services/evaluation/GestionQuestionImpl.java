@@ -50,5 +50,4 @@ public class GestionQuestionImpl implements IGestionQuestion{
     public List<Question> getQuestionsByQuiz(Long numQuiz){
         return questionRepo.getQuestionsByQuiz(numQuiz);
     }
-    
 }

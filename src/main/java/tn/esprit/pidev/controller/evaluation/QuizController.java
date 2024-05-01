@@ -41,4 +41,9 @@ public class QuizController {
         return IgQuiz.getQuizNotEmpty();
     }
 
-}
+    @GetMapping("/getdureeByQuiz/{id}")
+    public int getdureeByQuiz(@PathVariable("id") Long numQuiz) {
+        return IgQuiz.getdureeByQuiz(numQuiz);
+    }
+
+    }
