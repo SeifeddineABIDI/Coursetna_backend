@@ -1,6 +1,7 @@
 package tn.esprit.pidev.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.entities.Discussion;
 import tn.esprit.pidev.entities.Message;
@@ -31,13 +32,18 @@ public class DiscussionController {
     }
 
     @PutMapping("/modifyDiscussionGroup")
-    public Discussion cmodifyDiscussionGroup(@RequestParam Long discussion, @RequestParam Long userStart, @RequestParam String title, @RequestParam String userList, @RequestBody String image) {
-        return iGestionDiscussion.modifyDiscussionGroup(discussion,userStart,title,userList,image);
+    public ResponseEntity<String> cmodifyDiscussionGroup(@RequestParam Long discussion, @RequestParam Long userStart, @RequestParam String title, @RequestParam String userList, @RequestParam Long admin, @RequestBody String image) {
+        return iGestionDiscussion.modifyDiscussionGroup(discussion,userStart,title,userList,admin,image);
     }
 
-    @PutMapping("/addDiscussionToCommunity")
-    public Discussion caddDiscussionToCommunity(@RequestParam Long id, @RequestParam String discussionList) {
-        return iGestionDiscussion.addDiscussionToCommunity(id,discussionList);
+    @PutMapping("/modifyDiscussionCommunity")
+    public ResponseEntity<String> cmodifyDiscussionCommunity(@RequestParam Long discussion, @RequestParam Long userStart, @RequestParam String title, @RequestParam String userList, @RequestParam String discussionList, @RequestParam Long admin, @RequestBody String image) {
+        return iGestionDiscussion.modifyDiscussionCommunity(discussion,userStart,title,userList,discussionList,admin,image);
+    }
+
+    @PutMapping("/addAdminsToDiscussion")
+    public ResponseEntity<String> caddAdminsToDiscussion(@RequestParam Long discussion, @RequestParam Long admin, @RequestParam String userList) {
+        return iGestionDiscussion.addAdminsToDiscussion(discussion,admin,userList);
     }
 
     @GetMapping("/retrieveAllDiscussions")
@@ -50,14 +56,12 @@ public class DiscussionController {
         return iGestionDiscussion.retrieveAllCommunities(id);
     }
 
-
-    @PutMapping("/renameDiscussion")
-    public Discussion crenameDiscussion(@RequestParam Long id,@RequestParam String title) {
-        return iGestionDiscussion.renameDiscussion(id,title);
+    @PutMapping("/leaveDiscussion")
+    public Discussion cleaveDiscussion(@RequestParam Long user, @RequestParam Long discussion) {
+        return iGestionDiscussion.leaveDiscussion(user,discussion);
     }
-
     @PutMapping("/deleteDiscussion")
-    public boolean cdeleteDiscussion(@RequestParam Long id) {
-        return iGestionDiscussion.deleteDiscussion(id);
+    public ResponseEntity<String> cdeleteDiscussion(@RequestParam Long user, @RequestParam Long discussion) {
+        return iGestionDiscussion.deleteDiscussion(user,discussion);
     }
 }

@@ -28,6 +28,8 @@ public class Discussion implements Serializable {
     private TypeDiscussion typeDiscussion;
     @ManyToMany(cascade = CascadeType.DETACH)
     private List<User> users = new ArrayList<User>();
+    @ManyToMany(cascade = CascadeType.DETACH)
+    private List<User> admins = new ArrayList<User>();
     @OneToMany
     private List<Discussion> community = new ArrayList<Discussion>();
     private boolean archived = false ;

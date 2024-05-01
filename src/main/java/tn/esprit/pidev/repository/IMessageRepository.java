@@ -16,7 +16,6 @@ public interface IMessageRepository extends JpaRepository<Message, Long> {
 
     List<Message> findByDiscussionIdOrderByDateSent(Long id, Pageable pageable);
 
-
     List<Message> findByDiscussionIdAndDateSentAfterOrderByDateSent(Long id, LocalDateTime recentDateo);
 
 }
