@@ -1,4 +1,5 @@
-package com.example.picloud.entities;
+package tn.esprit.pidev.entities;
+
 
 
 import jakarta.persistence.*;

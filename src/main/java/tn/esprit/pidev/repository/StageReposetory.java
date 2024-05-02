@@ -1,4 +1,4 @@
-package com.example.picloud.repository;
+package tn.esprit.picloud.repository;
 
 import com.example.picloud.entities.Stage;
 import org.springframework.data.jpa.repository.JpaRepository;
