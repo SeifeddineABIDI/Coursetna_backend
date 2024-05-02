@@ -13,7 +13,7 @@ import java.time.Instant;
 public class CommentsDto {
     private Long id;
     private Long postId;
-    private Instant createdDate;
+    private String createdDate;
     @NotBlank
     private String text;
     private String email;

@@ -9,7 +9,7 @@ import tn.esprit.pidev.entities.User;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-25T01:43:45+0100",
+    date = "2024-05-02T02:15:34+0100",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.8 (Oracle Corporation)"
 )
 @Component
@@ -42,11 +42,11 @@ public class CommentMapperImpl implements CommentMapper {
         CommentsDto commentsDto = new CommentsDto();
 
         commentsDto.setId( comment.getId() );
-        commentsDto.setCreatedDate( comment.getCreatedDate() );
         commentsDto.setText( comment.getText() );
 
         commentsDto.setPostId( comment.getPost().getPostId() );
         commentsDto.setEmail( comment.getUser().getEmail() );
+        commentsDto.setCreatedDate( getDuration(comment) );
 
         return commentsDto;
     }

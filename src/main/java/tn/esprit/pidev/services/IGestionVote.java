@@ -4,4 +4,5 @@ import tn.esprit.pidev.dto.VoteDto;
 
 public interface IGestionVote {
     public void vote(VoteDto voteDto, String userEmail);
+    public void deleteVote(Long postId, String email);
 }

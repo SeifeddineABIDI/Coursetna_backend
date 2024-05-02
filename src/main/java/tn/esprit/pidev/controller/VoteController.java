@@ -20,8 +20,13 @@ public class VoteController {
 
     @PostMapping
     public ResponseEntity<Void> vote(@RequestBody VoteDto voteDto) {
-        String userEmail = "";
+        String userEmail = voteDto.getEmail();
         iGestionVote.vote(voteDto,userEmail);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deleteVote(@PathVariable Long postId, @RequestParam String email) {
+        iGestionVote.deleteVote(postId, email);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

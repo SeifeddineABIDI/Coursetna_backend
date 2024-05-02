@@ -3,7 +3,9 @@ package tn.esprit.pidev.controller;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +15,9 @@ import tn.esprit.pidev.entities.Post;
 import tn.esprit.pidev.services.IGestionPost;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 
@@ -79,6 +84,33 @@ public class PostController {
         return ResponseEntity.ok(mostInteractivePosts);
     }
 
+    @GetMapping("/{postId}/image")
+    public ResponseEntity<byte[]> getPostImage(@PathVariable Long postId) {
+        // Retrieve post by ID
+        PostResponse post = gestionPost.getPostById(postId);
+        if (post == null || post.getImageUrl() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Read image data from the file system using the image URL stored in the database
+        Path imagePath = Paths.get(post.getImageUrl());
+        byte[] imageData;
+        try {
+            imageData = Files.readAllBytes(imagePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        // Set content type header based on image type (adjust accordingly if not JPEG)
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+
+        // Return image data as response
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(imageData);
+    }
 
 
 }

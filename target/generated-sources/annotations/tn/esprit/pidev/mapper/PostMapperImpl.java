@@ -10,7 +10,7 @@ import tn.esprit.pidev.entities.User;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-25T01:56:59+0100",
+    date = "2024-04-27T19:30:52+0100",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.8 (Oracle Corporation)"
 )
 @Component
@@ -58,6 +58,8 @@ public class PostMapperImpl extends PostMapper {
 
         postResponse.setCommentCount( commentCount(post) );
         postResponse.setDuration( getDuration(post) );
+        postResponse.setLike( isPostLiked(post) );
+        postResponse.setDislike( isPostDisliked(post) );
 
         return postResponse;
     }

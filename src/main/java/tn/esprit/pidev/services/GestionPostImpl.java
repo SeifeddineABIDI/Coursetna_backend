@@ -48,7 +48,7 @@ public class GestionPostImpl implements IGestionPost {
     IUserRepository userRepository;
     PostMapper postMapper;
 
-    private static String uploadDirectory = "src/main/resources/templates";
+    private static String uploadDirectory = "src/main/resources/static";
 
 
 
