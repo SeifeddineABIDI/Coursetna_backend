@@ -37,4 +37,8 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "destinataire")
     private List<Notification> notifications;
+    @JsonIgnore
+    @OneToMany(mappedBy = "auteur")
+    private List<Commentaire> commentaires;
+
 }

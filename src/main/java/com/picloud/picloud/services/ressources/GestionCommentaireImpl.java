@@ -8,8 +8,6 @@ import com.picloud.picloud.entities.ressources.TypeNotif;
 import com.picloud.picloud.repository.IUserRepository;
 import com.picloud.picloud.repository.ressources.ICommentaireRepository;
 import com.picloud.picloud.repository.ressources.IRessourceRepository;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GestionCommentaireImpl implements IGestionCom {
@@ -33,47 +30,39 @@ public class GestionCommentaireImpl implements IGestionCom {
 
 
 
-
+    @Override
+    public List<Commentaire> getCommentaireByRessourceId(Long ressourceId) {
+        return commRepo.findByRessourceId(ressourceId);
+    }
     @Override
     @Transactional
-    public Commentaire addComment(Commentaire comm, Long userId, Long ressourceId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        Optional<Ressource> optionalRessource = ressourceRepo.findById(ressourceId);
+    public Commentaire addCommennt(Commentaire comm) {
+        Commentaire nouvelleComm = commRepo.save(comm);
+        User auteur = comm.getAuteur();
+        Ressource ressource = comm.getRessource();
         comm.setDatePublication(new Date());
         comm.setLikes(0);
         comm.setDislikes(0);
         comm.setEmotion(null);
-        if (optionalUser.isPresent() && optionalRessource.isPresent()) {
-            User user = optionalUser.get();
-            Ressource ressource = optionalRessource.get();
-            Optional<Commentaire> existingComment = commRepo.findByContenuAndRessources(comm.getContenu(), ressource);
-            if (commRepo.existsByContenuAndRessourcesContaining(comm.getContenu(), ressource)) {
-                throw new EntityExistsException("Ce commentaire existe déjà pour cette ressource.");
+        if (ressource != null) {
+            List<User> utilisateurs = userRepository.findAll();
+            for (User utilisateur : utilisateurs) {
+                if (!utilisateur.equals(auteur)) {
+                    Notification notification = new Notification();
+                    notification.setMessage("Un nouveau commentaire a été ajouté à la ressource '" + ressource.getTitre() + "' : " + comm.getContenu());
+                    notification.setDateEnvoi(new Date());
+                    notification.setEstLue(false);
+                    notification.setCommentaire(nouvelleComm);
+                    notification.setDestinataire(utilisateur);
+                    notification.setRessource(ressource);
+                    notification.setType(TypeNotif.COMMENTAIRE);
+                    notificationService.envoyerNotification(notification);
+                }
             }
-            comm.getUtilisateurs().add(user);
-            comm.getRessources().add(ressource);
-            Commentaire savedComment = commRepo.save(comm);
-            Notification notification = new Notification();
-            notification.setMessage("Un nouveau commentaire a été ajouté à la ressource '" + ressource.getTitre() + "' : " + comm.getContenu());
-            notification.setDateEnvoi(new Date());
-            notification.setEstLue(false);
-            notification.setCommentaire(savedComment);
-            notification.setDestinataire(user);
-            notification.setRessource(ressource);
-            notification.setType(TypeNotif.COMMENTAIRE);
-            notificationService.envoyerNotification(notification);
-
-            return savedComment;
-        } else {
-            throw new EntityNotFoundException("Utilisateur ou ressource introuvable avec les IDs spécifiés");
         }
+        return nouvelleComm;
     }
 
-
-    @Override
-    public List<Commentaire> getCommentaireByRessourceId(Long ressourceId) {
-        return commRepo.findByRessourcesId(ressourceId);
-    }
     @Override
     public int calculerTotalLikes(Long commentaireId) {
         Commentaire commentaire = commRepo.findById(commentaireId).orElse(null);
@@ -108,5 +97,9 @@ public class GestionCommentaireImpl implements IGestionCom {
         Commentaire commentaire = commRepo.findById(commentaireId).orElse(null);
         commentaire.setDislikes(commentaire.getDislikes() - 1);
         commRepo.save(commentaire);
+    }
+    @Override
+    public Long getNombreCommentairesByRessourceId(Long id) {
+        return commRepo.countByRessourceId(id);
     }
 }

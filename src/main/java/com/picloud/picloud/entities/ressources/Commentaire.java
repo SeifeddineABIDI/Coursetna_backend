@@ -35,19 +35,13 @@ public class Commentaire implements Serializable {
 
     private String emotion;
 
-    @ManyToMany
-    @JoinTable(
-            name = "utilisateur_commentaire",
-            joinColumns = @JoinColumn(name = "commentaire_id"),
-            inverseJoinColumns = @JoinColumn(name = "utilisateur_id"))
-    private Set<User> utilisateurs = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User auteur;
 
-    @ManyToMany
-    @JoinTable(
-            name = "ressource_commentaire",
-            joinColumns = @JoinColumn(name = "commentaire_id"),
-            inverseJoinColumns = @JoinColumn(name = "ressource_id"))
-    private Set<Ressource> ressources = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "ressource_id")
+    private Ressource ressource;
 
 
 }

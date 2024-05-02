@@ -234,6 +234,22 @@ public class GestionRessourceImpl implements IGestionRessource {
             throw new RuntimeException("Ressource non trouvée avec l'ID spécifié");
         }
     }
+    @Override
+    @Transactional
+    public void addRating(Long userId, Long ressourceId, int rating) {
+        Optional<Ressource> optionalRessource = ressourceRepo.findById(ressourceId);
+        if (optionalRessource.isPresent()) {
+            Ressource ressource = optionalRessource.get();
+            ressource.setRating(rating);
+            User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'ID spécifié"));
+            ressource.setAuteur(user);
+            ressourceRepo.save(ressource);
+        } else {
+            throw new RuntimeException("Ressource non trouvée avec l'ID spécifié");
+        }
+}
+
+
     public List<Ressource> getRessourcesByTopicName(Topic topic) {
         return ressourceRepo.findByTopic(topic);
     }

@@ -156,12 +156,12 @@ public class ControllerRess {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to rate ressource: " + e.getMessage());
         }
     }
-    @PostMapping("/{id}/rate")
-    public ResponseEntity<Map<String, String>> addRating(@PathVariable Long id, @RequestBody Map<String, Integer> requestBody) {
+    @PostMapping("/{userId}/resources/{resourceId}/rate")
+    public ResponseEntity<Map<String, String>> addRating(@PathVariable Long userId, @PathVariable Long resourceId, @RequestBody Map<String, Integer> requestBody) {
         int rating = requestBody.get("rating");
-        ressourceService.addRating(id, rating);
+        ressourceService.addRating(userId, resourceId, rating);
         Map<String, String> response = new HashMap<>();
-        response.put("message", "Rating added successfully to resource with ID: " + id);
+        response.put("message", "Rating added successfully to resource with ID: " + resourceId + " for user with ID: " + userId);
         return ResponseEntity.ok().body(response);
     }
 

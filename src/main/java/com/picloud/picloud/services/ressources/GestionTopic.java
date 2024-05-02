@@ -32,7 +32,6 @@ public class GestionTopic implements IGestionTopic {
     public List<Topic> getAll() {
         return topicRepo.findAll();
     }
-
     @Override
     @Transactional
     public Topic addTopic(Topic topic, MultipartFile photo) throws IOException {
@@ -42,8 +41,6 @@ public class GestionTopic implements IGestionTopic {
         String photoUrl = savePhoto(photo);
         topic.setPhoto(photoUrl);
         Topic savedTopic = topicRepo.save(topic);
-
-
         return savedTopic;
     }
 

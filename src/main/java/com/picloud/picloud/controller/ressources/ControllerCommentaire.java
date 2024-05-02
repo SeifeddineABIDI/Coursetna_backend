@@ -19,17 +19,22 @@ public class ControllerCommentaire {
     @Autowired
     IGestionCom commentaire;
 
-    @PostMapping("/addCom/{ressourceId}/{userId}")
-    public ResponseEntity<Commentaire> ajouterCommentaire(@RequestBody Commentaire comm,
-                                                          @PathVariable Long userId,
-                                                          @PathVariable Long ressourceId) {
-        Commentaire nouveauCommentaire = commentaire.addComment(comm, userId, ressourceId);
+    @PostMapping("/addCom")
+    public ResponseEntity<Commentaire> ajouterCommentaire(@RequestBody Commentaire comm) {
+        Commentaire nouveauCommentaire = commentaire.addCommennt(comm);
         return new ResponseEntity<>(nouveauCommentaire, HttpStatus.CREATED);
     }
+
+
     @GetMapping("/ressource/{ressourceId}")
     public ResponseEntity<List<Commentaire>> getCommentairesByRessourceId(@PathVariable Long ressourceId) {
         List<Commentaire> commentaires = commentaire.getCommentaireByRessourceId(ressourceId);
         return new ResponseEntity<>(commentaires, HttpStatus.OK);
+    }
+
+    @GetMapping("/ressources/{id}/commentaires/nombre")
+    public Long getNombreCommentairesByRessourceId(@PathVariable Long id) {
+        return commentaire.getNombreCommentairesByRessourceId(id);
     }
     @GetMapping("/{commentaireId}/likes")
     public ResponseEntity<Integer> getLikes(@PathVariable Long commentaireId) {

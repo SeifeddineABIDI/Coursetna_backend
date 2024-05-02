@@ -8,8 +8,6 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
 
 @Entity
 @Getter
@@ -47,6 +45,10 @@ public class Ressource implements Serializable {
     @OneToMany(mappedBy = "ressource", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<VersionRessource> versions;
     private boolean archived;
+    @JsonIgnore
+    @OneToMany(mappedBy = "ressource", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Commentaire> commentaires;
+
 
 
 

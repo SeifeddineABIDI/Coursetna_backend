@@ -16,17 +16,6 @@ import java.util.List;
 public interface IGestionRessource {
 
     List<Ressource> getAll() throws JsonProcessingException;
-
-
-//    List<Ressource> getRessourceByCategoryAndOption(Categorie categorie, Options option);
-//    @Transactional
-//    Ressource addRessource(MultipartFile file, Ressource ressource, Long userId) throws IOException;
-
-//    @Transactional
-//    Ressource addRessource(MultipartFile file, Ressource ressource, Long userId, Topic topic) throws IOException;
-
-//    List<Ressource> getRessourceByCategory(Categorie categorie);
-
     List<Ressource> getRessourceByCategory(Categorie categorie, Long topicId);
 
     @Transactional
@@ -61,6 +50,10 @@ public interface IGestionRessource {
 
     @Transactional
     void addRating(Long id, int rating);
+
+
+    @Transactional
+    void addRating(Long userId, Long ressourceId, int rating);
 
     void archiverRessource(Long id) throws Exception;
 

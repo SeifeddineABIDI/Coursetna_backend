@@ -11,11 +11,15 @@ public interface IGestionCom {
 
 
 
-    @Transactional
-    Commentaire addComment(Commentaire comm, Long userId, Long ressourceId);
 
+
+
+    @Transactional
+    Commentaire addCommennt(Commentaire comm);
 
     List<Commentaire> getCommentaireByRessourceId(Long ressourceId);
+
+
 
     int calculerTotalLikes(Long commentaireId);
 
@@ -28,4 +32,6 @@ public interface IGestionCom {
     void supprimerLike(Long commentaireId);
 
     void supprimerDislike(Long commentaireId);
+
+    Long getNombreCommentairesByRessourceId(Long id);
 }
