@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface IGestionMessage {
 
-    public Message sendMessage (Long senderUser, Long discussion, String message);
+    public Message sendMessage (int senderUser, Long discussion, String message);
 
     public Message modifyMessage (Long id, String message);
 
     public boolean deleteMessage (Long id);
 
-    public Message replyMessage(Long userSender, Long discussion, Long message, String reply);
+    public Message replyMessage(int userSender, Long discussion, Long message, String reply);
 
     public List<Message> retrieveAllMessages(Long id);
 

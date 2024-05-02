@@ -24,7 +24,7 @@ public class GestionReactionImpl implements IGestionReaction {
     @Override
 
 
-    public Reaction reacting(Long userId, Long message, String reaction) {
+    public Reaction reacting(int userId, Long message, String reaction) {
         User user = iUserRepository.findById(userId).get();
         Message messageo = iMessageRepository.findById(message).get();
 

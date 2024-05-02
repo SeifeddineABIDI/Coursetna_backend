@@ -27,7 +27,7 @@ public class MessageController {
 
 
     @PostMapping("/sendMessage")
-    public Message csendMessage(@RequestParam Long userSender,@RequestParam Long discussion,@RequestBody String message) {
+    public Message csendMessage(@RequestParam int userSender,@RequestParam Long discussion,@RequestBody String message) {
         return iGestionMessage.sendMessage(userSender,discussion,message);
     }
 
@@ -41,8 +41,8 @@ public class MessageController {
         return iGestionMessage.deleteMessage(id);
     }
 
-        @PostMapping("/replyMessage")
-    public Message creplyMessage(@RequestParam Long userSender,@RequestParam Long discussion,@RequestParam Long message,@RequestBody String reply) {
+    @PostMapping("/replyMessage")
+    public Message creplyMessage(@RequestParam int userSender,@RequestParam Long discussion,@RequestParam Long message,@RequestBody String reply) {
         return iGestionMessage.replyMessage(userSender,discussion,message,reply);
     }
 

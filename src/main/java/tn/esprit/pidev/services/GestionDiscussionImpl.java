@@ -22,8 +22,9 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
     @Autowired
     IUserRepository iUserRepository;
     @Override
-    public Discussion startDiscussionDuo(Long userStart, Long userEnd)
+    public Discussion startDiscussionDuo(int userStart, int userEnd)
     {
+
         List<Discussion> d = iDiscussionRepository.findByTwoUsersAndTypeDiscussion(iUserRepository.findById(userStart).get(),iUserRepository.findById(userEnd).get(),TypeDiscussion.Duo);
                 if (!d.isEmpty()) {
                     d.get(0).setArchived(false);
@@ -46,7 +47,7 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
     }
 
     @Override
-    public Discussion startDiscussionGroup(Long userStart, String title, String userList, String image) {
+    public Discussion startDiscussionGroup(int userStart, String title, String userList, String image) {
         Discussion discussion = new Discussion();
         discussion.setTypeDiscussion(TypeDiscussion.Group);
         discussion.setTitle(title);
@@ -58,7 +59,7 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
             String[] userIdStrings = userList.split("_");
 
             for (String userIdString : userIdStrings) {
-                Long userId = Long.parseLong(userIdString);
+                int userId = Integer.parseInt(userIdString);
                 if (iUserRepository.existsById(userId)) {
                     discussion.getUsers().add(iUserRepository.findById(userId).get());
                 }
@@ -73,7 +74,7 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
     }
 
     @Override
-    public Discussion startDiscussionCommunity(Long userStart, String title, String userList, String discussionList,String image) {
+    public Discussion startDiscussionCommunity(int userStart, String title, String userList, String discussionList,String image) {
         Discussion discussion = new Discussion();
         discussion.setTypeDiscussion(TypeDiscussion.Community);
         discussion.setTitle(title);
@@ -84,7 +85,7 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
             String[] userIdStrings = userList.split("_");
 
             for (String userIdString : userIdStrings) {
-                Long userId = Long.parseLong(userIdString);
+                int userId = Integer.parseInt(userIdString);
                 if (iUserRepository.existsById(userId)) {
                     discussion.getUsers().add(iUserRepository.findById(userId).get());
                 }
@@ -112,7 +113,7 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
     }
 
     @Override
-    public ResponseEntity<String> modifyDiscussionGroup(Long discussion, Long userStart, String title, String userList, Long admin, String image) {
+    public ResponseEntity<String> modifyDiscussionGroup(Long discussion, int userStart, String title, String userList, int admin, String image) {
         Discussion discussiono =iDiscussionRepository.findById(discussion).get();
         User admino = iUserRepository.findById(admin).get();
 
@@ -126,7 +127,7 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
                 String[] userIdStrings = userList.split("_");
 
                 for (String userIdString : userIdStrings) {
-                    Long userId = Long.parseLong(userIdString);
+                    int userId = Integer.parseInt(userIdString);
                     if (iUserRepository.existsById(userId)) {
                         discussiono.getUsers().add(iUserRepository.findById(userId).get());
                     }
@@ -146,7 +147,7 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
 
 
     @Override
-    public ResponseEntity<String> modifyDiscussionCommunity(Long discussion, Long userStart, String title, String userList, String discussionList, Long admin, String image) {
+    public ResponseEntity<String> modifyDiscussionCommunity(Long discussion, int userStart, String title, String userList, String discussionList, int admin, String image) {
         Discussion discussiono = iDiscussionRepository.findById(discussion).get();
         User admino = iUserRepository.findById(admin).get();
 
@@ -160,7 +161,7 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
                 String[] userIdStrings = userList.split("_");
 
                 for (String userIdString : userIdStrings) {
-                    Long userId = Long.parseLong(userIdString);
+                    int userId = Integer.parseInt(userIdString);
                     if (iUserRepository.existsById(userId)) {
                         discussiono.getUsers().add(iUserRepository.findById(userId).get());
                     }
@@ -211,7 +212,7 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
         }
     }
 
-    public ResponseEntity<String> addAdminsToDiscussion(Long discussion, Long admin, String userList) {
+    public ResponseEntity<String> addAdminsToDiscussion(Long discussion, int admin, String userList) {
 
         Discussion discussiono =iDiscussionRepository.findById(discussion).get();
         User usero = iUserRepository.findById(admin).get() ;
@@ -224,7 +225,7 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
                 String[] userIdStrings = userList.split("_");
 
                 for (String userIdString : userIdStrings) {
-                    Long userId = Long.parseLong(userIdString);
+                    int userId = Integer.parseInt(userIdString);
                     if (iUserRepository.existsById(userId)) {
                         discussiono.getAdmins().add(iUserRepository.findById(userId).get());
                     }
@@ -241,26 +242,26 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
     }
 
 
-    public List<Discussion> retrieveAllDiscussions(Long id){
+    public List<Discussion> retrieveAllDiscussions(Integer id){
         User user = iUserRepository.findById(id).get();
         return iDiscussionRepository.findByUsersContainingAndArchivedIsFalseAndTypeDiscussionIsNot(user,TypeDiscussion.Community);
     }
 
-    public List<Discussion> retrieveAllCommunities(Long id){
+    public List<Discussion> retrieveAllCommunities(int id){
         User user = iUserRepository.findById(id).get();
         return iDiscussionRepository.findByUsersContainingAndArchivedIsFalseAndTypeDiscussionIs(user,TypeDiscussion.Community);
 
     }
 
     @Override
-    public Discussion leaveDiscussion(Long user, Long discussion) {
+    public Discussion leaveDiscussion(int user, Long discussion) {
         Discussion discussiono = iDiscussionRepository.findById(discussion).get() ;
         User usero = iUserRepository.findById(user).get() ;
         discussiono.getUsers().remove(usero);
         return iDiscussionRepository.save(discussiono) ;
     }
     @Override
-    public ResponseEntity<String> deleteDiscussion(Long user, Long discussion) {
+    public ResponseEntity<String> deleteDiscussion(int user, Long discussion) {
         Discussion discussiono = iDiscussionRepository.findById(discussion).get() ;
         User usero = iUserRepository.findById(user).get() ;
         if (discussiono.getAdmins().contains(usero))

@@ -14,7 +14,7 @@ public class ReactionController {
     IGestionReaction iGestionReaction ;
 
     @PostMapping("/reacting")
-    public Reaction creacting(@RequestParam Long user, @RequestParam Long message, @RequestBody String reaction) {
+    public Reaction creacting(@RequestParam int user, @RequestParam Long message, @RequestBody String reaction) {
         return iGestionReaction.reacting(user,message,reaction);
     }
 
