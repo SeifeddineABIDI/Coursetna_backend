@@ -70,6 +70,7 @@
                                     .anyRequest()
                                     .authenticated()
 
+
                     )
 
                     .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

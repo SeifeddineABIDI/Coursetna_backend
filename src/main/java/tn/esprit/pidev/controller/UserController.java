@@ -13,6 +13,7 @@ import tn.esprit.pidev.token.Token;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/user")

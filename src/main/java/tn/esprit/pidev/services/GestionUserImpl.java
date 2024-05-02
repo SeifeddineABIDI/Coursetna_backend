@@ -27,11 +27,10 @@ public class GestionUserImpl implements IGestionUser{
     @Override
     public User update(User user) {
         // Check if the user exists
-        Optional<User> optionalUser = ur.findById(user.getId());
+        Optional<User> optionalUser = ur.findByEmail(user.getEmail());
         if (optionalUser.isPresent()) {
             // Get the existing user
             User existingUser = optionalUser.get();
-
             // Update the existing user with the new details
             existingUser.setNom(user.getNom());
             existingUser.setPrenom(user.getPrenom());
