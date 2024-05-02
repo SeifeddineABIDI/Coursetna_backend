@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface IGestionNotif {
 
-     Notification add(Notification notification);
 
     List<Notification> récupérerNotificationsUtilisateur(User utilisateur);
 
@@ -15,7 +14,6 @@ public interface IGestionNotif {
 
     void marquerCommeLue(Notification notification);
 
-    void supprimerNotification(Notification notification);
 
     void envoyerNotification(Notification notification);
 

@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface IRessourceRepository extends JpaRepository<Ressource,Long> {
 
@@ -25,4 +27,5 @@ public interface IRessourceRepository extends JpaRepository<Ressource,Long> {
 
     List<Ressource> getRessourceByCategorieAndTopicId(Categorie categorie, Long topicId);
 
+    Ressource findTopByOrderByIdDesc();
 }

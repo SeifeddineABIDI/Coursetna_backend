@@ -88,7 +88,7 @@ public class GestionRessourceImpl implements IGestionRessource {
             ressource.setRating(0);
             ressource.setArchived(false);
             Ressource nouvelleRessource = ressourceRepo.save(ressource);
-            sendNotifications(nouvelleRessource, currentDate);
+//            sendNotifications(nouvelleRessource, currentDate);
             return nouvelleRessource;
         } catch (IOException e) {
             throw new RuntimeException("Erreur lors de l'ajout de la ressource", e);
@@ -129,20 +129,20 @@ public class GestionRessourceImpl implements IGestionRessource {
         return ressourceRepo.findByOptions(option);
     }
 
-    private void sendNotifications(Ressource ressource, Date currentDate) {
-
-        List<User> utilisateurs = userRepository.findAll();
-        for (User recipient : utilisateurs) {
-            Notification notification = new Notification();
-            notification.setDestinataire(recipient);
-            notification.setMessage("Une nouvelle ressource a été ajouté à la ressource '" + ressource.getTitre());
-            notification.setDateEnvoi(new Date());
-            notification.setEstLue(false);
-            notification.setRessource(ressource);
-            notification.setType(TypeNotif.NOUVELLE_RESSOURCE);
-            notifservice.envoyerNotification(notification);
-        }
-    }
+//    private void sendNotifications(Ressource ressource, Date currentDate) {
+//
+//        List<User> utilisateurs = userRepository.findAll();
+//        for (User recipient : utilisateurs) {
+//            Notification notification = new Notification();
+//            notification.setDestinataire(recipient);
+//            notification.setMessage("Une nouvelle ressource a été ajouté à la ressource '" + ressource.getTitre());
+//            notification.setDateEnvoi(new Date());
+//            notification.setEstLue(false);
+//            notification.setRessource(ressource);
+//            notification.setType(TypeNotif.NOUVELLE_RESSOURCE);
+//            notifservice.envoyerNotification(notification);
+//        }
+//    }
 
 
     @Override

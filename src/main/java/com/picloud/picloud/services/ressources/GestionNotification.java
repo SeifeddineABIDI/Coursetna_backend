@@ -15,11 +15,6 @@ public class GestionNotification implements IGestionNotif {
     private INotificationRepository notificationRepository;
 
     @Override
-    public Notification add(Notification notification) {
-        return notificationRepository.save(notification);
-    }
-
-    @Override
     public List<Notification> récupérerNotificationsUtilisateur(User utilisateur) {
         return notificationRepository.findByDestinataire(utilisateur);
     }
@@ -35,10 +30,6 @@ public class GestionNotification implements IGestionNotif {
         notificationRepository.save(notification);
     }
 
-    @Override
-    public void supprimerNotification(Notification notification) {
-        notificationRepository.delete(notification);
-    }
 
     @Override
     public void envoyerNotification(Notification notification) {

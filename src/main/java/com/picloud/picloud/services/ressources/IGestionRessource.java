@@ -62,4 +62,5 @@ public interface IGestionRessource {
     int countResourcesByTopicId(Long topicId);
 
     List<Ressource> getResourcesByUserId(Long userId);
+
 }

@@ -1,9 +1,14 @@
 package com.picloud.picloud.controller.googledrive;
 
 import com.picloud.picloud.dtos.GoogleDriveFileDTO;
+import com.picloud.picloud.entities.ressources.Categorie;
+import com.picloud.picloud.entities.ressources.Options;
+import com.picloud.picloud.entities.ressources.Ressource;
 import com.picloud.picloud.services.googledrive.GoogleDriveFileService;
+import com.picloud.picloud.services.ressources.IGestionRessource;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +17,20 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/files")
 @RequiredArgsConstructor
 @Tag(name = "Files", description = "Files API")
+@CrossOrigin
 public class GoogleDriveFileController {
 
     private final GoogleDriveFileService googleDriveFileService;
-
+    @Autowired
+    IGestionRessource ressourceService;
     @GetMapping
     public ResponseEntity<List<GoogleDriveFileDTO>> findAll() {
         return ResponseEntity.ok(googleDriveFileService.findAll());
@@ -32,25 +41,28 @@ public class GoogleDriveFileController {
         return ResponseEntity.ok(googleDriveFileService.findAllInFolder(folderId));
     }
 
-    @PostMapping(value = "/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public String upload(
+    @PostMapping(value = "/upload", consumes = {"multipart/form-data"})
+    public ResponseEntity<Map<String, String>> upload(
             @RequestParam("file") MultipartFile file,
             @RequestParam("path") String path,
-            @RequestParam("shared") String shared) {
-        path = "".equals(path) ?"Root" : path;
-        return googleDriveFileService.upload(file, path, Boolean.parseBoolean(shared));
-    }
+            @RequestParam("description") String description,
+            @RequestParam("categorie") String categorie,
+            @RequestParam("userId") Long userId,
+            @RequestParam("topicName") String topicName,
+            @RequestParam("options") String options) throws IOException {
 
-    @DeleteMapping("/delete/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable String id) {
-        googleDriveFileService.deleteById(id);
-    }
+        path = "".equals(path) ? "Root" : path;
+        Ressource ressource = new Ressource();
+        ressource.setTitre(file.getOriginalFilename());
+        ressource.setDescription(description);
+        ressource.setCategorie(Categorie.valueOf(categorie));
+        ressource.setOptions(Options.valueOf(options));
+        ressourceService.addRessource(file, ressource, userId, topicName);
 
-    @GetMapping("/download/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void download(@PathVariable String id, HttpServletResponse response) throws IOException {
-        googleDriveFileService.download(id, response.getOutputStream());
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "File uploaded successfully");
+        response.put("googleDriveResponse", googleDriveFileService.upload(file, path, false));
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{fileId}/copy/{folderId}")

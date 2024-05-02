@@ -40,6 +40,7 @@ public class ControllerRess {
     @Value("${upload.directory}")
     private String uploadDirectory;
 
+
     @GetMapping("/download/{id}")
     public ResponseEntity<Resource> telechargerFichier(@PathVariable Long id) throws IOException {
         Optional<Ressource> optionalRessource = ressourceRepo.findById(id);
@@ -122,13 +123,13 @@ public class ControllerRess {
         }
     }
 
-
-    @GetMapping
-    public ResponseEntity<Page<Ressource>> getAllRessourcesWithPagination(@RequestParam(defaultValue = "0") int page,
-                                                                          @RequestParam(defaultValue = "10") int size) {
-        Page<Ressource> ressources = ressourceService.getAllWithPagination(page, size);
-        return ResponseEntity.ok(ressources);
-    }
+//
+//    @GetMapping
+//    public ResponseEntity<Page<Ressource>> getAllRessourcesWithPagination(@RequestParam(defaultValue = "0") int page,
+//                                                                          @RequestParam(defaultValue = "10") int size) {
+//        Page<Ressource> ressources = ressourceService.getAllWithPagination(page, size);
+//        return ResponseEntity.ok(ressources);
+//    }
 
     @GetMapping("/filterByTitre/{titre}")
     public ResponseEntity<List<Ressource>> filterRessourcesByTitre(@PathVariable("titre")String titre) {
@@ -224,6 +225,24 @@ public class ControllerRess {
     public List<Ressource> getResourcesByUserId(@PathVariable Long userId) {
         return ressourceService.getResourcesByUserId(userId);
     }
+    @GetMapping("/latestResourceId")
+    public ResponseEntity<Map<String, Long>> getLatestResourceId() {
+        Ressource latestResource = ressourceRepo.findTopByOrderByIdDesc();
+
+        if (latestResource != null) {
+            Long latestResourceId = latestResource.getId();
+            Map<String, Long> response = new HashMap<>();
+            response.put("id", latestResourceId);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
+
+
 
 
 }
