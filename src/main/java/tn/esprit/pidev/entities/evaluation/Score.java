@@ -17,7 +17,7 @@ public class Score implements Serializable {
     @Id
     @GeneratedValue
     private Long numScore;
-    private int score;
+    private double score;
     private LocalDateTime dateTime;
 
     @ManyToOne

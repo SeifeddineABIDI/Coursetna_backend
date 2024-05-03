@@ -1,7 +1,6 @@
 package tn.esprit.pidev.services.reclamation;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -13,9 +12,7 @@ import tn.esprit.pidev.repository.reclamation.IReclamationRepository;
 import tn.esprit.pidev.repository.ressources.ItopicRepository;
 import tn.esprit.pidev.repository.user.IUserRepository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 

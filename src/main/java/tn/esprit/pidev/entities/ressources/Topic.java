@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import tn.esprit.pidev.entities.evaluation.Quiz;
 import tn.esprit.pidev.entities.reclamation.Reclamtion;
 
 import java.io.Serializable;
@@ -30,5 +31,9 @@ public class Topic implements Serializable {
 
     @OneToMany(mappedBy ="topic" )
     private List<Reclamtion>reclamtionList;
+    /**** evaluation ***/
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "topic_id") // Define the foreign key column
+    private List<Quiz> listQuiz;
 
 }

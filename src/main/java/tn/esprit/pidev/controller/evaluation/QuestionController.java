@@ -1,4 +1,4 @@
-package tn.esprit.pidev.controller.user.evaluation;
+package tn.esprit.pidev.controller.evaluation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,21 +24,15 @@ public class QuestionController {
         return IgQuestion.retrieveQuestion(numQuestion);
     }
 
-    @PostMapping("/addQuestion")
-    public Question addQuestion(@RequestBody Question question) {
-        return IgQuestion.addQuestion(question);
-    }
-
-    @PutMapping("/updateQuestion")
-    public Question updateQuestion(@RequestBody Question question) {
-        return IgQuestion.updateQuestion(question);
+    @PutMapping("/updateQuestion/{id}")
+    public Question updateQuestion(@RequestBody Question question,@PathVariable("id") Long numQuiz) {
+        return IgQuestion.updateQuestion(question,numQuiz);
     }
 
     @DeleteMapping("/removeQuestion/{id}")
     public void removeQuestion(@PathVariable("id") Long numQuestion) {
         IgQuestion.removeQuestion(numQuestion);
     }
-
 
     @PostMapping("addQuestionAndAssignToQuiz/{idQuiz}")
     public Question addQuestionAndAssignToQuiz(@RequestBody Question question,@PathVariable("idQuiz") Long numQuiz){

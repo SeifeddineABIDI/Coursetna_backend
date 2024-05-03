@@ -2,6 +2,7 @@ package tn.esprit.pidev.repository.ressources;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tn.esprit.pidev.entities.ressources.Topic;
 
@@ -16,4 +17,7 @@ public interface ItopicRepository extends JpaRepository<Topic,Long> {
     List<String> findAllNames();
 
     Topic findByNom(String nom);
+    /********evaluation*************/
+    @Query("SELECT t FROM Topic t JOIN t.listQuiz q WHERE q.numQuiz = :numQuiz")
+    Topic findTopicByQuizId(@Param("numQuiz") Long numQuiz);
 }

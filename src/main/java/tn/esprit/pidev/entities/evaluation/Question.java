@@ -1,15 +1,13 @@
 package tn.esprit.pidev.entities.evaluation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,5 +27,10 @@ public class Question implements Serializable {
     @ManyToOne
     @JsonIgnore
     private Quiz quiz;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)//slave
+    @JsonIgnore
+    private List<Answer> answers;
+
 
 }

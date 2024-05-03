@@ -1,4 +1,4 @@
-package tn.esprit.pidev.controller.user.evaluation;
+package tn.esprit.pidev.controller.evaluation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,6 @@ public class AnswerController {
     @Autowired
     IGestionAnswer IgResponse;
 
-
     @GetMapping("/getAll")
     public List<Answer> retrieveAllReponses(){
         return IgResponse.retrieveAllReponses();
@@ -23,11 +22,6 @@ public class AnswerController {
     @GetMapping("/getReponse/{id}")
     public Answer retrieveReponse (@PathVariable("id") Long numReponse){
         return IgResponse.retrieveReponse(numReponse);
-    }
-
-    @PostMapping("/addReponse")
-    public Answer addReponse(@RequestBody Answer reponse){
-        return IgResponse.addReponse(reponse);
     }
 
     @PutMapping("/updateReponse")
@@ -45,10 +39,23 @@ public class AnswerController {
         return IgResponse.addReponseAndAssignToQuestionAndUser(reponse,numQuestion,numUser);
     }
 
-
     @GetMapping("/getAllByUser/{id}")
     public List<Answer> getAllResponsesByUser (@PathVariable("id") Integer numUser){
         return IgResponse.getAllByUser(numUser);
     }
+    @GetMapping("/getAnswersByUserAndQuiz/{numUser}/{numQuiz}")
+    public List<Answer> getAnswersByUserAndQuiz (@PathVariable("numUser")Integer numUser,@PathVariable("numQuiz") Long numQuiz) {
+        return IgResponse.getAnswersByUserAndQuiz(numUser,numQuiz);
+    }
+    /******stat***********/
+    @GetMapping("/getTotalCorrectAnswersForQuestion/{numq}")
+    public int getTotalCorrectAnswersForQuestion (@PathVariable("numq") Long question) {
+        return IgResponse.getTotalCorrectAnswersForQuestion(question);
+    }
 
-}
+    @GetMapping("/getTotalAnswersForQuestion/{numq}")
+    public int getTotalAnswersForQuestion (@PathVariable("numq") Long question) {
+        return IgResponse.getTotalAnswersForQuestion(question);
+    }
+    //int getTotalAnswersForQuestion(Long numquestion)
+    }
