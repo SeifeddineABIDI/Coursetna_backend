@@ -22,5 +22,6 @@ public class Reponse implements Serializable {
     private String contenuRep;
     @JsonIgnore
     @ManyToOne
+    //@JoinColumn(name = "idrec")
     private Reclamtion reclamtion;
 }

@@ -13,7 +13,8 @@ import tn.esprit.pidev.services.ressources.IGestionTopic;
 import java.io.IOException;
 import java.util.List;
 @RestController
-@CrossOrigin
+@CrossOrigin("*")
+
 @RequestMapping("/topic")
 public class ControllerTopic {
     @Autowired

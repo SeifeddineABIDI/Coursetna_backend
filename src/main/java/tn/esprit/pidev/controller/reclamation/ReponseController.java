@@ -1,6 +1,8 @@
 package tn.esprit.pidev.controller.reclamation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.pidev.entities.reclamation.Reponse;
 import tn.esprit.pidev.services.reclamation.IGestionReponse;
@@ -8,6 +10,8 @@ import tn.esprit.pidev.services.reclamation.IGestionReponse;
 import java.util.List;
 
 @RestController
+@CrossOrigin("*")
+
 @RequestMapping("/Reponse")
 public class ReponseController {
     @Autowired
@@ -51,6 +55,21 @@ public class ReponseController {
     public Reponse addReponseAndAssignToReclamtion(@RequestBody Reponse reponse,@PathVariable("idrep") long idrep)
     {
         return iGestionReponse.addReponseAndAssignToReclamtion(reponse,idrep);
+    }
+
+    @PostMapping("/reclamations/{id}")
+    public ResponseEntity<String> addResponseToReclamation(
+            @RequestBody Reponse reponse,
+            @PathVariable("id") long reclamationId
+    ) {
+        String message = iGestionReponse.AddReponseAndAssignToReclamtion(reponse, reclamationId);
+
+        // Check the message and return the appropriate response
+        if (message.startsWith("Response added successfully")) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(message);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+        }
     }
 
 }

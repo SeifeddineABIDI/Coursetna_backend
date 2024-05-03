@@ -47,6 +47,15 @@ public class AnswerController {
     public List<Answer> getAnswersByUserAndQuiz (@PathVariable("numUser")Integer numUser,@PathVariable("numQuiz") Long numQuiz) {
         return IgResponse.getAnswersByUserAndQuiz(numUser,numQuiz);
     }
+    /******stat***********/
+    @GetMapping("/getTotalCorrectAnswersForQuestion/{numq}")
+    public int getTotalCorrectAnswersForQuestion (@PathVariable("numq") Long question) {
+        return IgResponse.getTotalCorrectAnswersForQuestion(question);
+    }
 
-
+    @GetMapping("/getTotalAnswersForQuestion/{numq}")
+    public int getTotalAnswersForQuestion (@PathVariable("numq") Long question) {
+        return IgResponse.getTotalAnswersForQuestion(question);
+    }
+    //int getTotalAnswersForQuestion(Long numquestion)
     }

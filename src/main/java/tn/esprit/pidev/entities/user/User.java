@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tn.esprit.pidev.entities.evaluation.Answer;
 import tn.esprit.pidev.entities.evaluation.Score;
 import tn.esprit.pidev.entities.reclamation.Reclamtion;
 import tn.esprit.pidev.entities.ressources.Notification;

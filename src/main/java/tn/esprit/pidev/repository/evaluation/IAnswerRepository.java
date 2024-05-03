@@ -20,4 +20,10 @@ public interface IAnswerRepository extends JpaRepository<Answer,Long> {
     @Query("select r from Answer r where r.user.id=:numUser and r.question.numQuestion=:numQuest")
     public Answer getAnswerByUserAndQuestion(@Param("numUser") Integer numU,@Param("numQuest") Long numQ);
 
+//////stat
+@Query("select r from Answer r where r.question.numQuestion=:numQuest")
+List<Answer> findByQuestionn(@Param("numQuest") Long Qusetion);
+    @Query("select r from Answer r where r.question.quiz.numQuiz=:Q")
+    public List<Answer> findByQuizz(@Param("Q") Long Q);
+
 }

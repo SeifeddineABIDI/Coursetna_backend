@@ -24,16 +24,15 @@ public class QuestionController {
         return IgQuestion.retrieveQuestion(numQuestion);
     }
 
-    @PutMapping("/updateQuestion")
-    public Question updateQuestion(@RequestBody Question question) {
-        return IgQuestion.updateQuestion(question);
+    @PutMapping("/updateQuestion/{id}")
+    public Question updateQuestion(@RequestBody Question question,@PathVariable("id") Long numQuiz) {
+        return IgQuestion.updateQuestion(question,numQuiz);
     }
 
     @DeleteMapping("/removeQuestion/{id}")
     public void removeQuestion(@PathVariable("id") Long numQuestion) {
         IgQuestion.removeQuestion(numQuestion);
     }
-
 
     @PostMapping("addQuestionAndAssignToQuiz/{idQuiz}")
     public Question addQuestionAndAssignToQuiz(@RequestBody Question question,@PathVariable("idQuiz") Long numQuiz){

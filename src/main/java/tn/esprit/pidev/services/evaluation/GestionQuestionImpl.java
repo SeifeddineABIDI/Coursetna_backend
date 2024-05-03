@@ -27,7 +27,8 @@ public class GestionQuestionImpl implements IGestionQuestion{
     }
 
     @Override
-    public Question updateQuestion(Question question) {
+    public Question updateQuestion(Question question,Long numQuiz) {
+        question.setQuiz(quizRepo.findById(numQuiz).get());
         return questionRepo.save(question);
     }
 
@@ -45,9 +46,9 @@ public class GestionQuestionImpl implements IGestionQuestion{
         return questionRepo.save(question);
     }
 
+
     @Override
     public List<Question> getQuestionsByQuiz(Long numQuiz){
         return questionRepo.getQuestionsByQuiz(numQuiz);
     }
-    
 }
