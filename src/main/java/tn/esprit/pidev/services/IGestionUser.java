@@ -15,4 +15,5 @@ public interface IGestionUser {
     void delete(Integer id);
     User findUserBymail(String email);
     List<User> findByNomOrPrenom(String name,String prename);
+    Optional<User> getUserByEmail(String email);
 }

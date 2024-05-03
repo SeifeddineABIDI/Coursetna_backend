@@ -78,4 +78,9 @@ public class GestionUserImpl implements IGestionUser{
     }
 
 
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return ur.findByEmail(email);
+    }
+
 }
