@@ -1,13 +1,13 @@
-package com.example.picloud.controllers;
+package tn.esprit.pidev.controllers;
 
 
-import com.example.picloud.entities.Stage;
-import com.example.picloud.services.StageService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.pidev.entities.Stage;
+import tn.esprit.pidev.services.StageService;
 
 import java.util.List;
 

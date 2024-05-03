@@ -1,9 +1,9 @@
-package com.example.picloud.services;
+package tn.esprit.pidev.services;
 
-import com.example.picloud.entities.Forum;
-import com.example.picloud.repository.ForumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tn.esprit.pidev.entities.Forum;
+import tn.esprit.pidev.repository.ForumRepository;
 
 @Service
 public class ForumServiceImpl implements ForumService {

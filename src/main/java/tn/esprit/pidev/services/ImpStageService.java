@@ -1,9 +1,12 @@
-package com.example.picloud.services;
+package tn.esprit.pidev.services;
 
-import com.example.picloud.entities.Stage;
-import com.example.picloud.repository.StageReposetory;
+
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tn.esprit.pidev.entities.Stage;
+import tn.esprit.pidev.repository.StageReposetory;
 
 import java.util.List;
 
@@ -11,7 +14,7 @@ import java.util.List;
 public class ImpStageService implements StageService {
 
     @Autowired
-     StageReposetory stageRepository;
+    StageReposetory stageRepository;
 
 
 

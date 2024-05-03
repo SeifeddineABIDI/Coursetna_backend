@@ -1,6 +1,7 @@
-package com.example.picloud.services;
+package tn.esprit.pidev.services;
 
-import com.example.picloud.entities.Stage;
+
+import tn.esprit.pidev.entities.Stage;
 
 import java.util.List;
 
