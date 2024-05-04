@@ -1,11 +1,5 @@
 package tn.esprit.pidev.controller.googledrive;
 
-import tn.esprit.pidev.dtos.GoogleDriveFileDTO;
-import tn.esprit.pidev.entities.ressources.Categorie;
-import tn.esprit.pidev.entities.ressources.Options;
-import tn.esprit.pidev.entities.ressources.Ressource;
-import tn.esprit.pidev.services.googledrive.GoogleDriveFileService;
-import tn.esprit.pidev.services.ressources.IGestionRessource;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tn.esprit.pidev.dtos.GoogleDriveFileDTO;
+import tn.esprit.pidev.entities.Categorie;
+import tn.esprit.pidev.entities.Options;
+import tn.esprit.pidev.entities.Ressource;
+import tn.esprit.pidev.services.googledrive.GoogleDriveFileService;
+import tn.esprit.pidev.services.IGestionRessource;
 
 import java.io.IOException;
 import java.util.HashMap;

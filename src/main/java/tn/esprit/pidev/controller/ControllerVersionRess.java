@@ -1,7 +1,9 @@
 package tn.esprit.pidev.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.entities.VersionRessource;
 import tn.esprit.pidev.services.IGestionVersionRess;
 
@@ -10,22 +12,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/version")
 public class ControllerVersionRess {
-  @Autowired
+    @Autowired
     private IGestionVersionRess versionservice;
 
-  @GetMapping("/getAll")
-  public List<VersionRessource> listerVers() {
-      return versionservice.recupererToutesLesVersions();
-  }
-    @PostMapping("/addVersion")
-    public VersionRessource addVersion(@RequestBody VersionRessource versionRessource) {
-        return versionservice.creerNouvelleVersion(versionRessource);
+    @PostMapping("/create")
+    public ResponseEntity<VersionRessource> createNewVersion(@RequestParam Long ressourceId,
+                                                             @RequestParam String versionName,
+                                                             @RequestParam("file") MultipartFile cheminFichier) throws Exception {
+        VersionRessource nouvelleVersion = versionservice.createNewVersion(ressourceId, versionName, cheminFichier);
+        return ResponseEntity.ok(nouvelleVersion);
     }
 
-    @DeleteMapping("/removeVersion/{id}")
-    public String removeById(@PathVariable("id") long id) {
-        versionservice.supprimerVersion(id);
-        return "version avec l'ID " + id + " supprimé avec succès";
+    @GetMapping("/all")
+    public ResponseEntity<List<VersionRessource>> getAllVersionsByRessourceId(@RequestParam Long ressourceId) {
+        List<VersionRessource> versions = versionservice.getAllVersionsByRessourceId(ressourceId);
+        return ResponseEntity.ok(versions);
     }
 
+    @DeleteMapping("/delete/{versionId}")
+    public ResponseEntity<?> deleteVersion(@PathVariable Long versionId) {
+        versionservice.deleteVersion(versionId);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -42,6 +42,17 @@ public class User implements UserDetails {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         this.password = encoder.encode(password);
     }
+    /**Ressources**/
+    @JsonIgnore
+    @OneToMany(mappedBy = "auteur")
+    private List<Commentaire> commentaires;
+    @JsonIgnore
+    @OneToMany(mappedBy = "auteur")
+    private List<Ressource> ressourcesPubliees;
+    @JsonIgnore
+    @OneToMany(mappedBy = "destinataire")
+    private List<Notification> notifications;
+    /**/
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

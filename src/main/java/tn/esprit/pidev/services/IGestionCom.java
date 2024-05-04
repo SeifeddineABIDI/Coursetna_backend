@@ -1,6 +1,7 @@
 package tn.esprit.pidev.services;
 
 import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 import tn.esprit.pidev.entities.Commentaire;
 
 import java.util.List;
@@ -9,9 +10,8 @@ public interface IGestionCom {
 
 
 
-
     @Transactional
-    Commentaire addComment(Commentaire comm, Integer userId, Long ressourceId);
+    ResponseEntity<?> addCommennt(Commentaire comm);
 
 
     List<Commentaire> getCommentaireByRessourceId(Long ressourceId);
@@ -24,7 +24,11 @@ public interface IGestionCom {
 
     void ajouterDislike(Long commentaireId);
 
+    Commentaire getCommentaire(Long commentaireId);
+
     void supprimerLike(Long commentaireId);
 
     void supprimerDislike(Long commentaireId);
+
+    Long getNombreCommentairesByRessourceId(Long id);
 }

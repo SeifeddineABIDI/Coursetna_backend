@@ -5,16 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tn.esprit.pidev.entities.Categorie;
-import tn.esprit.pidev.entities.Options;
-import tn.esprit.pidev.entities.Ressource;
-import tn.esprit.pidev.entities.Topic;
+import tn.esprit.pidev.entities.*;
 import tn.esprit.pidev.repository.IRessourceRepository;
 import tn.esprit.pidev.repository.IUserRepository;
 import tn.esprit.pidev.repository.ItopicRepository;
@@ -41,6 +37,7 @@ public class ControllerRess {
     @Value("${upload.directory}")
     private String uploadDirectory;
 
+
     @GetMapping("/download/{id}")
     public ResponseEntity<Resource> telechargerFichier(@PathVariable Long id) throws IOException {
         Optional<Ressource> optionalRessource = ressourceRepo.findById(id);
@@ -60,9 +57,10 @@ public class ControllerRess {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
     @GetMapping("/getall")
     public List<Ressource> getAllRessource() throws JsonProcessingException {
-        return  ressourceService.getAll();
+        return ressourceService.getAll();
     }
 
     @PostMapping("/upload")
@@ -70,15 +68,15 @@ public class ControllerRess {
                                 @RequestParam("titre") String titre,
                                 @RequestParam("description") String description,
                                 @RequestParam("categorie") String categorie,
-                                @RequestParam("userId") Integer userId,
+                                @RequestParam("userId") Long userId,
                                 @RequestParam("topicName") String topicName,
-                                @RequestParam("options")String options) throws IOException {
+                                @RequestParam("options") String options) throws IOException {
         Ressource ressource = new Ressource();
         ressource.setTitre(titre);
         ressource.setDescription(description);
         ressource.setCategorie(Categorie.valueOf(categorie));
         ressource.setOptions(Options.valueOf(options));
-        return ressourceService.addRessource(file, ressource, userId,topicName);
+        return ressourceService.addRessource(file, ressource, userId, topicName);
     }
 
     @GetMapping("/{option}")
@@ -88,8 +86,8 @@ public class ControllerRess {
     }
 
     @GetMapping("/byCategorie/{categorie}/{topicId}")
-    public ResponseEntity<List<Ressource>> getResourcesByCategorie(@PathVariable Categorie categorie,@PathVariable Long topicId) {
-        List<Ressource> resources = ressourceService.getRessourceByCategory(categorie,topicId);
+    public ResponseEntity<List<Ressource>> getResourcesByCategorie(@PathVariable Categorie categorie, @PathVariable Long topicId) {
+        List<Ressource> resources = ressourceService.getRessourceByCategory(categorie, topicId);
         return ResponseEntity.ok(resources);
     }
 
@@ -123,16 +121,16 @@ public class ControllerRess {
         }
     }
 
-
-    @GetMapping
-    public ResponseEntity<Page<Ressource>> getAllRessourcesWithPagination(@RequestParam(defaultValue = "0") int page,
-                                                                          @RequestParam(defaultValue = "10") int size) {
-        Page<Ressource> ressources = ressourceService.getAllWithPagination(page, size);
-        return ResponseEntity.ok(ressources);
-    }
+//
+//    @GetMapping
+//    public ResponseEntity<Page<Ressource>> getAllRessourcesWithPagination(@RequestParam(defaultValue = "0") int page,
+//                                                                          @RequestParam(defaultValue = "10") int size) {
+//        Page<Ressource> ressources = ressourceService.getAllWithPagination(page, size);
+//        return ResponseEntity.ok(ressources);
+//    }
 
     @GetMapping("/filterByTitre/{titre}")
-    public ResponseEntity<List<Ressource>> filterRessourcesByTitre(@PathVariable("titre")String titre) {
+    public ResponseEntity<List<Ressource>> filterRessourcesByTitre(@PathVariable("titre") String titre) {
         List<Ressource> ressources = ressourceService.filterRessourcesByTitre(titre);
         return ResponseEntity.ok(ressources);
     }
@@ -157,12 +155,13 @@ public class ControllerRess {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to rate ressource: " + e.getMessage());
         }
     }
-    @PostMapping("/{id}/rate")
-    public ResponseEntity<Map<String, String>> addRating(@PathVariable Long id, @RequestBody Map<String, Integer> requestBody) {
+
+    @PostMapping("/{userId}/resources/{resourceId}/rate")
+    public ResponseEntity<Map<String, String>> addRating(@PathVariable Long userId, @PathVariable Long resourceId, @RequestBody Map<String, Integer> requestBody) {
         int rating = requestBody.get("rating");
-        ressourceService.addRating(id, rating);
+        ressourceService.addRating(userId, resourceId, rating);
         Map<String, String> response = new HashMap<>();
-        response.put("message", "Rating added successfully to resource with ID: " + id);
+        response.put("message", "Rating added successfully to resource with ID: " + resourceId + " for user with ID: " + userId);
         return ResponseEntity.ok().body(response);
     }
 
@@ -204,7 +203,7 @@ public class ControllerRess {
     }
 
     @PutMapping("/{id}/désarchiver")
-    public ResponseEntity<Map<String, String>>désarchiverRessource(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Map<String, String>> désarchiverRessource(@PathVariable Long id) throws Exception {
         try {
             ressourceService.désarchiverRessource(id);
             Map<String, String> responseBody = new HashMap<>();
@@ -216,17 +215,42 @@ public class ControllerRess {
                     .body(Collections.singletonMap("error", "Une erreur s'est produite lors de le désarchivage de la ressource."));
         }
     }
+
     @GetMapping("/{topicId}/ressources/count")
     public int getResourcesCountByTopicId(@PathVariable Long topicId) {
         return ressourceService.countResourcesByTopicId(topicId);
     }
 
     @GetMapping("/user/{userId}")
-    public List<Ressource> getResourcesByUserId(@PathVariable Integer userId) {
+    public List<Ressource> getResourcesByUserId(@PathVariable Long userId) {
         return ressourceService.getResourcesByUserId(userId);
     }
 
+    @GetMapping("/latestResourceId")
+    public ResponseEntity<Map<String, Long>> getLatestResourceId() {
+        Ressource latestResource = ressourceRepo.findTopByOrderByIdDesc();
 
+        if (latestResource != null) {
+            Long latestResourceId = latestResource.getId();
+            Map<String, Long> response = new HashMap<>();
+            response.put("id", latestResourceId);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/countRessources/{userId}")
+    public String countRessourcesByUserId(@PathVariable Long userId) {
+        int count = ressourceService.countRessourcesByUserId(userId);
+        return "Le nombre de ressources pour l'utilisateur avec l'ID " + userId + " est : " + count;
+    }
+    @GetMapping("/{ressourceId}/versions")
+    public List<VersionRessource> getVersionsByRessource(@PathVariable Long ressourceId) {
+        return ressourceService.getVersionsByRessource(ressourceId);
+    }
 }
+
+
 
 

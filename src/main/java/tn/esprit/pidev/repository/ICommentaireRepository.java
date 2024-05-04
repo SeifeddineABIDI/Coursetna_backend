@@ -7,12 +7,14 @@ import tn.esprit.pidev.entities.Ressource;
 import java.util.List;
 import java.util.Optional;
 
-public interface ICommentaireRepository extends JpaRepository<Commentaire,Long> {
 
 
-    List<Commentaire> findByRessourcesId(Long ressourceId);
+    public interface ICommentaireRepository extends JpaRepository<Commentaire,Long> {
 
-    Optional<Commentaire> findByContenuAndRessources(String contenu, Ressource ressource);
 
-    boolean existsByContenuAndRessourcesContaining(String contenu, Ressource ressource);
-}
+
+        List<Commentaire> findByRessourceId(Long ressourceId);
+
+        Long countByRessourceId(Long id);
+    }
+

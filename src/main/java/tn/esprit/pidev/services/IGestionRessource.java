@@ -4,57 +4,64 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
-import tn.esprit.pidev.entities.Categorie;
-import tn.esprit.pidev.entities.Options;
-import tn.esprit.pidev.entities.Ressource;
-import tn.esprit.pidev.entities.User;
+import tn.esprit.pidev.entities.*;
 
 import java.io.IOException;
 import java.util.List;
 
-public interface IGestionRessource {
 
-    List<Ressource> getAll() throws JsonProcessingException;
-    List<Ressource> getRessourceByCategory(Categorie categorie, Long topicId);
+    public interface IGestionRessource {
 
-    @Transactional
-    Ressource addRessource(MultipartFile file, Ressource ressource, Integer userId, String topicName) throws IOException;
+        List<Ressource> getAll() throws JsonProcessingException;
+        List<Ressource> getRessourceByCategory(Categorie categorie, Long topicId);
 
-    @Transactional
-    Ressource updateRessource(Long ressourceId, Ressource updatedRessource, MultipartFile newFile) throws IOException;
+        @Transactional
+        Ressource addRessource(MultipartFile file, Ressource ressource, Long userId, String topicName) throws IOException;
 
-    List<Ressource> getResourcesForOption(Options option);
+        @Transactional
+        Ressource updateRessource(Long ressourceId, Ressource updatedRessource, MultipartFile newFile) throws IOException;
 
-    List<User> determineUsersToNotify(Ressource ressource);
+        List<Ressource> getResourcesForOption(Options option);
 
-
-    Ressource getById(Long id);
-
-    void  removeRessource(Long id);
+        List<User> determineUsersToNotify(Ressource ressource);
 
 
-    Page<Ressource> getAllWithPagination(int page, int size);
+        Ressource getById(Long id);
+
+        void  removeRessource(Long id);
 
 
-    List<Ressource> searchRessourcesByTitre(String titre);
-
-    List<Ressource> filterRessourcesByTitre(String titre);
-
-    void updateRatingForRessource(Long ressourceId, int newRating);
+        Page<Ressource> getAllWithPagination(int page, int size);
 
 
-    @Transactional
-    void rateRessource(Long id, int newRating);
+        List<Ressource> searchRessourcesByTitre(String titre);
+
+        List<Ressource> filterRessourcesByTitre(String titre);
+
+        void updateRatingForRessource(Long ressourceId, int newRating);
 
 
-    @Transactional
-    void addRating(Long id, int rating);
+        @Transactional
+        void rateRessource(Long id, int newRating);
 
-    void archiverRessource(Long id) throws Exception;
 
-    void désarchiverRessource(Long id) throws Exception;
+        @Transactional
+        void addRating(Long id, int rating);
 
-    int countResourcesByTopicId(Long topicId);
 
-    List<Ressource> getResourcesByUserId(Integer userId);
-}
+        @Transactional
+        void addRating(Long userId, Long ressourceId, int rating);
+
+        void archiverRessource(Long id) throws Exception;
+
+        void désarchiverRessource(Long id) throws Exception;
+
+        int countResourcesByTopicId(Long topicId);
+
+        List<Ressource> getResourcesByUserId(Long userId);
+
+        int countRessourcesByUserId(Long userId);
+
+
+        List<VersionRessource> getVersionsByRessource(Long ressourceId);
+    }

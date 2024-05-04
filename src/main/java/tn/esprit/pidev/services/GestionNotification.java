@@ -44,12 +44,10 @@ public class GestionNotification implements IGestionNotif {
         notificationRepository.save(notification);
         System.out.println("Notification sauvegardée : " + notification.getMessage());
         switch (notification.getType()) {
-            case NOUVELLE_RESSOURCE:
-                break;
+
             case COMMENTAIRE:
                 break;
-            case NOUVELLE_VERSION:
-                break;
+
             default:
                 break;
         }

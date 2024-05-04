@@ -2,10 +2,10 @@ package tn.esprit.pidev.services.googledrive;
 
 import com.google.api.services.drive.model.File;
 import com.google.common.io.ByteStreams;
-import tn.esprit.pidev.dtos.GoogleDriveFolderDTO;
-import tn.esprit.pidev.utils.PermissionDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tn.esprit.pidev.dtos.GoogleDriveFolderDTO;
+import tn.esprit.pidev.utils.PermissionDetails;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

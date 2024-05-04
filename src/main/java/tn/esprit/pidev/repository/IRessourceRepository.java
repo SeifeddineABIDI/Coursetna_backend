@@ -2,12 +2,11 @@ package tn.esprit.pidev.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import tn.esprit.pidev.entities.Categorie;
-import tn.esprit.pidev.entities.Options;
-import tn.esprit.pidev.entities.Ressource;
-import tn.esprit.pidev.entities.Topic;
+import tn.esprit.pidev.entities.*;
 
+import java.util.Date;
 import java.util.List;
 @Repository
 public interface IRessourceRepository extends JpaRepository<Ressource,Long> {
@@ -21,8 +20,21 @@ public interface IRessourceRepository extends JpaRepository<Ressource,Long> {
 
     List<Ressource> findByTopicId(Long topicId);
 
-    List<Ressource> findByAuteurId(Integer userId);
+    List<Ressource> findByAuteurId(Long userId);
 
     List<Ressource> getRessourceByCategorieAndTopicId(Categorie categorie, Long topicId);
+
+    Ressource findTopByOrderByIdDesc();
+
+    int countByAuteurId(Long userId);
+    @Query("SELECT COUNT(r) FROM Ressource r WHERE r.dateTlg BETWEEN :startOfWeek AND :endOfWeek")
+    Long countRessourcesAddedByWeek(@Param("startOfWeek") Date startOfWeek, @Param("endOfWeek") Date endOfWeek);
+
+
+    @Query("SELECT r.options, COUNT(r) FROM Ressource r GROUP BY r.options")
+    List<Object[]> countRessourcesByOption();
+
+
+
 
 }
