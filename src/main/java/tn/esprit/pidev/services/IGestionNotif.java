@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IGestionNotif {
 
-     Notification add(Notification notification);
+    Notification add(Notification notification);
 
     List<Notification> récupérerNotificationsUtilisateur(User utilisateur);
 

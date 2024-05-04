@@ -48,6 +48,9 @@ public class User implements UserDetails {
     /*************ressource*********************/
     @JsonIgnore
     @OneToMany(mappedBy = "auteur")
+    private List<Commentaire> commentaires;
+    @JsonIgnore
+    @OneToMany(mappedBy = "auteur")
     private List<Ressource> ressourcesPubliees;
     @JsonIgnore
     @OneToMany(mappedBy = "destinataire")

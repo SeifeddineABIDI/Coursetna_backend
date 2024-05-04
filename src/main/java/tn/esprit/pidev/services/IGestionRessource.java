@@ -4,13 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
-import tn.esprit.pidev.entities.Categorie;
-import tn.esprit.pidev.entities.Options;
-import tn.esprit.pidev.entities.Ressource;
-import tn.esprit.pidev.entities.User;
+import tn.esprit.pidev.entities.*;
 
 import java.io.IOException;
 import java.util.List;
+
 
 public interface IGestionRessource {
 
@@ -18,7 +16,7 @@ public interface IGestionRessource {
     List<Ressource> getRessourceByCategory(Categorie categorie, Long topicId);
 
     @Transactional
-    Ressource addRessource(MultipartFile file, Ressource ressource, Integer userId, String topicName) throws IOException;
+    Ressource addRessource(MultipartFile file, Ressource ressource, Long userId, String topicName) throws IOException;
 
     @Transactional
     Ressource updateRessource(Long ressourceId, Ressource updatedRessource, MultipartFile newFile) throws IOException;
@@ -50,11 +48,20 @@ public interface IGestionRessource {
     @Transactional
     void addRating(Long id, int rating);
 
+
+    @Transactional
+    void addRating(Long userId, Long ressourceId, int rating);
+
     void archiverRessource(Long id) throws Exception;
 
     void désarchiverRessource(Long id) throws Exception;
 
     int countResourcesByTopicId(Long topicId);
 
-    List<Ressource> getResourcesByUserId(Integer userId);
+    List<Ressource> getResourcesByUserId(Long userId);
+
+    int countRessourcesByUserId(Long userId);
+
+
+    List<VersionRessource> getVersionsByRessource(Long ressourceId);
 }

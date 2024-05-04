@@ -21,13 +21,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class GestionRessourceImpl implements IGestionRessource {
-
     @Autowired
     IRessourceRepository ressourceRepo;
     @Autowired
@@ -58,9 +58,9 @@ public class GestionRessourceImpl implements IGestionRessource {
 
     @Override
     @Transactional
-    public Ressource addRessource(MultipartFile file, Ressource ressource, Integer userId, String topicName) throws IOException {
+    public Ressource addRessource(MultipartFile file, Ressource ressource, Long userId, String topicName) throws IOException {
         try {
-            Optional<User> optionalUser = userRepository.findById(userId);
+            Optional<User> optionalUser = userRepository.findById(Math.toIntExact(userId));
             if (!optionalUser.isPresent()) {
                 throw new RuntimeException("L'utilisateur avec l'ID spécifié n'existe pas.");
             }
@@ -84,7 +84,7 @@ public class GestionRessourceImpl implements IGestionRessource {
             ressource.setRating(0);
             ressource.setArchived(false);
             Ressource nouvelleRessource = ressourceRepo.save(ressource);
-            sendNotifications(nouvelleRessource, currentDate);
+//            sendNotifications(nouvelleRessource, currentDate);
             return nouvelleRessource;
         } catch (IOException e) {
             throw new RuntimeException("Erreur lors de l'ajout de la ressource", e);
@@ -125,20 +125,20 @@ public class GestionRessourceImpl implements IGestionRessource {
         return ressourceRepo.findByOptions(option);
     }
 
-    private void sendNotifications(Ressource ressource, Date currentDate) {
-
-        List<User> utilisateurs = userRepository.findAll();
-        for (User recipient : utilisateurs) {
-            Notification notification = new Notification();
-            notification.setDestinataire(recipient);
-            notification.setMessage("Une nouvelle ressource a été ajouté à la ressource '" + ressource.getTitre());
-            notification.setDateEnvoi(new Date());
-            notification.setEstLue(false);
-            notification.setRessource(ressource);
-            notification.setType(TypeNotif.NOUVELLE_RESSOURCE);
-            notifservice.envoyerNotification(notification);
-        }
-    }
+//    private void sendNotifications(Ressource ressource, Date currentDate) {
+//
+//        List<User> utilisateurs = userRepository.findAll();
+//        for (User recipient : utilisateurs) {
+//            Notification notification = new Notification();
+//            notification.setDestinataire(recipient);
+//            notification.setMessage("Une nouvelle ressource a été ajouté à la ressource '" + ressource.getTitre());
+//            notification.setDateEnvoi(new Date());
+//            notification.setEstLue(false);
+//            notification.setRessource(ressource);
+//            notification.setType(TypeNotif.NOUVELLE_RESSOURCE);
+//            notifservice.envoyerNotification(notification);
+//        }
+//    }
 
 
     @Override
@@ -230,6 +230,22 @@ public class GestionRessourceImpl implements IGestionRessource {
             throw new RuntimeException("Ressource non trouvée avec l'ID spécifié");
         }
     }
+    @Override
+    @Transactional
+    public void addRating(Long userId, Long ressourceId, int rating) {
+        Optional<Ressource> optionalRessource = ressourceRepo.findById(ressourceId);
+        if (optionalRessource.isPresent()) {
+            Ressource ressource = optionalRessource.get();
+            ressource.setRating(rating);
+            User user = userRepository.findById(Math.toIntExact(userId)).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec l'ID spécifié"));
+            ressource.setAuteur(user);
+            ressourceRepo.save(ressource);
+        } else {
+            throw new RuntimeException("Ressource non trouvée avec l'ID spécifié");
+        }
+    }
+
+
     public List<Ressource> getRessourcesByTopicName(Topic topic) {
         return ressourceRepo.findByTopic(topic);
     }
@@ -261,12 +277,24 @@ public class GestionRessourceImpl implements IGestionRessource {
         return resources.size();
     }
     @Override
-    public List<Ressource> getResourcesByUserId(Integer userId) {
+    public List<Ressource> getResourcesByUserId(Long userId) {
         return ressourceRepo.findByAuteurId(userId);
     }
-
+    @Override
+    public int countRessourcesByUserId(Long userId) {
+        return ressourceRepo.countByAuteurId(userId);
+    }
+    @Override
+    public List<VersionRessource> getVersionsByRessource(Long ressourceId) {
+        Optional<Ressource> ressourceOptional = ressourceRepo.findById(ressourceId);
+        if (ressourceOptional.isPresent()) {
+            Ressource ressource = ressourceOptional.get();
+            return ressource.getVersions();
+        } else {
+            return Collections.emptyList();
+        }
+    }
 }
-
 
 
 

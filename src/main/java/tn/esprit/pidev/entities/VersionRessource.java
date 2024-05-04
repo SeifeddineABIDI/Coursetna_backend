@@ -1,5 +1,6 @@
 package tn.esprit.pidev.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,11 +25,11 @@ public class VersionRessource implements Serializable {
 
         private String cheminFichier;
 
-        private String contenu;
-
+        @JsonIgnore
         @ManyToOne
         @JoinColumn(name = "ressource_id")
         private Ressource ressource;
+
 
 }
 
