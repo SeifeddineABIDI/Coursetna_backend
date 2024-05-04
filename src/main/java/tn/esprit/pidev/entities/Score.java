@@ -1,0 +1,30 @@
+package tn.esprit.pidev.entities;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import tn.esprit.pidev.entities.User;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+public class Score implements Serializable {
+    @Id
+    @GeneratedValue
+    private Long numScore;
+    private double score;
+    private LocalDateTime dateTime;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "quiz_id")
+    private Quiz quiz;
+
+}

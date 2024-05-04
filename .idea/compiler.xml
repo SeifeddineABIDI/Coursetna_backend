@@ -9,11 +9,13 @@
         <outputRelativeToContentRoot value="true" />
         <module name="pidev-backend" />
         <module name="pidev_cloud_backend" />
+        <module name="pidev" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="pidev" options="-parameters" />
       <module name="pidev-backend" options="-parameters" />
       <module name="pidev_cloud_backend" options="-parameters" />
     </option>
