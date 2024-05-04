@@ -1,7 +1,0 @@
-tn\esprit\pidev\services\IGestionUser.class
-tn\esprit\pidev\services\GestionUserImpl.class
-tn\esprit\pidev\entities\User.class
-tn\esprit\pidev\PidevApplication.class
-tn\esprit\pidev\controller\controller.class
-tn\esprit\pidev\repository\IUserRepository.class
-tn\esprit\pidev\entities\TypeUser.class
