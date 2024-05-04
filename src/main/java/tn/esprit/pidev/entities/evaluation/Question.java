@@ -28,4 +28,9 @@ public class Question implements Serializable {
     @JsonIgnore
     private Quiz quiz;
 
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)//slave
+    @JsonIgnore
+    private List<Answer> answers;
+
+
 }

@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface IQuizRepository extends JpaRepository<Quiz,Long> {
-    List<Quiz> findByListQuestionNotNull();
+    List<Quiz> findAllByListQuestionNotNullAndStatus(boolean status);
+
 }
