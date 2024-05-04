@@ -58,7 +58,7 @@ public class GestionQuizImpl implements IGestionQuiz{
     }
 /**************************************************/
     @Transactional
-    @Scheduled(cron="*/60 * * * * *")
+    @Scheduled(cron="*/10 * * * * *")
     @Override
     public void removeQuizWithNoQuestion(){
       List<Quiz>listQuiz=quizRepo.findAll();
