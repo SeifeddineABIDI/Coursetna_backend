@@ -46,4 +46,10 @@ public class QuizController {
         return IgQuiz.getdureeByQuiz(numQuiz);
     }
 
+    @PutMapping("/activateQuiz/{id}")
+    void activateQuiz(@PathVariable("id") Long numQuiz){
+        IgQuiz.updateQuizStatusToTrue(numQuiz);
     }
+
+    }
+

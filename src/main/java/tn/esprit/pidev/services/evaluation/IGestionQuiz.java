@@ -17,6 +17,7 @@ public interface IGestionQuiz {
     void removeQuizWithNoQuestion();
     List<Quiz> getQuizNotEmpty();
     int getdureeByQuiz(Long numQuiz);
+    void updateQuizStatusToTrue(Long quizId);
 
 
 
