@@ -1,35 +1,3 @@
-<<<<<<< HEAD
-# 🚀 Awesome Spring Boot Application
-
-![Spring Boot Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Spring_Framework_Logo_2018.svg/2560px-Spring_Framework_Logo_2018.svg.png)
-
-Welcome to our exciting and innovative Spring Boot application! This repository hosts a remarkable project that showcases [brief description of what the app does]. Let's dive in and explore the magic of Spring Boot together!
-=======
-<div align="center">
-  <img src="https://cdn-icons-png.flaticon.com/512/10270/10270032.png" alt="User Management Logo" width="200">
-  <h1 style="color: blue;">User Management Task</h1>
-  <h3>A simple and efficient user management system built with Spring Boot 3</h3>
-</div>
-
----
->>>>>>> 96ae483441bbff19ddd2857bf8231672c335ee66
-
-## 🌟 Features
-
-<<<<<<< HEAD
-- **Dynamic**: Our application brings dynamic functionality to life, ensuring a captivating user experience.
-- **Scalable**: With Spring Boot's scalability, our application can grow with your needs, handling increasing demands effortlessly.
-- **Intuitive**: Designed with user experience in mind, our application offers an intuitive interface that users will love.
-=======
-- [Introduction](#introduction)
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-
----
-
 ## Introduction
 
 Welcome to the User Management Application! This project aims to provide a robust and user-friendly system for managing users, built using the powerful Spring Boot 3 framework. Whether you're a developer looking to understand Spring Boot better or a project manager seeking a ready-made solution for user management, this application has got you covered.
