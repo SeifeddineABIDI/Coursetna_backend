@@ -11,5 +11,6 @@ public interface IGestionScore {
 
     Score calculateScore(Long numQuiz, Integer numUser);
     Score retrieveScoreByUserAndQuiz(Integer numUser,Long numQuiz);
-
+//////////////////////
+    double getAverageScore();
 }

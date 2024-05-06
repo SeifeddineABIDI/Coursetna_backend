@@ -3,17 +3,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import tn.esprit.pidev.entities.evaluation.Score;
 import tn.esprit.pidev.token.Token;
-
-
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 @Entity
@@ -39,6 +36,30 @@ public class User implements UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
+
+    /********evaluation*******************/
+    /*@OneToMany(mappedBy="user")
+    @JsonIgnore
+    private List<Answer> listAnswer;*/
+
+    @OneToMany(mappedBy="user")
+    @JsonIgnore
+    private List<Score> listScore;
+    /*************ressource*********************/
+    @JsonIgnore
+    @OneToMany(mappedBy = "auteur")
+    private List<Commentaire> commentaires;
+    @JsonIgnore
+    @OneToMany(mappedBy = "auteur")
+    private List<Ressource> ressourcesPubliees;
+    @JsonIgnore
+    @OneToMany(mappedBy = "destinataire")
+    private List<Notification> notifications;
+    /*************reclamation*********************/
+    @JsonIgnore
+    @OneToMany(mappedBy = "user") // user 1 ------ * reclamtion
+    private List<Reclamtion> reclamtionList;
+    /******************************************/
 
     public void setPassword(String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

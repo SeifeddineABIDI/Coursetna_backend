@@ -15,5 +15,9 @@ public interface IGestionAnswer {
     Answer addReponseAndAssignToQuestionAndUser(Answer reponse,Long numQuestion,Integer numUser);
     List<Answer> getAllByUser (Integer numUser);
     List<Answer> getAnswersByUserAndQuiz (Integer numUser,Long numQuiz);
+//////////////////////////////////////////////////////
+    int getTotalCorrectAnswersForQuestion(Long question);
+    int getTotalAnswersForQuestion(Long numquestion);
 
+    double getPercentageCorrectAnswers();
 }

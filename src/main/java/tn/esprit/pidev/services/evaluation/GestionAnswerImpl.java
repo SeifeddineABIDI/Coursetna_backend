@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.esprit.pidev.entities.evaluation.Answer;
 import tn.esprit.pidev.entities.evaluation.Question;
-import tn.esprit.pidev.entities.user.User;
+import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.evaluation.IAnswerRepository;
 import tn.esprit.pidev.repository.evaluation.IQuestionRepository;
-import tn.esprit.pidev.repository.user.IUserRepository;
+import tn.esprit.pidev.repository.IUserRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @Service
@@ -56,5 +58,44 @@ public class GestionAnswerImpl implements IGestionAnswer {
     public List<Answer> getAnswersByUserAndQuiz (Integer numUser,Long numQuiz){
         return reponseRepo.getAllAnswerByUserAndQuiz(numUser,numQuiz);
     }
+    /***************stat*********************************/
+    public int getTotalCorrectAnswersForQuestion(Long numquestion) {
+        List<Answer> answers = reponseRepo.findByQuestionn(numquestion);
+        Question question=questionRepo.findById(numquestion).get();
+
+        int totalCorrectAnswers = 0;
+        for (Answer answer : answers) {
+            if (answer.getSelectedChoice().equals(question.getCorrectAnswer())) {
+                totalCorrectAnswers++;
+            }
+        }
+        return totalCorrectAnswers;
+    }
+    public int getTotalAnswersForQuestion(Long numquestion) {
+        List<Answer> answers = reponseRepo.findByQuestionn(numquestion);
+        return answers.size();
+    }
+    public int getTotalUsersAnsweredQuiz(Long numquiz) {
+        List<Answer> answers = reponseRepo.findByQuizz(numquiz);
+        Set<User> users = new HashSet<>();
+        for (Answer answer : answers) {
+            users.add(answer.getUser());
+        }
+        return users.size();
+    }
+
+    public double getPercentageCorrectAnswers() {
+        List<Answer> answers = reponseRepo.findAll();
+        if (answers.isEmpty()) {
+            return 0.0;
+        }
+        long correctAnswers = answers.stream().filter(this::isCorrect).count();
+        return (double) correctAnswers / answers.size() * 100.0;
+    }
+
+    private boolean isCorrect(Answer answer) {
+        return answer.getSelectedChoice() != null && answer.getSelectedChoice().equals(answer.getQuestion().getCorrectAnswer());
+    }
+
 
 }

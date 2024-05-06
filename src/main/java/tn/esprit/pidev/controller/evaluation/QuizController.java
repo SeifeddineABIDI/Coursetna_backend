@@ -35,5 +35,21 @@ public class QuizController {
 
     @PostMapping("/addQuizAndAssignToTopic/{numTopic}")
     public Quiz addQuizAndAssignToTopic(@RequestBody Quiz quiz,@PathVariable("numTopic") Long numTopic) { return IgQuiz.addQuizAndAssignToTopic(quiz, numTopic); }
+    /******************************/
+    @GetMapping("/getQuizNotEmpty")
+    public List<Quiz> getQuizNotEmpty(){
+        return IgQuiz.getQuizNotEmpty();
+    }
 
-}
+    @GetMapping("/getdureeByQuiz/{id}")
+    public int getdureeByQuiz(@PathVariable("id") Long numQuiz) {
+        return IgQuiz.getdureeByQuiz(numQuiz);
+    }
+
+    @PutMapping("/activateQuiz/{id}")
+    void activateQuiz(@PathVariable("id") Long numQuiz){
+        IgQuiz.updateQuizStatusToTrue(numQuiz);
+    }
+
+    }
+

@@ -24,9 +24,9 @@ public class QuestionController {
         return IgQuestion.retrieveQuestion(numQuestion);
     }
 
-    @PutMapping("/updateQuestion")
-    public Question updateQuestion(@RequestBody Question question) {
-        return IgQuestion.updateQuestion(question);
+    @PutMapping("/updateQuestion/{id}")
+    public Question updateQuestion(@RequestBody Question question,@PathVariable("id") Long numQuiz) {
+        return IgQuestion.updateQuestion(question,numQuiz);
     }
 
     @DeleteMapping("/removeQuestion/{id}")

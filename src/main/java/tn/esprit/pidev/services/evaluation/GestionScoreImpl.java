@@ -2,17 +2,16 @@ package tn.esprit.pidev.services.evaluation;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import tn.esprit.pidev.entities.*;
 import tn.esprit.pidev.entities.evaluation.Answer;
 import tn.esprit.pidev.entities.evaluation.Question;
 import tn.esprit.pidev.entities.evaluation.Quiz;
 import tn.esprit.pidev.entities.evaluation.Score;
-import tn.esprit.pidev.entities.user.User;
+import tn.esprit.pidev.repository.*;
 import tn.esprit.pidev.repository.evaluation.IAnswerRepository;
 import tn.esprit.pidev.repository.evaluation.IQuestionRepository;
 import tn.esprit.pidev.repository.evaluation.IQuizRepository;
 import tn.esprit.pidev.repository.evaluation.IScoreRepository;
-import tn.esprit.pidev.repository.user.IUserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,18 +42,21 @@ public class GestionScoreImpl implements IGestionScore{
 
         List<Question>questions=quiz.getListQuestion();
         int totalQuestions = questions.size();
-        int pts = 0;
+        int totalpts =0;
+        double pts = 0;
 
         for (int i = 0; i < totalQuestions; i++) {
             Question question = questions.get(i);
             Answer answer = reponseRepo.getAnswerByUserAndQuestion(user.getId(), question.getNumQuestion());
+            totalpts=totalpts+question.getPoints();
 
             if (answer.getSelectedChoice().equals(question.getCorrectAnswer()))
                 pts = pts + question.getPoints();
         }
+        double s=pts/totalpts*100;
 
         Score score=new Score();
-        score.setScore(pts);
+        score.setScore(s);
         score.setDateTime(LocalDateTime.now());
         score.setUser(user);
         score.setQuiz(quiz);
@@ -68,5 +70,13 @@ public class GestionScoreImpl implements IGestionScore{
         return scoreRepo.getScoreByUserAndQuiz(numUser,numQuiz);
     }
 
-
+////////Stat//////////////////////
+public double getAverageScore() {
+    List<Score> scores = scoreRepo.findAll();
+    if (scores.isEmpty()) {
+        return 0.0;
+    }
+    double totalScore = scores.stream().mapToDouble(Score::getScore).sum();
+    return totalScore / scores.size();
+}
 }

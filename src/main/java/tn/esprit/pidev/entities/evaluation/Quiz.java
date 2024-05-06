@@ -20,13 +20,12 @@ public class Quiz implements Serializable {
     private String title;
     private String description;
     private int duree;
+    private boolean status=false;
 
     @OneToMany(mappedBy = "quiz",cascade = CascadeType.ALL)
     private List<Question> listQuestion;
 
-    @OneToMany(mappedBy = "quiz")
+    @OneToMany(mappedBy = "quiz",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Score> listScore;
-
-
 }

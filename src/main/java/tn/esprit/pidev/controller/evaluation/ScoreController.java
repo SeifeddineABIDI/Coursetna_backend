@@ -30,10 +30,14 @@ public class ScoreController {
         return IgScore.retrieveScoreByUserAndQuiz(numUser,numQuiz);
     }
 
-    @PostMapping("/addScore/{numQuiz}/{numUser}")
+    @GetMapping("/addScore/{numQuiz}/{numUser}")
     public Score addScore(@PathVariable("numQuiz")Long numQuiz,@PathVariable("numUser")Integer numUser){
         return IgScore.calculateScore(numQuiz,numUser);
     }
-
+////stat
+    @GetMapping("/Average")
+    public double getAverageScore() {
+        return IgScore.getAverageScore();
+    }
 
 }
