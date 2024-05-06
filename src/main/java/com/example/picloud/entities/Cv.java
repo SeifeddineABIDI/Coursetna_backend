@@ -16,18 +16,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Forum {
+public class Cv {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String cheminFichier;
 
-    private String fullName;
-    private String emailAddress;
-    private String phoneNumber;
-    private String address;
-    private String coverLetter; // Cover letter text
-    private String resumeCV; // Path to the uploaded resume/CV file
-
-    // Ajoutez les constructeurs, getters et setters
 }
