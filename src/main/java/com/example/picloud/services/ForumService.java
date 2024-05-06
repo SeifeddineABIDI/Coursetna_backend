@@ -1,7 +1,6 @@
-package tn.esprit.pidev.services;
+package com.example.picloud.services;
 
-
-import tn.esprit.pidev.entities.Forum;
+import com.example.picloud.entities.Forum;
 
 public interface ForumService {
 

@@ -1,13 +1,12 @@
-package tn.esprit.pidev.controllers;
+package com.example.picloud.controllers;
 
 
+import com.example.picloud.entities.Stage;
+import com.example.picloud.services.StageService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.pidev.entities.Stage;
-import tn.esprit.pidev.services.StageService;
 
 import java.util.List;
 
@@ -34,22 +33,30 @@ public class StageController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<Void> addStage(@RequestBody Stage stage) {
         serviceStage.addStage(stage);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<Void> updateStage(@PathVariable("id") int id, @RequestBody Stage stage) {
         serviceStage.updateStage(id, stage);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteStage(@PathVariable("id") int id) {
         serviceStage.deleteStage(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    @GetMapping("/Titre/{title}")
+    public ResponseEntity<List<Stage>> filterRessourcesByTitre(@PathVariable("title")String title) {
+        List<Stage> stages = serviceStage.searchStageByTitre(title);
+        return ResponseEntity.ok(stages);
+    }
+
+
+
 
 }

@@ -1,4 +1,6 @@
-package tn.esprit.pidev.entities;
+package com.example.picloud.entities;
+
+
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,7 +21,7 @@ public class User implements Serializable {
     private String prenom;
     private String email;
     private String password;
-    @Enumerated(EnumType.STRING)
-    private TypeUser role;
-    private String photo;
+   // @Enumerated(EnumType.STRING)
+   // private TypeUser role;
+   // private String photo;
 }

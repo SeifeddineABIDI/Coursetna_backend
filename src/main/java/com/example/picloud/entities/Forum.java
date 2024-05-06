@@ -1,4 +1,4 @@
-package tn.esprit.pidev.entities;
+package com.example.picloud.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
