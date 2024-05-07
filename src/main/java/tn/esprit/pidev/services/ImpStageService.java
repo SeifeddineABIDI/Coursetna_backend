@@ -1,17 +1,19 @@
 package tn.esprit.pidev.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import tn.esprit.pidev.entities.Stage;
 import tn.esprit.pidev.repository.StageReposetory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class ImpStageService implements StageService {
 
     @Autowired
-    StageReposetory stageRepository;
+     StageReposetory stageRepository;
+
 
 
 
@@ -28,6 +30,11 @@ public class ImpStageService implements StageService {
     @Override
     public void addStage(Stage stage) {
         stageRepository.save(stage);
+
+        Date currentDate = new Date();
+        stage.setPublicationDate(currentDate);
+
+
     }
 
     @Override
@@ -38,6 +45,12 @@ public class ImpStageService implements StageService {
             stageRepository.save(stage);
         }
     }
+
+    @Override
+    public List<Stage> searchStageByTitre(String title) {
+        return stageRepository.findByTitleContaining(title);
+    }
+
 
     @Override
     public void deleteStage(int id) {

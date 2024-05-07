@@ -1,6 +1,5 @@
 package tn.esprit.pidev.services;
 
-
 import tn.esprit.pidev.entities.Stage;
 
 import java.util.List;
@@ -10,6 +9,10 @@ public interface StageService {
     Stage getStageById(int id);
     void addStage(Stage stage);
     void updateStage(int id, Stage stage);
+
+
+    List<Stage> searchStageByTitre(String title);
+
     void deleteStage(int id);
 
 }
