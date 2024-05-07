@@ -11,9 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.entities.*;
+import tn.esprit.pidev.entities.*;
 import tn.esprit.pidev.repository.IRessourceRepository;
 import tn.esprit.pidev.repository.IUserRepository;
 import tn.esprit.pidev.repository.ItopicRepository;
+import tn.esprit.pidev.repository.IRessourceRepository;
+import tn.esprit.pidev.repository.ItopicRepository;
+import tn.esprit.pidev.services.IGestionRessource;
 import tn.esprit.pidev.services.IGestionRessource;
 
 import java.io.IOException;
@@ -57,26 +61,24 @@ public class ControllerRess {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
-
     @GetMapping("/getall")
     public List<Ressource> getAllRessource() throws JsonProcessingException {
-        return ressourceService.getAll();
+        return  ressourceService.getAll();
     }
 
     @PostMapping("/upload")
     public Ressource uploadFile(@RequestParam("file") MultipartFile file,
-                                @RequestParam("titre") String titre,
                                 @RequestParam("description") String description,
                                 @RequestParam("categorie") String categorie,
                                 @RequestParam("userId") Long userId,
                                 @RequestParam("topicName") String topicName,
-                                @RequestParam("options") String options) throws IOException {
+                                @RequestParam("options")String options) throws IOException {
         Ressource ressource = new Ressource();
-        ressource.setTitre(titre);
+        ressource.setTitre(file.getOriginalFilename());
         ressource.setDescription(description);
         ressource.setCategorie(Categorie.valueOf(categorie));
         ressource.setOptions(Options.valueOf(options));
-        return ressourceService.addRessource(file, ressource, userId, topicName);
+        return ressourceService.addRessource(file, ressource, userId,topicName);
     }
 
     @GetMapping("/{option}")
@@ -86,8 +88,8 @@ public class ControllerRess {
     }
 
     @GetMapping("/byCategorie/{categorie}/{topicId}")
-    public ResponseEntity<List<Ressource>> getResourcesByCategorie(@PathVariable Categorie categorie, @PathVariable Long topicId) {
-        List<Ressource> resources = ressourceService.getRessourceByCategory(categorie, topicId);
+    public ResponseEntity<List<Ressource>> getResourcesByCategorie(@PathVariable Categorie categorie,@PathVariable Long topicId) {
+        List<Ressource> resources = ressourceService.getRessourceByCategory(categorie,topicId);
         return ResponseEntity.ok(resources);
     }
 
@@ -120,17 +122,15 @@ public class ControllerRess {
             }
         }
     }
-
-//
-//    @GetMapping
-//    public ResponseEntity<Page<Ressource>> getAllRessourcesWithPagination(@RequestParam(defaultValue = "0") int page,
-//                                                                          @RequestParam(defaultValue = "10") int size) {
-//        Page<Ressource> ressources = ressourceService.getAllWithPagination(page, size);
-//        return ResponseEntity.ok(ressources);
-//    }
+    @GetMapping("/fltr/{category}/{topicId}")
+    public List<Ressource> getRessourcesByCategoryAndTopicId(
+            @PathVariable("category") Categorie category,
+            @PathVariable("topicId") Long topicId) {
+        return ressourceService.getRessourcesByCategoryAndTopicId(category, topicId);
+    }
 
     @GetMapping("/filterByTitre/{titre}")
-    public ResponseEntity<List<Ressource>> filterRessourcesByTitre(@PathVariable("titre") String titre) {
+    public ResponseEntity<List<Ressource>> filterRessourcesByTitre(@PathVariable("titre")String titre) {
         List<Ressource> ressources = ressourceService.filterRessourcesByTitre(titre);
         return ResponseEntity.ok(ressources);
     }
@@ -155,7 +155,6 @@ public class ControllerRess {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to rate ressource: " + e.getMessage());
         }
     }
-
     @PostMapping("/{userId}/resources/{resourceId}/rate")
     public ResponseEntity<Map<String, String>> addRating(@PathVariable Long userId, @PathVariable Long resourceId, @RequestBody Map<String, Integer> requestBody) {
         int rating = requestBody.get("rating");
@@ -203,7 +202,7 @@ public class ControllerRess {
     }
 
     @PutMapping("/{id}/désarchiver")
-    public ResponseEntity<Map<String, String>> désarchiverRessource(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Map<String, String>>désarchiverRessource(@PathVariable Long id) throws Exception {
         try {
             ressourceService.désarchiverRessource(id);
             Map<String, String> responseBody = new HashMap<>();
@@ -215,7 +214,6 @@ public class ControllerRess {
                     .body(Collections.singletonMap("error", "Une erreur s'est produite lors de le désarchivage de la ressource."));
         }
     }
-
     @GetMapping("/{topicId}/ressources/count")
     public int getResourcesCountByTopicId(@PathVariable Long topicId) {
         return ressourceService.countResourcesByTopicId(topicId);
@@ -225,7 +223,6 @@ public class ControllerRess {
     public List<Ressource> getResourcesByUserId(@PathVariable Long userId) {
         return ressourceService.getResourcesByUserId(userId);
     }
-
     @GetMapping("/latestResourceId")
     public ResponseEntity<Map<String, Long>> getLatestResourceId() {
         Ressource latestResource = ressourceRepo.findTopByOrderByIdDesc();
@@ -239,7 +236,6 @@ public class ControllerRess {
             return ResponseEntity.notFound().build();
         }
     }
-
     @GetMapping("/countRessources/{userId}")
     public String countRessourcesByUserId(@PathVariable Long userId) {
         int count = ressourceService.countRessourcesByUserId(userId);
@@ -249,8 +245,10 @@ public class ControllerRess {
     public List<VersionRessource> getVersionsByRessource(@PathVariable Long ressourceId) {
         return ressourceService.getVersionsByRessource(ressourceId);
     }
+
+
+
+
+
+
 }
-
-
-
-

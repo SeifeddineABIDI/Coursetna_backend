@@ -11,10 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.entities.*;
-import tn.esprit.pidev.repository.INotificationRepository;
-import tn.esprit.pidev.repository.IRessourceRepository;
-import tn.esprit.pidev.repository.IUserRepository;
-import tn.esprit.pidev.repository.ItopicRepository;
+import tn.esprit.pidev.repository.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +35,9 @@ public class GestionRessourceImpl implements IGestionRessource {
     ItopicRepository topicRepository;
     @Autowired
     INotificationRepository notificationRepository;
+    @Autowired
+    IVersionRessRepository versionRessRepository;
+
 
     @Autowired
     IGestionUser userService;
@@ -284,6 +284,18 @@ public class GestionRessourceImpl implements IGestionRessource {
     public int countRessourcesByUserId(Long userId) {
         return ressourceRepo.countByAuteurId(userId);
     }
+    //    @Override
+//    public List<VersionRessource> getVersionsByRessource(Optional<Ressource> ressource) {
+//        // Utilisez la méthode du repository pour récupérer les versions par ressource
+//        return ressourceRepo.findVersionsByRessource(ressource);
+//    }
+//    public Optional<Ressource> getRessourceById(Long ressourceId) {
+//        return ressourceRepo.findById(ressourceId);
+//    }
+    @Override
+    public List<VersionRessource> getAllRessourcesWithVersions() {
+        return versionRessRepository.findAll();
+    }
     @Override
     public List<VersionRessource> getVersionsByRessource(Long ressourceId) {
         Optional<Ressource> ressourceOptional = ressourceRepo.findById(ressourceId);
@@ -294,14 +306,8 @@ public class GestionRessourceImpl implements IGestionRessource {
             return Collections.emptyList();
         }
     }
+    @Override
+    public List<Ressource> getRessourcesByCategoryAndTopicId(Categorie category, Long topicId) {
+        return ressourceRepo.getRessourceByCategorieAndTopicId(category, topicId);
+    }
 }
-
-
-
-
-
-
-
-
-
-

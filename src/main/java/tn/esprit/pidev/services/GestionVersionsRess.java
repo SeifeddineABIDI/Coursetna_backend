@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.pidev.entities.Ressource;
 import tn.esprit.pidev.entities.VersionRessource;
+import tn.esprit.pidev.entities.Ressource;
+import tn.esprit.pidev.entities.VersionRessource;
+import tn.esprit.pidev.repository.IRessourceRepository;
+import tn.esprit.pidev.repository.IVersionRessRepository;
 import tn.esprit.pidev.repository.IRessourceRepository;
 import tn.esprit.pidev.repository.IVersionRessRepository;
 

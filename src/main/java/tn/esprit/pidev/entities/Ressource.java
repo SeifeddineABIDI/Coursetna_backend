@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import tn.esprit.pidev.entities.*;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 
 @Entity
 @Getter

@@ -63,5 +63,11 @@ public interface IGestionRessource {
     int countRessourcesByUserId(Long userId);
 
 
+    List<VersionRessource> getAllRessourcesWithVersions();
+
     List<VersionRessource> getVersionsByRessource(Long ressourceId);
+
+
+
+    List<Ressource> getRessourcesByCategoryAndTopicId(Categorie category, Long topicId);
 }

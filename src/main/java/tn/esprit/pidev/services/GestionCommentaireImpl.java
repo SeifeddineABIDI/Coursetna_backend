@@ -6,6 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import tn.esprit.pidev.entities.*;
+import tn.esprit.pidev.entities.Commentaire;
+import tn.esprit.pidev.entities.Notification;
+import tn.esprit.pidev.entities.Ressource;
+import tn.esprit.pidev.entities.TypeNotif;
 import tn.esprit.pidev.repository.ICommentaireRepository;
 import tn.esprit.pidev.repository.IRessourceRepository;
 import tn.esprit.pidev.repository.IUserRepository;
@@ -14,6 +18,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import tn.esprit.pidev.repository.ICommentaireRepository;
+import tn.esprit.pidev.repository.IRessourceRepository;
+import tn.esprit.pidev.services.GestionNotification;
 
 
 import java.io.IOException;
@@ -56,22 +63,17 @@ public class GestionCommentaireImpl implements IGestionCom {
         comm.setLikes(0);
         comm.setDislikes(0);
         comm.setEmotion(null);
-        if (ressource != null) {
-            List<User> utilisateurs = userRepository.findAll();
-            for (User utilisateur : utilisateurs) {
-                if (!utilisateur.equals(auteur)) {
-                    Notification notification = new Notification();
-                    notification.setMessage("Un nouveau commentaire a été ajouté à la ressource '" + ressource.getTitre() + "' : " + comm.getContenu());
-                    notification.setDateEnvoi(new Date());
-                    notification.setEstLue(false);
-                    notification.setCommentaire(nouvelleComm);
-                    notification.setDestinataire(utilisateur);
-                    notification.setRessource(ressource);
-                    notification.setType(TypeNotif.COMMENTAIRE);
-                    notificationService.envoyerNotification(notification);
-                }
-            }
-        }
+        User proprietaireRessource = ressource.getAuteur();
+        Notification notification = new Notification();
+        notification.setMessage("Un nouveau commentaire a été ajouté à votre ressource '" + ressource.getTitre() + "' : " + comm.getContenu());
+        notification.setDateEnvoi(new Date());
+        notification.setEstLue(false);
+        notification.setCommentaire(nouvelleComm);
+        notification.setDestinataire(proprietaireRessource);
+        notification.setRessource(ressource);
+        notification.setType(TypeNotif.COMMENTAIRE);
+        notificationService.envoyerNotification(notification);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(nouvelleComm);
 
     }
@@ -145,3 +147,4 @@ public class GestionCommentaireImpl implements IGestionCom {
         return commRepo.countByRessourceId(id);
     }
 }
+

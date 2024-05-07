@@ -14,4 +14,7 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
     boolean existsByEmail(String email);
     List<User> findByNomContainingIgnoreCaseOrPrenomContainingIgnoreCase(String nom, String prename);
 
+    @Query("SELECT u FROM User u WHERE u.id <> :commentingUserId")
+    List<User> findAllExceptCommentingUser(@Param("commentingUserId") Long commentingUserId);
+
 }
