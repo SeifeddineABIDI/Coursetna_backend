@@ -11,6 +11,7 @@ import tn.esprit.pidev.repository.IDiscussionRepository;
 import tn.esprit.pidev.repository.IMessageRepository;
 import tn.esprit.pidev.repository.IUserRepository;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -18,18 +19,18 @@ import java.util.stream.Collectors;
 
 @Service
 public class GestionMessageImpl implements IGestionMessage {
+
     @Autowired
     IMessageRepository iMessageRepository;
     @Autowired
     IUserRepository iUserRepository;
     @Autowired
     IDiscussionRepository iDiscussionRepository;
+
     @Override
     public Message sendMessage(int userSender, Long discussion, String message) {
         Message messageo = new Message();
         messageo.setMessage(message);
-
-
 
         messageo.setDateSent(LocalDateTime.now());
         messageo.setArchived(false);
@@ -46,6 +47,11 @@ public class GestionMessageImpl implements IGestionMessage {
         Message messageo = iMessageRepository.findById(id).get();
         messageo.setDateModified(LocalDateTime.now());
         messageo.setMessage(message);
+
+        SecureRandom secureRandom = new SecureRandom();
+        messageo.getDiscussion().setUpdating(secureRandom.nextInt(100));
+        iDiscussionRepository.save(messageo.getDiscussion());
+
         return iMessageRepository.save(messageo);
     }
 
@@ -53,6 +59,10 @@ public class GestionMessageImpl implements IGestionMessage {
         Message message = iMessageRepository.findById(id).get();
         message.setArchived(true);
         try {
+            SecureRandom secureRandom = new SecureRandom();
+            message.getDiscussion().setUpdating(secureRandom.nextInt(100));
+            iDiscussionRepository.save(message.getDiscussion());
+
             iMessageRepository.save(message);
             return true;
         } catch (Exception e) {
@@ -80,15 +90,9 @@ public class GestionMessageImpl implements IGestionMessage {
         return iMessageRepository.findAllByDiscussionIdAndArchivedIsFalseOrderByDateSent(id);
     }
 
-    public List<Message> retrieve20Messages(Long id){
-        return iMessageRepository.findTop20ByDiscussionIdOrderByDateSent(id);
-    }
-
-    public List<Message> retrieveA20Messages(Long id, int pageNumber) {
-        int pageSize = 20;
-        int offset = pageNumber * pageSize;
-        Pageable pageable = PageRequest.of(offset, pageSize, Sort.by("DateSent"));
-        return iMessageRepository.findByDiscussionIdOrderByDateSent(id, pageable);
+    public List<Message> retrieveMessages(Long id, int page, int size){
+        PageRequest pageRequest = PageRequest.of(page, size,Sort.by("DateSent").descending());
+        return iMessageRepository.findAllByDiscussion_IdAndArchivedIsFalse(id, pageRequest);
     }
 
     public List<Message> retrieveRecentMessages(Long id, String recentDate)

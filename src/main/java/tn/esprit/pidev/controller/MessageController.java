@@ -1,4 +1,4 @@
-package tn.esprit.pidev.controllers;
+package tn.esprit.pidev.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,14 +52,9 @@ public class MessageController {
         return iGestionMessage.retrieveAllMessages(id);
     }
 
-    @GetMapping("/retrieve20Messages")
-    public List<Message> cretrieve20Messages(@RequestParam Long id) {
-        return iGestionMessage.retrieve20Messages(id);
-    }
-
-    @GetMapping("/retrieveA20Messages")
-    public List<Message> cretrieveA20Messages(@RequestParam Long id,@RequestParam int pageNumber) {
-        return iGestionMessage.retrieveA20Messages(id,pageNumber);
+    @GetMapping("/retrieveMessages")
+    public List<Message> cretrieveMessages(@RequestParam Long id, @RequestParam int page, @RequestParam int size) {
+        return iGestionMessage.retrieveMessages(id,page,size);
     }
 
     @GetMapping("/retrieveRecentMessages")

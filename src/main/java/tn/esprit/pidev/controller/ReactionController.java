@@ -1,4 +1,4 @@
-package tn.esprit.pidev.controllers;
+package tn.esprit.pidev.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

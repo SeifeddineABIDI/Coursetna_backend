@@ -6,27 +6,35 @@ import tn.esprit.pidev.entities.Discussion;
 import tn.esprit.pidev.entities.Message;
 import tn.esprit.pidev.entities.Reaction;
 import tn.esprit.pidev.entities.User;
+import tn.esprit.pidev.repository.IDiscussionRepository;
 import tn.esprit.pidev.repository.IMessageRepository;
 import tn.esprit.pidev.repository.IReactionRepository;
 import tn.esprit.pidev.repository.IUserRepository;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 public class GestionReactionImpl implements IGestionReaction {
+
     @Autowired
     IMessageRepository iMessageRepository;
     @Autowired
     IUserRepository iUserRepository;
     @Autowired
     IReactionRepository iReactionRepository;
+    @Autowired
+    IDiscussionRepository iDiscussionRepository;
+
     @Override
-
-
     public Reaction reacting(int userId, Long message, String reaction) {
         User user = iUserRepository.findById(userId).get();
         Message messageo = iMessageRepository.findById(message).get();
+
+        SecureRandom secureRandom = new SecureRandom();
+        messageo.getDiscussion().setUpdating(secureRandom.nextInt(100));
+        iDiscussionRepository.save(messageo.getDiscussion());
 
         Optional<Reaction> existingReaction = iReactionRepository.findFirstByUserAndReactionAndMessage(user, reaction, messageo);
         if (existingReaction.isPresent()) {

@@ -30,4 +30,5 @@ public interface IGestionDiscussion {
     public Discussion leaveDiscussion(int user, Long discussion);
 
     public ResponseEntity<String> deleteDiscussion(int user, Long discussion);
+
 }
