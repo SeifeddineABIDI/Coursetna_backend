@@ -9,18 +9,25 @@ import tn.esprit.pidev.entities.Message;
 import tn.esprit.pidev.entities.TypeDiscussion;
 import tn.esprit.pidev.entities.User;
 import tn.esprit.pidev.repository.IDiscussionRepository;
+import tn.esprit.pidev.repository.IMessageRepository;
 import tn.esprit.pidev.repository.IUserRepository;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class GestionDiscussionImpl implements IGestionDiscussion {
+
     @Autowired
     IDiscussionRepository iDiscussionRepository;
     @Autowired
     IUserRepository iUserRepository;
+    @Autowired
+    IMessageRepository iMessageRepository;
+    GestionMessageImpl gestionMessage;
+
     @Override
     public Discussion startDiscussionDuo(int userStart, int userEnd)
     {
@@ -28,11 +35,10 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
         List<Discussion> d = iDiscussionRepository.findByTwoUsersAndTypeDiscussion(iUserRepository.findById(userStart).get(),iUserRepository.findById(userEnd).get(),TypeDiscussion.Duo);
                 if (!d.isEmpty()) {
                     d.get(0).setArchived(false);
-                    d.get(0).getUsers().clear();
                    return iDiscussionRepository.save(d.get(0));
                 } else {
 
-                    Discussion discussion = new Discussion();
+                     Discussion discussion = new Discussion();
                     discussion.setTypeDiscussion(TypeDiscussion.Duo);
                     User userEndo = iUserRepository.findById(userEnd).get();
                     discussion.getUsers().add(iUserRepository.findById(userStart).get());
@@ -42,7 +48,19 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
                     discussion.setTitle(userEndo.getPrenom() + " " + userEndo.getNom());
                     discussion.setDateStart(LocalDateTime.now());
                     discussion.setArchived(false);
-                    return iDiscussionRepository.save(discussion);
+                    iDiscussionRepository.save(discussion);
+
+                    User userStarto = iUserRepository.findById(userStart).get();
+                    Message messageo = new Message();
+                    messageo.setMessage("\uD83C\uDFC1 Discussion started by "+ userStarto.getPrenom() + " "+ userStarto.getNom());
+                    messageo.setDateSent(LocalDateTime.now());
+                    messageo.setArchived(false);
+                    messageo.setPinned(false);
+                    messageo.setUser(iUserRepository.findById(userStart).get());
+                    messageo.setDiscussion(discussion);
+                    iMessageRepository.save(messageo);
+
+                    return discussion;
                 }
     }
 
@@ -70,7 +88,19 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
         discussion.setArchived(false);
         discussion.setPhoto(image);
 
-        return iDiscussionRepository.save(discussion);
+        iDiscussionRepository.save(discussion);
+
+        User userStarto = iUserRepository.findById(userStart).get();
+        Message messageo = new Message();
+        messageo.setMessage("\uD83C\uDFC1 Discussion started by "+ userStarto.getPrenom() + " "+ userStarto.getNom());
+        messageo.setDateSent(LocalDateTime.now());
+        messageo.setArchived(false);
+        messageo.setPinned(false);
+        messageo.setUser(iUserRepository.findById(userStart).get());
+        messageo.setDiscussion(discussion);
+        iMessageRepository.save(messageo);
+
+        return  discussion;
     }
 
     @Override
@@ -103,7 +133,18 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
             discussiono.setPhoto(" ");
             discussiono.setArchived(false);
             discussion.getCommunity().add(discussiono);
-           iDiscussionRepository.save(discussiono) ;
+            iDiscussionRepository.save(discussiono) ;
+
+            User userStarto = iUserRepository.findById(userStart).get();
+            Message messageo = new Message();
+            messageo.setMessage("\uD83C\uDFC1 Discussion started by "+ userStarto.getPrenom() + " "+ userStarto.getNom());
+            messageo.setDateSent(LocalDateTime.now());
+            messageo.setArchived(false);
+            messageo.setPinned(false);
+            messageo.setUser(iUserRepository.findById(userStart).get());
+            messageo.setDiscussion(discussiono);
+            iMessageRepository.save(messageo);
+
         }
 
         discussion.setPhoto(image);
@@ -136,6 +177,8 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
 
             discussiono.setPhoto(image);
 
+            SecureRandom secureRandom = new SecureRandom();
+            discussiono.setUpdating(secureRandom.nextInt(100));
 
             iDiscussionRepository.save(discussiono);
             return ResponseEntity.ok("Group discussion modified successfully.");
@@ -201,7 +244,20 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
                 discussionListo.remove(0);
                 discussiono.getCommunity().add(discussionoo);
                 iDiscussionRepository.save(discussionoo);
+
+                User userStarto = iUserRepository.findById(userStart).get();
+                Message messageo = new Message();
+                messageo.setMessage("\uD83C\uDFC1 Discussion started by "+ userStarto.getPrenom() + " "+ userStarto.getNom());
+                messageo.setDateSent(LocalDateTime.now());
+                messageo.setArchived(false);
+                messageo.setPinned(false);
+                messageo.setUser(iUserRepository.findById(userStart).get());
+                messageo.setDiscussion(discussionoo );
+                iMessageRepository.save(messageo);
             }
+
+            SecureRandom secureRandom = new SecureRandom();
+            discussiono.setUpdating(secureRandom.nextInt(100));
 
             iDiscussionRepository.save(discussiono);
             return ResponseEntity.ok("Community discussion modified successfully.");
@@ -232,6 +288,10 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
                 }
 
             }
+
+            SecureRandom secureRandom = new SecureRandom();
+            discussiono.setUpdating(secureRandom.nextInt(100));
+
             iDiscussionRepository.save(discussiono) ;
 
             return ResponseEntity.ok("Admins added successfully.");
@@ -258,6 +318,11 @@ public class GestionDiscussionImpl implements IGestionDiscussion {
         Discussion discussiono = iDiscussionRepository.findById(discussion).get() ;
         User usero = iUserRepository.findById(user).get() ;
         discussiono.getUsers().remove(usero);
+
+        SecureRandom secureRandom = new SecureRandom();
+        discussiono.setUpdating(secureRandom.nextInt(100));
+
+
         return iDiscussionRepository.save(discussiono) ;
     }
     @Override

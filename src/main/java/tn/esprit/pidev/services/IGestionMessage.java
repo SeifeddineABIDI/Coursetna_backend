@@ -18,14 +18,10 @@ public interface IGestionMessage {
 
     public List<Message> retrieveAllMessages(Long id);
 
-    public List<Message> retrieve20Messages(Long id);
-
-    public List<Message> retrieveA20Messages(Long id, int pageNumber);
+    public List<Message> retrieveMessages(Long id, int page, int size);
 
     public List<Message> retrieveRecentMessages(Long id, String recentDate);
 
     public Message pinMessage(Long id);
 
-
-
-    }
+}

@@ -24,6 +24,7 @@ public class Discussion implements Serializable {
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String photo = "";
+    private int updating = 0;
     @Enumerated(EnumType.STRING)
     private TypeDiscussion typeDiscussion;
     @ManyToMany(cascade = CascadeType.DETACH)

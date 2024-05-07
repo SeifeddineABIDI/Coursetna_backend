@@ -10,11 +10,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IMessageRepository extends JpaRepository<Message, Long> {
-    List<Message> findTop20ByDiscussionIdOrderByDateSent(Long id);
 
     List<Message> findAllByDiscussionIdAndArchivedIsFalseOrderByDateSent(Long id);
 
-    List<Message> findByDiscussionIdOrderByDateSent(Long id, Pageable pageable);
+    List<Message> findAllByDiscussion_IdAndArchivedIsFalse(Long id, Pageable pageable);
 
     List<Message> findByDiscussionIdAndDateSentAfterOrderByDateSent(Long id, LocalDateTime recentDateo);
 
