@@ -51,6 +51,9 @@ public abstract class PostMapper {
     @Mapping(target = "imageUrl", source = "post.imageUrl")
     @Mapping(target = "like", expression = "java(isPostLiked(post))")
     @Mapping(target = "dislike", expression = "java(isPostDisliked(post))")
+    @Mapping(target = "nom", source = "user.nom") // Use direct source for nom
+    @Mapping(target = "prenom", source = "user.prenom")
+    @Mapping(target = "userId", source = "user.id")
     public abstract PostResponse mapToDto(Post post);
 
     Integer commentCount(Post post) {
@@ -83,4 +86,5 @@ public abstract class PostMapper {
         }
         return false;
     }
+
 }

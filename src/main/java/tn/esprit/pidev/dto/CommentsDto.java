@@ -17,4 +17,9 @@ public class CommentsDto {
     @NotBlank
     private String text;
     private String email;
+    private String nom;
+    private String prenom;
+    private int userId;
+
+
 }

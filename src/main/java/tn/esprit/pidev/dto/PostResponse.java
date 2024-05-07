@@ -20,6 +20,9 @@ public class PostResponse {
     private String duration;
     private boolean like;
     private boolean dislike;
+    public String nom;
+    public String prenom;
+    public int userId;
 
 
 }
