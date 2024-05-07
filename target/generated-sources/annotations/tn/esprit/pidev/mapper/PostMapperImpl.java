@@ -10,7 +10,7 @@ import tn.esprit.pidev.entities.User;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-04-27T19:30:52+0100",
+    date = "2024-05-06T13:02:17+0100",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.8 (Oracle Corporation)"
 )
 @Component
@@ -51,6 +51,12 @@ public class PostMapperImpl extends PostMapper {
         postResponse.setSubforumName( postSubforumName( post ) );
         postResponse.setEmail( postUserEmail( post ) );
         postResponse.setImageUrl( post.getImageUrl() );
+        postResponse.setNom( postUserNom( post ) );
+        postResponse.setPrenom( postUserPrenom( post ) );
+        Integer id = postUserId( post );
+        if ( id != null ) {
+            postResponse.setUserId( id );
+        }
         postResponse.setPostName( post.getPostName() );
         postResponse.setUrl( post.getUrl() );
         postResponse.setDescription( post.getDescription() );
@@ -92,5 +98,50 @@ public class PostMapperImpl extends PostMapper {
             return null;
         }
         return email;
+    }
+
+    private String postUserNom(Post post) {
+        if ( post == null ) {
+            return null;
+        }
+        User user = post.getUser();
+        if ( user == null ) {
+            return null;
+        }
+        String nom = user.getNom();
+        if ( nom == null ) {
+            return null;
+        }
+        return nom;
+    }
+
+    private String postUserPrenom(Post post) {
+        if ( post == null ) {
+            return null;
+        }
+        User user = post.getUser();
+        if ( user == null ) {
+            return null;
+        }
+        String prenom = user.getPrenom();
+        if ( prenom == null ) {
+            return null;
+        }
+        return prenom;
+    }
+
+    private Integer postUserId(Post post) {
+        if ( post == null ) {
+            return null;
+        }
+        User user = post.getUser();
+        if ( user == null ) {
+            return null;
+        }
+        Integer id = user.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
     }
 }

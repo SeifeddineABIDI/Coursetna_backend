@@ -9,7 +9,7 @@ import tn.esprit.pidev.entities.User;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-05-02T02:15:34+0100",
+    date = "2024-05-06T16:00:09+0100",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.8 (Oracle Corporation)"
 )
 @Component
@@ -41,6 +41,12 @@ public class CommentMapperImpl implements CommentMapper {
 
         CommentsDto commentsDto = new CommentsDto();
 
+        commentsDto.setNom( commentUserNom( comment ) );
+        commentsDto.setPrenom( commentUserPrenom( comment ) );
+        Integer id = commentUserId( comment );
+        if ( id != null ) {
+            commentsDto.setUserId( id );
+        }
         commentsDto.setId( comment.getId() );
         commentsDto.setText( comment.getText() );
 
@@ -49,5 +55,50 @@ public class CommentMapperImpl implements CommentMapper {
         commentsDto.setCreatedDate( getDuration(comment) );
 
         return commentsDto;
+    }
+
+    private String commentUserNom(Comment comment) {
+        if ( comment == null ) {
+            return null;
+        }
+        User user = comment.getUser();
+        if ( user == null ) {
+            return null;
+        }
+        String nom = user.getNom();
+        if ( nom == null ) {
+            return null;
+        }
+        return nom;
+    }
+
+    private String commentUserPrenom(Comment comment) {
+        if ( comment == null ) {
+            return null;
+        }
+        User user = comment.getUser();
+        if ( user == null ) {
+            return null;
+        }
+        String prenom = user.getPrenom();
+        if ( prenom == null ) {
+            return null;
+        }
+        return prenom;
+    }
+
+    private Integer commentUserId(Comment comment) {
+        if ( comment == null ) {
+            return null;
+        }
+        User user = comment.getUser();
+        if ( user == null ) {
+            return null;
+        }
+        Integer id = user.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
     }
 }

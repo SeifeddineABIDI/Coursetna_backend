@@ -1,6 +1,5 @@
 package tn.esprit.pidev.entities;
 
-
 public class CurrentUser {
     private static User user;
 

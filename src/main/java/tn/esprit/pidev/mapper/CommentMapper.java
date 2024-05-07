@@ -21,6 +21,9 @@ public interface CommentMapper {
     @Mapping(target = "postId", expression = "java(comment.getPost().getPostId())")
     @Mapping(target = "email", expression = "java(comment.getUser().getEmail())")
     @Mapping(target = "createdDate", expression = "java(getDuration(comment))")
+    @Mapping(target = "nom", source = "user.nom") // Use direct source for nom
+    @Mapping(target = "prenom", source = "user.prenom")
+    @Mapping(target = "userId", source = "user.id")
     CommentsDto mapToDto(Comment comment);
     default String getDuration(Comment comment) {
         if (comment.getCreatedDate() != null) {

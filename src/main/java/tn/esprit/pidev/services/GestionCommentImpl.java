@@ -1,5 +1,6 @@
 package tn.esprit.pidev.services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.mail.MessageRemovedException;
@@ -22,8 +23,13 @@ import tn.esprit.pidev.repository.IUserRepository;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -37,8 +43,9 @@ public class GestionCommentImpl implements IGestionComment {
     MailService mailService;
     MailContentBuilder mailContentBuilder;
     private static final String POST_URL = "";
-    private static final String PROFANITY_API_BASE_URL = "https://api.api-ninjas.com/v1/profanityfilter";
-    private static final String API_KEY = "bkFu4qUELNjMk2blZVqJaw==HNFUUE6wOQD0olt5";
+    private static final String PROFANITY_API_BASE_URL = "https://neutrinoapi-bad-word-filter.p.rapidapi.com/bad-word-filter";
+    private static final String API_KEY = "cd0fd78975msh65069d8c049fc5ep1a23f0jsn976f4f1a0cc9";
+
 
 
     @Override
@@ -59,37 +66,28 @@ public class GestionCommentImpl implements IGestionComment {
             String message = mailContentBuilder.build(post.getUser().getNom() + " posted a comment on your post." + POST_URL);
             sendCommentNotification(message, post.getUser());
         } else {
-            throw new PostNotFoundException( "Your comment contains profanity. Please remove it and try again.");
-        }
+            throw new SubforumNotFoundException("Your comment contains bad words. Please remove it and try again.");        }
     }
 
     private boolean checkProfanity(String text) {
         try {
-            URL url = new URL(PROFANITY_API_BASE_URL + "?text=" + text);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("accept", "application/json");
-            connection.setRequestProperty("X-Api-Key", API_KEY);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(PROFANITY_API_BASE_URL))
+                    .header("content-type", "application/x-www-form-urlencoded")
+                    .header("X-RapidAPI-Key", API_KEY)
+                    .header("X-RapidAPI-Host", "neutrinoapi-bad-word-filter.p.rapidapi.com")
+                    .method("POST", HttpRequest.BodyPublishers.ofString("content=" + text + "&censor-character=*"))
+                    .build();
 
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                InputStream responseStream = connection.getInputStream();
-                ObjectMapper mapper = new ObjectMapper();
-                JsonNode root = mapper.readTree(responseStream);
-                return root.path("containsProfanity").asBoolean();
-            } else {
-                // Handle HTTP error response
-                System.err.println("HTTP Error: " + responseCode);
-                // Optionally, read and print the error response body
-                InputStream errorStream = connection.getErrorStream();
-                if (errorStream != null) {
-                    ObjectMapper mapper = new ObjectMapper();
-                    JsonNode errorRoot = mapper.readTree(errorStream);
-                    System.err.println("Error Response: " + errorRoot.toString());
-                }
-                return false;
-            }
-        } catch (IOException e) {
-            // Handle exception
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            String responseBody = response.body();
+
+            // Parsing JSON response to check if "is-bad" is true
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> responseMap = mapper.readValue(responseBody, new TypeReference<Map<String, Object>>(){});
+            Boolean isBad = (Boolean) responseMap.get("is-bad");
+            return isBad != null && isBad;
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             return false;
         }
