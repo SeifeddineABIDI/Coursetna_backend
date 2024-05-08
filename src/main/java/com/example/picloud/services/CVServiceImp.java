@@ -1,8 +1,7 @@
 package com.example.picloud.services;
 
 
-import com.example.picloud.entities.Cv;
-import com.example.picloud.repository.ICvRepo;
+
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

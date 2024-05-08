@@ -1,7 +1,5 @@
 package com.example.picloud.services;
 
-import com.example.picloud.entities.Stage;
-import com.example.picloud.repository.StageReposetory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
